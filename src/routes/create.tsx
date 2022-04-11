@@ -1,0 +1,66 @@
+import { Typography } from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import { GoogleSearch } from "./google-search";
+import { PollInfo, Info } from "./poll-info";
+import { Participants } from "./participants";
+import { Option, Participant } from "../models";
+import groupthink, { PendingPoll } from '../client/groupthink';
+
+export enum Step {
+  OPTONS,
+  POLL_INFO,
+  PARTICIPANTS,
+}
+
+const STEPS = [Step.OPTONS, Step.POLL_INFO, Step.PARTICIPANTS];
+
+export function CreateRoute() {
+  const [step, setStep] = useState(Step.OPTONS)
+  const [options, setOptions] = useState<Option[]>([]);
+  const [info, setInfo] = useState<Info | null>(null);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+
+  const next = useCallback(async () => {
+    const stepIdx = STEPS.indexOf(step);
+    if (stepIdx < STEPS.length - 1) {
+      setStep(STEPS[stepIdx + 1]);
+      console.log("moving to step", stepIdx + 1);
+      return;
+    }
+
+    // time to create!
+    const poll: PendingPoll = {
+      ...info!,
+      participants,
+      optionsList: options,
+    }
+
+    const res = await groupthink.createPoll(poll);
+    console.log({ res });
+
+    // TODO: set token
+    localStorage.setItem(res.id + "token", res.ownerToken);
+    window.history.pushState({}, "_", `/${res.id}`);
+
+  }, [step, STEPS, info, options, participants]);
+
+  const onSelectOption = useCallback((opt: Option) => {
+    setOptions([...options, opt]);
+  }, [options]);
+
+  return (
+    <div>
+      <Typography variant="h2">
+        {options.length + " options selected"}
+      </Typography>
+      {step === Step.OPTONS && <GoogleSearch onSelectOption={opt => onSelectOption(opt)} onComplete={next} /> }
+      {step === Step.POLL_INFO && <PollInfo onSubmit={pollInfo => { setInfo(pollInfo); next(); } }/>}
+      {step === Step.PARTICIPANTS &&
+        <Participants
+          onComplete={next}
+          participants={participants}
+          onAddParticipant={p => setParticipants([...participants, p])}
+        />}
+    </div>
+  );
+}
