@@ -5,6 +5,7 @@ import { PollInfo, Info } from "./poll-info";
 import { Participants } from "./participants";
 import { Option, Participant } from "../models";
 import groupthink, { PendingPoll } from '../client/groupthink';
+import { useNavigate } from 'react-router-dom';
 
 export enum Step {
   OPTONS,
@@ -15,6 +16,7 @@ export enum Step {
 const STEPS = [Step.OPTONS, Step.POLL_INFO, Step.PARTICIPANTS];
 
 export function CreateRoute() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(Step.OPTONS)
   const [options, setOptions] = useState<Option[]>([]);
   const [info, setInfo] = useState<Info | null>(null);
@@ -40,7 +42,7 @@ export function CreateRoute() {
 
     // TODO: set token
     localStorage.setItem(res.id + "token", res.ownerToken);
-    window.history.pushState({}, "_", `/${res.id}`);
+    navigate(`/${res.id}`);
 
   }, [step, STEPS, info, options, participants]);
 

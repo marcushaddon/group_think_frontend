@@ -30,12 +30,12 @@ export const PollInfo: FunctionComponent<Props> = ({
       description,
       ownerName,
       ownerPhone,
-      expires,
+      expires: new Date(expires).toISOString(),
     });
     setName("");
     setDescription("");
     setOwnerPhone("");
-  }, [onSubmit, name, ownerPhone, description]);
+  }, [onSubmit, name, ownerPhone, description, ownerName, expires]);
 
   return (
     <form onSubmit={submit}>
@@ -50,7 +50,7 @@ export const PollInfo: FunctionComponent<Props> = ({
           <Input type="text" name="description" value={description} placeholder="Additional details" onChange={e => setDescription(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <Input type="text" required name="description" value={ownerName} placeholder="Your name" onChange={e => setOwnerName(e.target.value)} />
+          <Input type="text" required name="ownerName" value={ownerName} placeholder="Your name" onChange={e => setOwnerName(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
           <Input type="tel" required name="ownerPhone" value={ownerPhone} placeholder="Your phone" onChange={e => setOwnerPhone(e.target.value)} />

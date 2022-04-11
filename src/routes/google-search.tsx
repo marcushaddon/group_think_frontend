@@ -39,7 +39,6 @@ export const GoogleSearch: FunctionComponent<Props> = ({
   }, [offset, doSearch]);
 
   const selectOption = useCallback((option: Option) => {
-    console.log("TODO: filter out result!");
     onSelectOption && onSelectOption(option);
   }, [onSelectOption])
 

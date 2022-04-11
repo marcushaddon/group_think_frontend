@@ -1,7 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 import groupthink, { Poll } from "../client/groupthink";
+import { Option } from "../components/option";
+import { Participant } from "../components/participant";
 
 export const PollRoute: FunctionComponent = () => {
   const params = useParams();
@@ -9,7 +11,8 @@ export const PollRoute: FunctionComponent = () => {
 
   const [poll, setPoll] = useState<Poll | null>(null);
   useEffect(() => {
-    const poll = groupthink.getPoll(pollId!)
+    if (!pollId) return;
+    groupthink.getPoll(pollId)
       .then(poll => setPoll(poll));
     
   }, [pollId]);
@@ -18,5 +21,24 @@ export const PollRoute: FunctionComponent = () => {
     return <CircularProgress />
   }
 
-  return <>TODO</>;
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h1">
+          {poll.name}
+        </Typography>
+        <Typography variant="subtitle1">
+          by {poll.ownerName}
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body1">
+          {poll.description}
+        </Typography>
+      </Grid>
+      {poll.participants.length} participants
+      {poll.participants.map(p => <Participant participant={p} />)}
+      {poll.optionsList.map(o => <Option {...o} />)}
+    </Grid>
+  )
 }
