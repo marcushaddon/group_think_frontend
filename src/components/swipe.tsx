@@ -1,7 +1,8 @@
 import { Typography } from "@mui/material";
-import React, { useRef, FunctionComponent, useCallback, useState } from "react";
+import React, { useRef, FunctionComponent, useCallback, useState, useEffect } from "react";
 
 export interface Props {
+  refreshKey: string;
   children: React.ReactNode;
   onLeft: () => void;
   onRight: () => void;
@@ -55,19 +56,39 @@ const makeSwipeHandler = (x: number, onLeft: () => void, onRight: () => void) =>
 export const Swipe: FunctionComponent<Props> = ({
   children,
   onLeft,
-  onRight
+  onRight,
+  refreshKey
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [rejected, setRejected] = useState(false);
   const [selected, setSelected] = useState(false);
+  const [leftTimeout, setLeftTimeout] = useState<any>(null);
+  const [rightTimeout, setRightTimeout] = useState<any>(null);
+
+  const clearTimeouts = useCallback(() => {
+    if (leftTimeout) {
+      clearTimeout(leftTimeout);
+      setLeftTimeout(null);
+    }
+    if (rightTimeout) {
+      clearTimeout(rightTimeout);
+      setRightTimeout(null);
+    }
+  }, [leftTimeout, rightTimeout]);
+
+  useEffect(() => {
+    setRejected(false);
+    setSelected(false);
+    clearTimeouts();
+  }, [refreshKey]);
 
   const onLeftWrapper = useCallback(() => {
     setRejected(true);
-    setTimeout(onLeft, 200); // TODO: clear prev timeout!!!!
+    setLeftTimeout(setTimeout(onLeft, 500)); // TODO: clear prev timeout!!!!
   }, [onLeft]);
   const onRightWrapper = useCallback(() => {
     setSelected(true);
-    setTimeout(onRight, 200);
+    setRightTimeout(setTimeout(onRight, 200));
   }, [onRight]);
 
   const startSwipe: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {

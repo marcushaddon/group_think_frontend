@@ -81,6 +81,7 @@ export const Matchup: FunctionComponent<Props> = ({
       <Swipe
         onLeft={rejectA}
         onRight={chooseA}
+        refreshKey={optionA!.id + optionB!.id}
       >
         <Option
           {...optionA}
@@ -91,6 +92,7 @@ export const Matchup: FunctionComponent<Props> = ({
       <Swipe
         onLeft={negativeTie}
         onRight={positiveTie}
+        refreshKey={optionA.id + optionB.id}
       >
         <Grid
           container
@@ -121,6 +123,7 @@ export const Matchup: FunctionComponent<Props> = ({
       <Swipe
         onLeft={rejectB}
         onRight={chooseB}
+        refreshKey={optionA!.id + optionB!.id}
       >
         <Option
           {...optionB}

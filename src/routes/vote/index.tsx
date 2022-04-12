@@ -24,8 +24,8 @@ export interface MatchupResult {
 export const VoteRoute: FunctionComponent = () => {
   const params = useParams();
   const [pollId,] = useState(params.pollId!);
-  console.log("yo vote?", pollId)
 
+  const [voting, setVoting] = useState(true);
   const [poll, setPoll] = useState<Poll | null>(null);
   const [optionA, setOptionA] = useState<Option | null>(null);
   const [optionB, setOptionB] = useState<Option | null>(null);
@@ -45,15 +45,15 @@ export const VoteRoute: FunctionComponent = () => {
     return <CircularProgress />;
   }
 
-  return <Matchup
+  return voting ? <Matchup
     prompt={poll.description}
     optionA={optionA!}
     optionB={optionB!}
     onResult={(res: MatchupResult) => {
       console.log(res);
-      setOptionA(poll!.optionsList[0]);
-      setOptionB(poll!.optionsList[1]);
+      setOptionA(poll!.optionsList[1]);
+      setOptionB(poll!.optionsList[0]);
     }}
-  />
+  /> : <></>;
 
 }
