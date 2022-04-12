@@ -1,7 +1,7 @@
 import { Grid, Typography, Input, Button } from "@mui/material";
 import React, { FunctionComponent, useCallback, useState } from "react";
-import { Participant } from "../components/participant";
-import { Participant as ParticipantModel, VoteStatus } from "../models";
+import { Participant } from "../../components/participant";
+import { Participant as ParticipantModel, VoteStatus } from "../../models";
 
 export interface Props {
   participants: ParticipantModel[];

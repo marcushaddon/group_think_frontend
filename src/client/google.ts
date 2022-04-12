@@ -1,7 +1,7 @@
-import { Option } from "../models";
+import { PendingOption } from "../models";
 import * as gt from "./google-types";
 
-const itemToOption = (item: gt.Item): Option => ({
+const itemToOption = (item: gt.Item): PendingOption => ({
   name: item.title,
   uri: item.link,
   description: item.snippet,
@@ -25,7 +25,7 @@ export class GoogleSearchClient {
     const mapped = json.items.map((item: gt.Item) => itemToOption(item));
     console.log(mapped);
 
-    return { items: mapped as Option[] };
+    return { items: mapped as PendingOption[] };
   }
 }
 

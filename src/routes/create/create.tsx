@@ -3,8 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { GoogleSearch } from "./google-search";
 import { PollInfo, Info } from "./poll-info";
 import { Participants } from "./participants";
-import { Option, Participant } from "../models";
-import groupthink, { PendingPoll } from '../client/groupthink';
+import { PendingOption, Participant } from "../../models";
+import groupthink, { PendingPoll } from '../../client/groupthink';
 import { useNavigate } from 'react-router-dom';
 
 export enum Step {
@@ -18,7 +18,7 @@ const STEPS = [Step.OPTONS, Step.POLL_INFO, Step.PARTICIPANTS];
 export function CreateRoute() {
   const navigate = useNavigate();
   const [step, setStep] = useState(Step.OPTONS)
-  const [options, setOptions] = useState<Option[]>([]);
+  const [options, setOptions] = useState<PendingOption[]>([]);
   const [info, setInfo] = useState<Info | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
 
@@ -26,7 +26,7 @@ export function CreateRoute() {
     const stepIdx = STEPS.indexOf(step);
     if (stepIdx < STEPS.length - 1) {
       setStep(STEPS[stepIdx + 1]);
-      console.log("moving to step", stepIdx + 1);
+
       return;
     }
 
@@ -44,9 +44,9 @@ export function CreateRoute() {
     localStorage.setItem(res.id + "token", res.ownerToken);
     navigate(`/${res.id}`);
 
-  }, [step, STEPS, info, options, participants]);
+  }, [step, info, options, participants, navigate]);
 
-  const onSelectOption = useCallback((opt: Option) => {
+  const onSelectOption = useCallback((opt: PendingOption) => {
     setOptions([...options, opt]);
   }, [options]);
 

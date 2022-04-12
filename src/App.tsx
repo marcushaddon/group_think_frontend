@@ -1,8 +1,9 @@
-import { Button, Typography } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { CreateRoute } from "./routes/create";
+import { CreateRoute } from "./routes/create/create";
 import { PollRoute } from "./routes/poll";
+import { VoteRoute } from './routes/vote';
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route index element={<CreateRoute />} />
         <Route path="/:pollId" element={<PollRoute />} />
+        <Route path="/vote/:pollId" element={<VoteRoute />} />
       </Routes>
     </BrowserRouter>
   )

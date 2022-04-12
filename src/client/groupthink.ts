@@ -1,6 +1,8 @@
-import { Option, Participant } from "../models";
+import { PendingOption, Option, Participant } from "../models";
 
-export type PendingPoll = Omit<Poll, "id" | "ownerToken">;
+export type PendingPoll = Omit<Poll, "id" | "ownerToken" | "optionsMap" | "optionsList"> & {
+  optionsList: PendingOption[];
+};
 
 export interface Poll {
   id: string;
@@ -10,6 +12,7 @@ export interface Poll {
   ownerToken: string;
   ownerPhone: string;
   optionsList: Option[];
+  optionsMap: { [id: string]: Option };
   participants: Participant[];
   expires: string;
 

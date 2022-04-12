@@ -1,11 +1,11 @@
 import React, { useState, useCallback, FunctionComponent } from "react";
 import { Button, Input, Grid } from "@mui/material";
-import googleSearch from "../client/google";
-import { Option as OptionComponent } from "../components/option";
-import { Option } from "../models";
+import googleSearch from "../../client/google";
+import { Option as OptionComponent } from "../../components/option";
+import { PendingOption } from "../../models";
 
 export interface Props {
-  onSelectOption: (option: Option) => void;
+  onSelectOption: (option: PendingOption) => void;
   onComplete: () => void;
 }
 
@@ -14,7 +14,7 @@ export const GoogleSearch: FunctionComponent<Props> = ({
   onComplete
 }) => {
   const PAGE_SIZE = 10;
-  const [results, setResults] = useState<Option[]>([]);
+  const [results, setResults] = useState<PendingOption[]>([]);
   const [term, setTerm] = useState("");
   const [offset, setOffset] = useState(0);
 
@@ -38,7 +38,7 @@ export const GoogleSearch: FunctionComponent<Props> = ({
     doSearch();
   }, [offset, doSearch]);
 
-  const selectOption = useCallback((option: Option) => {
+  const selectOption = useCallback((option: PendingOption) => {
     onSelectOption && onSelectOption(option);
   }, [onSelectOption])
 

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback } from "react";
 import { Grid, Typography, Link, Button } from "@mui/material";
-import { Option as OptionProps } from "../models";
+import { PendingOption as OptionProps } from "../models";
 
 export interface Swipeable {
   onSelect?: () => void;

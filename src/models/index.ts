@@ -1,9 +1,12 @@
 export interface Option {
+  id: string;
   name: string;
   description: string;
   uri: string;
   img: string;
 }
+
+export type PendingOption = Omit<Option, "id">;
 
 export enum VoteStatus {
   // TODO: get from backend

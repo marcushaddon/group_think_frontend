@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CircularProgress, Grid, Typography } from "@mui/material";
-import groupthink, { Poll } from "../client/groupthink";
-import { Option } from "../components/option";
-import { Participant } from "../components/participant";
+import groupthink, { Poll } from "../../client/groupthink";
+import { Option } from "../../components/option";
+import { Participant } from "../../components/participant";
 
 export const PollRoute: FunctionComponent = () => {
   const params = useParams();
