@@ -50,7 +50,7 @@ while (i++ < 10) {
     break;
   }
   choices.value = choices.value as StepResult;
-  
+
   if (choices.value.choiceA === choices.value.choiceB) {
     input = 0
   } else if (choices.value.choiceA < choices.value.choiceB) {

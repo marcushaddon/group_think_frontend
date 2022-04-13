@@ -1,6 +1,6 @@
 import { Option } from "../../models";
 
-type StepResult = {
+export type StepResult = {
   choiceA: Option;
   choiceB: Option;
 }
@@ -33,7 +33,7 @@ function* binarySearch(options: Option[], option: Option): Generator<StepResult,
   return finalRes === option.id ? l + 1 : l;
 }
 
-function* insertionSort(unsorted: Option[]): Generator<StepResult, Option[], string | undefined> {
+export function* insertionSort(unsorted: Option[]): Generator<StepResult, Option[], string | undefined> {
   const sorted: Option[] = [];
   while (unsorted.length > 0) {
     const next = unsorted.pop()!;

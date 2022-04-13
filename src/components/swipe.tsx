@@ -64,19 +64,22 @@ export const Swipe: FunctionComponent<Props> = ({
   useEffect(() => {
     setRejected(false);
     setSelected(false);
+    setDragStart(-1);
     clearTimeouts();
   }, [refreshKey]);
 
   const onLeftWrapper = useCallback(() => {
     setRejected(true);
-    setLeftTimeout(setTimeout(onLeft, 500)); // TODO: clear prev timeout!!!!
+    onLeft(); // TODO: clear prev timeout!!!!
   }, [onLeft]);
   const onRightWrapper = useCallback(() => {
     setSelected(true);
-    setRightTimeout(setTimeout(onRight, 200));
+    onRight();
   }, [onRight]);
 
   const drag: React.TouchEventHandler<HTMLDivElement> = useCallback(({ touches }) => {
+    if (dragStart < 0) return;
+
     const delta = touches[0].clientX - dragStart;
     if (delta < -50) {
       return onLeftWrapper();
@@ -90,10 +93,13 @@ export const Swipe: FunctionComponent<Props> = ({
     setDragStart(touches[0].clientX);
   }, []);
 
+  const cancelDrag: React.TouchEventHandler<HTMLDivElement> = useCallback(() => { setDragStart(-1); }, [])
+
   return (
     <div
       onTouchStart={startDrag}
       onTouchMove={drag}
+      onTouchEnd={cancelDrag}
       style={{
         position: "relative",
         width: "100%",

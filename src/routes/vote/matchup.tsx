@@ -35,6 +35,7 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult, optionB]);
 
   const rejectA = useCallback(() => {
+
     onResult({
       winnerId: optionB.id,
       optionA: OptionAward.EXPLICIT_LOSS,
@@ -73,62 +74,89 @@ export const Matchup: FunctionComponent<Props> = ({
 
   return (
     <Grid container>
+      <Typography variant="h4">
+        {prompt}
+      </Typography>
       <Grid item xs={12}>
-        <Typography variant="h4">
-          {prompt}
-        </Typography>
-      </Grid>
-      <Swipe
-        onLeft={rejectA}
-        onRight={chooseA}
-        refreshKey={optionA!.id + optionB!.id}
-      >
-        <Option
-          {...optionA}
-        />
-      </Swipe>
-      
-      {/* TODO: tie */}
-      <Swipe
-        onLeft={negativeTie}
-        onRight={positiveTie}
-        refreshKey={optionA.id + optionB.id}
-      >
-        <Grid
-          container
-          item
-          xs={12}
-          style={{
-            border: "1px solid grey",
-            padding: "16px",
-          }}
-        >
-          <Grid item xs={4} style={{ backgroundColor: "red" }}>
-            <Typography variant="subtitle2">
-              &lt;&lt;&lt; x (hate both)
-            </Typography>
-          </Grid>
-          <Grid item xs={4} onClick={ambivalantTie} style={{ backgroundColor: "grey" }}>
-            <Typography variant="subtitle2">
-              ¯\_(ツ)_/¯ (meh)
-            </Typography>
-          </Grid>
-          <Grid item xs={4} style={{ backgroundColor: "green" }}>
-            <Typography variant="subtitle2">
-              + (love both) &gt;&gt;&gt;
-            </Typography>
-          </Grid>
+        {/* TOP HALF */}
+        <Grid item xs={12} style={{ height: "40%" }}>
+          <Swipe
+            onLeft={rejectA}
+            onRight={chooseA}
+            refreshKey={optionA!.id + optionB!.id}
+          >
+            <Option
+              {...optionA}
+            />
+          </Swipe>
         </Grid>
-      </Swipe>
-      <Swipe
-        onLeft={rejectB}
-        onRight={chooseB}
-        refreshKey={optionA!.id + optionB!.id}
-      >
-        <Option
-          {...optionB}
-        />
-      </Swipe>
+        {/* MIDDLE */}
+        <Grid item xs={12} style={{ height: "20%" }}>
+          <Tie 
+            negativeTie={negativeTie}
+            positiveTie={positiveTie}
+            ambivalantTie={ambivalantTie}
+            refreshKey={optionA.id + optionB.id}
+          />
+        </Grid>
+        {/* BOTTOM HALF */}
+        <Grid item xs={12} style={{ height: "40%" }}>
+          <Swipe
+            onLeft={rejectB}
+            onRight={chooseB}
+            refreshKey={optionA.id + optionB.id}
+          >
+            <Option
+              {...optionB}
+            />
+          </Swipe>
+        </Grid>
+      </Grid>
     </Grid>
   );
 }
+
+interface TieProps {
+  negativeTie: () => void;
+  positiveTie: () => void;
+  ambivalantTie: () => void;
+  refreshKey: string;
+}
+const Tie: FunctionComponent<TieProps> = ({
+  negativeTie,
+  positiveTie,
+  ambivalantTie,
+  refreshKey
+}) => (
+  <Swipe
+    onLeft={negativeTie}
+    onRight={positiveTie}
+    refreshKey={refreshKey}
+  >
+    <Grid
+      container
+      item
+      xs={12}
+      style={{
+        border: "1px solid grey",
+        padding: "16px",
+      }}
+    >
+      <Grid item xs={4} style={{ backgroundColor: "red" }}>
+        <Typography variant="subtitle2">
+          &lt;&lt;&lt; x (hate both)
+        </Typography>
+      </Grid>
+      <Grid item xs={4} onClick={ambivalantTie} style={{ backgroundColor: "grey" }}>
+        <Typography variant="subtitle2">
+          ¯\_(ツ)_/¯ (meh)
+        </Typography>
+      </Grid>
+      <Grid item xs={4} style={{ backgroundColor: "green" }}>
+        <Typography variant="subtitle2">
+          + (love both) &gt;&gt;&gt;
+        </Typography>
+      </Grid>
+    </Grid>
+  </Swipe>
+)
