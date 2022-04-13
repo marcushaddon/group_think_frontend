@@ -38,30 +38,15 @@ const Selected: FunctionComponent = () => (
   </div>
 )
 
-const makeSwipeHandler = (x: number, onLeft: () => void, onRight: () => void) => {
-  return (e: TouchEvent) => {
-    e.stopPropagation();
-    const touchX = e.touches[0]?.clientX || 0;
-    const deltaX = touchX - x;
-
-    if (deltaX < -50) {
-      return onLeft();
-    }
-    if (deltaX > 50) {
-      return onRight();
-    }
-  }
-}
-
 export const Swipe: FunctionComponent<Props> = ({
   children,
   onLeft,
   onRight,
   refreshKey
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
   const [rejected, setRejected] = useState(false);
   const [selected, setSelected] = useState(false);
+  const [dragStart, setDragStart] = useState(-1);
   const [leftTimeout, setLeftTimeout] = useState<any>(null);
   const [rightTimeout, setRightTimeout] = useState<any>(null);
 
@@ -91,26 +76,28 @@ export const Swipe: FunctionComponent<Props> = ({
     setRightTimeout(setTimeout(onRight, 200));
   }, [onRight]);
 
-  const startSwipe: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
-    const { clientX: x, clientY: y } = e.touches?.[0];
-    const swipeHandler = makeSwipeHandler(x, onLeftWrapper, onRightWrapper);
-    if (!ref.current) {
-      alert("No current!");
-      return;
+  const drag: React.TouchEventHandler<HTMLDivElement> = useCallback(({ touches }) => {
+    const delta = touches[0].clientX - dragStart;
+    if (delta < -50) {
+      return onLeftWrapper();
     }
+    if (delta > 50) {
+      return onRightWrapper();
+    }
+  }, [dragStart]);
 
-    ref.current.addEventListener("touchmove", swipeHandler);
-    e.stopPropagation();
-    // TODO: remove handlers on drag end to reset incomplete swipes
-  }, [ref, onLeftWrapper, onRightWrapper]);
+  const startDrag: React.TouchEventHandler<HTMLDivElement> = useCallback(({ touches }) => {
+    setDragStart(touches[0].clientX);
+  }, []);
 
   return (
     <div
-      ref={ref}
-      onTouchStart={startSwipe}
-      // onTouchMove={drag}
+      onTouchStart={startDrag}
+      onTouchMove={drag}
       style={{
-        position: "relative"
+        position: "relative",
+        width: "100%",
+        height: "100%"
       }}
     >
       {rejected && <Rejected />}
