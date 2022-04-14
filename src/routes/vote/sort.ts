@@ -1,4 +1,5 @@
 import { assert } from "console";
+import { appendFileSync } from "fs";
 import { Option } from "../../models";
 
 export type SearchStepResult = {
@@ -6,71 +7,57 @@ export type SearchStepResult = {
   choiceB: Option;
 }
 
+type InsertionIdx = number;
+type WinnerId = string | undefined;
+
 export type SortStepResult = SearchStepResult & {
   progress: number;
 }
 
-function* binarySearch(options: Option[], option: Option): Generator<SearchStepResult, number, string | undefined> {
-  let l = 0;
-  let r = options.length;
-  console.log("BIN SEARCH, inserting into", { options, option })
-  console.log("BIN SEARCH, intitial l, r", { l, r});
+const log = (...msg: any[]) => { 
+  console.log("INSERT IDX:", ...msg);
+  appendFileSync("./sort.log", msg.join("") + "\n");
+};
 
-  if (r === 0) { return 0 };
-
-  while (l < r) {
-    const mid = Math.floor((l + r) / 2);
-    console.log("BIN SEARCH: l, r, mid", l, r, mid);
-    const winner = yield { choiceA: options[mid], choiceB: option };
-
-    if (winner === undefined) {
-      return mid;
-    }
-
-    if (winner === option.id) {
-      l = mid + 1;
-    } else {
-      r = mid - 1;
-    }
+export function* insertIdx(
+  opt: Option,
+  opts: Option[],
+  low = 0,
+  high = opts.length -1
+): Generator<SearchStepResult, InsertionIdx, WinnerId> {
+  if (opts.length === 0) {
+    return 0;
   }
 
-  const finalRes = yield { choiceA: options[l], choiceB: option };
+  if (low === high) {
+    const winner = yield { choiceA: opts[low], choiceB: opt };
+    const optIsGT = winner === opt.id;
 
-  return finalRes === option.id ? l + 1 : l;
-}
+    if (optIsGT) {
+      return low + 1;
+    }
 
-export function* insertionSort(unsorted: Option[]): Generator<SortStepResult, Option[], string | undefined> {
-  const debuggingMatchups: { [key: string]: boolean } = {};
-
-  const unsortedCopy = [...unsorted];
-  const sorted: Option[] = [];
-  while (unsortedCopy.length > 0) {
-    const next = unsortedCopy.pop()!;
-    console.log("OUTER SORT LOOP, next to be inserted:", { next });
-    let winner: string | undefined;
-    const bin = binarySearch(sorted, next);
-
-    while (true) {
-      console.log("INNER SEARCH LOOP, current winner", { winner })
-      const res = bin.next(winner);
-      console.log("INNER SEARCH LOOP, next choices", { res });
-      if (res.done) {
-        sorted.splice(res.value, 0, next);
-        break;
-      }
-
-      // const debugKey = [res.value.choiceA.id, res.value.choiceB.id].sort().join("_");
-      // console.assert(!(debugKey in debuggingMatchups), "SORTER: duplicate matchup!", {
-      //   debugKey, debuggingMatchups
-      // });
-      // debuggingMatchups[debugKey] = true;
-
-      winner = yield { ...res.value, progress: sorted.length };
-      console.log("INNER SEARCH LOOP, comparison winner:", winner);
-    }   
+    return low;
   }
 
-  return sorted;
+  const mid = Math.floor((low + high) / 2);
+  const candidate = opts[mid];
+  const winner = yield { choiceA: opt, choiceB: candidate };
+  const optIsGT = winner === opt.id;
+  const optIsLT = winner === candidate.id;
+
+  if (optIsGT) {
+    const idx = yield* insertIdx(opt, opts, mid + 1, high);
+    return idx;
+  }
+
+  if (optIsLT) {
+    const idx = yield* insertIdx(opt, opts, low, mid) // or mid - 1?
+    return idx;
+  }
+
+  return mid;
 }
+
 
 
