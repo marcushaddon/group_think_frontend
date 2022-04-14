@@ -22,14 +22,16 @@ export interface MatchupResult {
   winnerId?: string;
 }
 
+const matchupKey = (a: Option, b: Option): string => [a.id, b.id].sort().join("_");
+
 export const VoteRoute: FunctionComponent = () => {
   console.log("rendering the route!");
   const params = useParams();
 
-  const [fetched, setFetched] = useState(false);
   const [voting, setVoting] = useState(true);
   const [progress, setProgress] = useState(0);
   const [sorter, setSorter] = useState<Generator<SortStepResult, Option[], string | undefined> | null>(null);
+  const [matchupResults, setMatchupResults] = useState<{ [ids: string ]: string | undefined }>({});
   const [poll, setPoll] = useState<Poll | null>(null);
   const [optionA, setOptionA] = useState<Option | null>(null);
   const [optionB, setOptionB] = useState<Option | null>(null);
@@ -64,20 +66,31 @@ export const VoteRoute: FunctionComponent = () => {
   }, [params.pollId, fetchPoll]);
 
   const onMatchupResult = useCallback((res: MatchupResult) => {
-    debugger;
-    const stepResult = sorter!.next(res.winnerId);
-    if (stepResult.done) {
-      console.log("DONE SORTINg", stepResult.value);
-
-      return;
+    let stepResult: IteratorResult<SortStepResult, Option[]>;
+    while (true) {
+      stepResult = sorter!.next(res.winnerId);
+      if (stepResult.done) {
+        console.log("TODO: DISPLAY RESULTS!!!", stepResult.value);
+  
+        return;
+      }
+      const key = matchupKey(stepResult.value.choiceA, stepResult.value.choiceB);
+      if (!(key in matchupResults)) {
+        // set options, add matchup result, and break
+        setMatchupResults({
+          ...matchupResults,
+          [key]: res.winnerId,
+        });
+        setOptionA(stepResult.value.choiceA);
+        setOptionB(stepResult.value.choiceB);
+        setProgress(stepResult.value.progress);
+        
+        break;
+      }
+      // feed result to sorter
+      stepResult = sorter!.next(matchupResults[key]);
     }
-
-    console.log("progress after user chocie", stepResult.value.progress);
-
-    setOptionA(stepResult.value.choiceA);
-    setOptionB(stepResult.value.choiceB);
-    setProgress(stepResult.value.progress);
-  }, [sorter])
+  }, [sorter, matchupResults])
 
   if (!poll) {
     return <CircularProgress />;

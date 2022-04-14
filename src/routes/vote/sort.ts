@@ -1,5 +1,4 @@
 import { assert } from "console";
-import { appendFileSync } from "fs";
 import { Option } from "../../models";
 
 export type SearchStepResult = {
@@ -16,7 +15,6 @@ export type SortStepResult = SearchStepResult & {
 
 const log = (...msg: any[]) => { 
   console.log("INSERT IDX:", ...msg);
-  appendFileSync("./sort.log", msg.join("") + "\n");
 };
 
 export function* insertIdx(
