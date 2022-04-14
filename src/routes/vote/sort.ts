@@ -59,5 +59,24 @@ export function* insertIdx(
   return mid;
 }
 
+export function* insertionSort(opts: Option[]): Generator<SortStepResult, Option[], WinnerId> {
+  const unsorted = [...opts];
+  const sorted: Option[] = [];
 
+  let winnerId: WinnerId = undefined;
+  while (unsorted.length > 0) {
+    const toInsert = unsorted.pop()!;
+    const search = insertIdx(toInsert, sorted);
+    while (true) {
+      const step = search.next(winnerId);
+      if (step.done) {
+        sorted.splice(step.value, 0, toInsert);
+        break;
+      } else {
+        winnerId = yield { ...step.value, progress: sorted.length };
+      }
+    }
+  }
 
+  return sorted;
+}
