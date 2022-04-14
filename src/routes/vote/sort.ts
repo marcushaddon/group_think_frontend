@@ -1,11 +1,16 @@
+import { assert } from "console";
 import { Option } from "../../models";
 
-export type StepResult = {
+export type SearchStepResult = {
   choiceA: Option;
   choiceB: Option;
 }
 
-function* binarySearch(options: Option[], option: Option): Generator<StepResult, number, string | undefined> {
+export type SortStepResult = SearchStepResult & {
+  progress: number;
+}
+
+function* binarySearch(options: Option[], option: Option): Generator<SearchStepResult, number, string | undefined> {
   let l = 0;
   let r = options.length;
 
@@ -26,29 +31,37 @@ function* binarySearch(options: Option[], option: Option): Generator<StepResult,
     }
   }
 
-  console.assert(l === r);
+  console.assert(l === r); // Hmm, not actually sure this is true?
 
   const finalRes = yield { choiceA: options[l], choiceB: option };
 
   return finalRes === option.id ? l + 1 : l;
 }
 
-export function* insertionSort(unsorted: Option[]): Generator<StepResult, Option[], string | undefined> {
+export function* insertionSort(unsorted: Option[]): Generator<SortStepResult, Option[], string | undefined> {
+  const debuggingMatchups: { [key: string]: boolean } = {};
+
+  const unsortedCopy = [...unsorted];
   const sorted: Option[] = [];
-  while (unsorted.length > 0) {
-    const next = unsorted.pop()!;
-    console.log("next to be inserted", next);
+  while (unsortedCopy.length > 0) {
+    const next = unsortedCopy.pop()!;
     let winner: string | undefined;
     const bin = binarySearch(sorted, next);
+
     while (true) {
-      var res = bin.next(winner);
+      const res = bin.next(winner);
       if (res.done) {
-        console.log("place for next found", res.value);
         sorted.splice(res.value, 0, next);
         break;
       }
-      console.log("'next' matchup for next", res.value);
-      winner = yield res.value;
+
+      const debugKey = [res.value.choiceA.id, res.value.choiceB.id].sort().join("_");
+      console.assert(!(debugKey in debuggingMatchups), "SORTER: duplicate matchup!", {
+        debugKey, debuggingMatchups
+      });
+      debuggingMatchups[debugKey] = true;
+
+      winner = yield { ...res.value, progress: sorted.length };
     }   
   }
 

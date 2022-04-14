@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import groupthink, { Poll } from "../../client/groupthink";
 import { Option } from "../../models";
 import { Matchup } from "./matchup";
-import { insertionSort, StepResult } from "./sort";
+import { insertionSort, SortStepResult } from "./sort";
 
 export enum OptionAward {
   EXPLICIT_WIN,
@@ -23,54 +23,70 @@ export interface MatchupResult {
 }
 
 export const VoteRoute: FunctionComponent = () => {
+  console.log("rendering the route!");
   const params = useParams();
-  const [pollId,] = useState(params.pollId!);
 
+  const [fetched, setFetched] = useState(false);
   const [voting, setVoting] = useState(true);
-  const [sorter, setSorter] = useState<Generator<StepResult, Option[], string | undefined> | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [sorter, setSorter] = useState<Generator<SortStepResult, Option[], string | undefined> | null>(null);
   const [poll, setPoll] = useState<Poll | null>(null);
   const [optionA, setOptionA] = useState<Option | null>(null);
   const [optionB, setOptionB] = useState<Option | null>(null);
 
+  const fetchPoll = useCallback(async (pollId: string) => {
+    const p = await groupthink.getPoll(pollId);
+    if (!p) {
+      alert("POLL NOT FOUND");
+      return;
+    }
+
+    setPoll(p);
+    const generator = insertionSort(p.optionsList);
+    setSorter(generator);
+
+    const initialRes = generator.next();
+    if (initialRes.done) {
+      alert("AREADY SORTED?!");
+      return;
+    }
+
+    console.log("initial sort step prog:", initialRes.value.progress);
+
+    setOptionA(initialRes.value.choiceA);
+    setOptionB(initialRes.value.choiceB);
+    setProgress(initialRes.value.progress);
+  }, []);
+
   useEffect(() => {
-    groupthink.getPoll(pollId)
-      .then(p => {
-        if (!p) {
-          alert("POLL NOT FOUND");
-          return;
-        }
-        setPoll(p);
-        const generator = insertionSort(p.optionsList);
-        setSorter(generator);
-        const initialChoices = generator.next();
-        if (initialChoices.done) {
-          alert("AREADY SORTED?!");
-          return;
-        }
-        setOptionA(initialChoices.value.choiceA);
-        setOptionB(initialChoices.value.choiceB);
-      });
-  
-  }, [pollId]);
+    if (!params.pollId) return;
+    fetchPoll(params.pollId);
+  }, [params.pollId, fetchPoll]);
 
   const onMatchupResult = useCallback((res: MatchupResult) => {
-    console.log(res, "TODO: TRACK ENTHUSIASM!!!");
+    debugger;
     const stepResult = sorter!.next(res.winnerId);
     if (stepResult.done) {
       console.log("DONE SORTINg", stepResult.value);
-      alert("TODO: DISPLAY SORTED");
 
       return;
     }
+
+    console.log("progress after user chocie", stepResult.value.progress);
+
     setOptionA(stepResult.value.choiceA);
     setOptionB(stepResult.value.choiceB);
+    setProgress(stepResult.value.progress);
   }, [sorter])
 
   if (!poll) {
     return <CircularProgress />;
   }
 
+  console.log("doing matchup between", { optionA, optionB });
+
   return voting ? <Matchup
+    options={poll.optionsList}
     prompt={poll.description}
     optionA={optionA!}
     optionB={optionB!}

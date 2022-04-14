@@ -1,7 +1,8 @@
-import { Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React, { useRef, FunctionComponent, useCallback, useState, useEffect } from "react";
 
 export interface Props {
+  visible: boolean;
   refreshKey: string;
   children: React.ReactNode;
   onLeft: () => void;
@@ -39,6 +40,7 @@ const Selected: FunctionComponent = () => (
 )
 
 export const Swipe: FunctionComponent<Props> = ({
+  visible,
   children,
   onLeft,
   onRight,
@@ -77,38 +79,28 @@ export const Swipe: FunctionComponent<Props> = ({
     onRight();
   }, [onRight]);
 
-  const drag: React.TouchEventHandler<HTMLDivElement> = useCallback(({ touches }) => {
-    if (dragStart < 0) return;
-
-    const delta = touches[0].clientX - dragStart;
-    if (delta < -50) {
-      return onLeftWrapper();
-    }
-    if (delta > 50) {
-      return onRightWrapper();
-    }
-  }, [dragStart]);
-
-  const startDrag: React.TouchEventHandler<HTMLDivElement> = useCallback(({ touches }) => {
-    setDragStart(touches[0].clientX);
-  }, []);
-
-  const cancelDrag: React.TouchEventHandler<HTMLDivElement> = useCallback(() => { setDragStart(-1); }, [])
+  if (!visible) {
+    return <></>;
+  }
 
   return (
     <div
-      onTouchStart={startDrag}
-      onTouchMove={drag}
-      onTouchEnd={cancelDrag}
       style={{
-        position: "relative",
         width: "100%",
         height: "100%"
       }}
     >
-      {rejected && <Rejected />}
-      {selected && <Selected />}
+      {/* {rejected && <Rejected />}
+      {selected && <Selected />} */}
       {children}
+      <Grid container item style={{ width: "100%" }}>
+        <Button color="error" variant="contained" style={{ width: "50%"}} onClick={onLeftWrapper}>
+          No
+        </Button>
+        <Button color="success"variant="contained" style={{ width: "50%"}} onClick={onRightWrapper}>
+          Yes
+        </Button>
+      </Grid>
     </div>
   );
 }
