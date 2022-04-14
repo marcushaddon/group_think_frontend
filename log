@@ -1,0 +1,121 @@
+
+> group_think_frontend@0.1.0 test
+> react-scripts test
+
+  console.log
+    sort, next: {
+      next: {
+        id: 'f',
+        name: 'option',
+        description: 'option',
+        uri: 'option',
+        img: 'option'
+      }
+    }
+
+      at next (src/routes/vote/sort.ts:46:13)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    bin search, current winner { winner: undefined }
+
+      at next (src/routes/vote/sort.ts:51:15)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    bin search, next choices { res: { value: 0, done: true } }
+
+      at next (src/routes/vote/sort.ts:53:15)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    sort, next: {
+      next: {
+        id: 'a',
+        name: 'option',
+        description: 'option',
+        uri: 'option',
+        img: 'option'
+      }
+    }
+
+      at next (src/routes/vote/sort.ts:46:13)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    bin search, current winner { winner: undefined }
+
+      at next (src/routes/vote/sort.ts:51:15)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    bin search, next choices {
+      res: { value: { choiceA: [Object], choiceB: [Object] }, done: false }
+    }
+
+      at next (src/routes/vote/sort.ts:53:15)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    result {
+      value: {
+        choiceA: {
+          id: 'f',
+          name: 'option',
+          description: 'option',
+          uri: 'option',
+          img: 'option'
+        },
+        choiceB: {
+          id: 'a',
+          name: 'option',
+          description: 'option',
+          uri: 'option',
+          img: 'option'
+        },
+        progress: 1
+      },
+      done: false
+    }
+
+      at Object.<anonymous> (src/routes/vote/sort.spec.ts:25:15)
+
+  console.log
+    winner a
+
+      at Object.<anonymous> (src/routes/vote/sort.spec.ts:35:15)
+
+  console.log
+    bin search, current winner { winner: 'a' }
+
+      at next (src/routes/vote/sort.ts:51:15)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    bin search, next choices {
+      res: { value: { choiceA: undefined, choiceB: [Object] }, done: false }
+    }
+
+      at next (src/routes/vote/sort.ts:53:15)
+          at insertionSort.next (<anonymous>)
+
+  console.log
+    result {
+      value: {
+        choiceA: undefined,
+        choiceB: {
+          id: 'a',
+          name: 'option',
+          description: 'option',
+          uri: 'option',
+          img: 'option'
+        },
+        progress: 1
+      },
+      done: false
+    }
+
+      at Object.<anonymous> (src/routes/vote/sort.spec.ts:25:15)
+
+
+
