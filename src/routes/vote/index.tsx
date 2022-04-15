@@ -3,6 +3,7 @@ import React, { FunctionComponent, useCallback, useEffect, useState } from "reac
 import { useParams } from "react-router-dom";
 import groupthink, { Poll } from "../../client/groupthink";
 import { Option } from "../../models";
+import { ManualReview } from "./manual-review";
 import { Matchup } from "./matchup";
 import { insertionSort, SortStepResult } from "./sort";
 
@@ -29,6 +30,7 @@ export const VoteRoute: FunctionComponent = () => {
   const params = useParams();
 
   const [voting, setVoting] = useState(true);
+  const [ranking, setRanking] = useState<Option[]>([]);
   const [progress, setProgress] = useState(0);
   const [sorter, setSorter] = useState<Generator<SortStepResult, Option[], string | undefined> | null>(null);
   const [matchupResults, setMatchupResults] = useState<{ [ids: string ]: string | undefined }>({});
@@ -71,6 +73,8 @@ export const VoteRoute: FunctionComponent = () => {
       stepResult = sorter!.next(res.winnerId);
       if (stepResult.done) {
         console.log("TODO: DISPLAY RESULTS!!!", stepResult.value);
+        setRanking(stepResult.value);
+        setVoting(false);
   
         return;
       }
@@ -104,6 +108,6 @@ export const VoteRoute: FunctionComponent = () => {
     optionA={optionA!}
     optionB={optionB!}
     onResult={onMatchupResult}
-  /> : <></>;
+  /> : <ManualReview ranking={ranking} />;
 
 }
