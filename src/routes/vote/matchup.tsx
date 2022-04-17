@@ -6,7 +6,6 @@ import { Swipe } from "../../components/swipe";
 import { Option as OptionModel } from "../../models";
 
 export interface Props {
-  prompt: string;
   options: OptionModel[];
   optionA: OptionModel;
   optionB: OptionModel;
@@ -18,7 +17,6 @@ export const Matchup: FunctionComponent<Props> = ({
   optionA,
   optionB,
   onResult,
-  prompt
 }) => {
   const [snackMessage, setSnackMessage] = useState<string | null>(null);
   const chooseA = useCallback(() => {
@@ -60,11 +58,11 @@ export const Matchup: FunctionComponent<Props> = ({
     setSnackMessage(`-1 for ${optionB.name}`);
   }, [onResult, optionA, optionB]);
 
-  const ambivalantTie = useCallback(() => {
+  const ambivalentTie = useCallback(() => {
     // debugger;
     onResult({
-      optionA: OptionAward.AMBILVALANT_TIE,
-      optionB: OptionAward.AMBILVALANT_TIE,
+      optionA: OptionAward.AMBIVALENT_TIE,
+      optionB: OptionAward.AMBIVALENT_TIE,
     });
     setSnackMessage(`meh to both`);
   }, [onResult]);
@@ -89,9 +87,6 @@ export const Matchup: FunctionComponent<Props> = ({
 
   return (
     <Grid container>
-      <Typography variant="h4">
-        {prompt}
-      </Typography>
       <Grid item xs={12}>
         {/* TOP HALF */}
         <Grid item xs={12}>
@@ -114,7 +109,7 @@ export const Matchup: FunctionComponent<Props> = ({
           <Tie 
             negativeTie={negativeTie}
             positiveTie={positiveTie}
-            ambivalantTie={ambivalantTie}
+            ambivalentTie={ambivalentTie}
             refreshKey={optionA.id + optionB.id}
           />
         </Grid>
@@ -148,13 +143,13 @@ export const Matchup: FunctionComponent<Props> = ({
 interface TieProps {
   negativeTie: () => void;
   positiveTie: () => void;
-  ambivalantTie: () => void;
+  ambivalentTie: () => void;
   refreshKey: string;
 }
 const Tie: FunctionComponent<TieProps> = ({
   negativeTie,
   positiveTie,
-  ambivalantTie,
+  ambivalentTie,
   refreshKey
 }) => (
   <Grid
@@ -171,7 +166,7 @@ const Tie: FunctionComponent<TieProps> = ({
         &lt;&lt;&lt; x (hate both)
       </Typography>
     </Grid>
-    <Grid item xs={4} onClick={ambivalantTie} style={{ backgroundColor: "grey" }}>
+    <Grid item xs={4} onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
       <Typography variant="subtitle2">
         ¯\_(ツ)_/¯ (meh)
       </Typography>

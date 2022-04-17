@@ -23,3 +23,24 @@ export interface Participant {
   email?: string;
   status?: VoteStatus;
 }
+
+export interface Choice {
+  optionId: string;
+  explicitWins: number;
+  implicitWins: number;
+  explicitLosses: number;
+  implicitLosses: number;
+  negativeTies: number;
+  ambivalentTies: number;
+  positiveTies: number;
+}
+
+export interface Ranking {
+  id: string;
+  participantId: string;
+  pollId: string;
+
+  choices: Choice[];
+}
+
+export type PendingRanking = Omit<Ranking, "id" | "participantId">;

@@ -38,7 +38,6 @@ export function CreateRoute() {
     }
 
     const res = await groupthink.createPoll(poll);
-    console.log({ res });
 
     // TODO: set token
     localStorage.setItem(res.id + "token", res.ownerToken);

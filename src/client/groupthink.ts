@@ -1,4 +1,4 @@
-import { PendingOption, Option, Participant } from "../models";
+import { PendingOption, Option, Participant, PendingRanking, Ranking } from "../models";
 
 export type PendingPoll = Omit<Poll, "id" | "ownerToken" | "optionsMap" | "optionsList"> & {
   optionsList: PendingOption[];
@@ -24,7 +24,6 @@ export class GroupthinkClient {
 
   async createPoll(poll: PendingPoll): Promise<Poll> {
     const url = `${this.baseUrl}/polls`;
-    console.log({ url });
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -34,7 +33,6 @@ export class GroupthinkClient {
       body: JSON.stringify(poll),
     });
     const resBody = await res.json();
-    console.log(resBody);
 
     return resBody;
   }
@@ -50,6 +48,22 @@ export class GroupthinkClient {
     });
 
     return res.json();
+  }
+
+  async createRanking(pending: PendingRanking): Promise<Ranking> {
+    const accessToken = localStorage.getItem(`${pending.pollId}token`);
+    if (!accessToken) throw new Error("No token found for poll: " + pending.pollId);
+
+    const url = `${this.baseUrl}/rankings`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "access-token": accessToken },
+      body: JSON.stringify(pending),
+    });
+
+    const resBody = await res.json();
+
+    return resBody as Ranking;
   }
 }
 

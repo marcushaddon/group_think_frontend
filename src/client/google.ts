@@ -23,7 +23,6 @@ export class GoogleSearchClient {
     const json = await res.json();
 
     const mapped = json.items.map((item: gt.Item) => itemToOption(item));
-    console.log(mapped);
 
     return { items: mapped as PendingOption[] };
   }

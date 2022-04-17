@@ -1,15 +1,19 @@
 import React, { FunctionComponent} from "react";
-import { Option } from "../../models";
+import { PendingRanking } from "../../models";
 
 export interface Props {
-  ranking: Option[];
+  ranking: PendingRanking;
 }
 
 export const ManualReview: FunctionComponent<Props> = ({
   ranking
 }) => {
-
+  
   return (
-    <>hello take a last look!</>
+    <ol>
+      {ranking.choices.map(ch => (
+        <li>{ch.optionId}</li>
+      ))}
+    </ol>
   );
 };

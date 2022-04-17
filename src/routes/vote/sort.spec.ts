@@ -29,7 +29,6 @@ describe("insertIdx", () => {
     for (let i = 0; i < opts.length; i++) {
       const withTargetRemoved = [...opts];
       const target = withTargetRemoved.splice(i, 1);
-      console.log({ withTargetRemoved, target });
 
       const gen = insertIdx(target[0], withTargetRemoved);
       const res = driveInsertIdx(gen);
@@ -52,7 +51,6 @@ describe("insertionSort generator", () => {
     let winner: string | undefined = undefined;
     while (true) {
       const res = sorter.next(winner);
-      console.log("TEST: next comparison", res);
       if (res.done) {
         resultStr = res.value.map(o => o.id).join("");
         
@@ -62,7 +60,6 @@ describe("insertionSort generator", () => {
       expect(res.value.choiceB).toBeDefined();
 
       winner = [res.value.choiceA.id, res.value.choiceB.id].sort()[1];
-      console.log("TEST: winner", winner);
     }
     const sortedStr = options.map(o => o.id).join("");
     expect(resultStr).toEqual(sortedStr);

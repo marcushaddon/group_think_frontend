@@ -1,20 +1,21 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import groupthink, { Poll } from "../../client/groupthink";
-import { Option } from "../../models";
+import { Option, PendingRanking, Choice } from "../../models";
 import { ManualReview } from "./manual-review";
 import { Matchup } from "./matchup";
 import { insertionSort, SortStepResult } from "./sort";
+import { buildRanking, optionAwardKey } from "./build-ranking";
 
 export enum OptionAward {
-  EXPLICIT_WIN,
-  EXPLICIT_LOSS,
-  IMPLICIT_WIN,
-  IMPLICIT_LOSS,
-  POSITIVE_TIE,
-  NEGATIVE_TIE,
-  AMBILVALANT_TIE
+  EXPLICIT_WIN = "explicitWins",
+  EXPLICIT_LOSS = "explicitLosses",
+  IMPLICIT_WIN = "implicitWins",
+  IMPLICIT_LOSS = "implicitLosses",
+  POSITIVE_TIE = "positiveTies",
+  NEGATIVE_TIE = "negativeTies",
+  AMBIVALENT_TIE = "ambivalentTies"
 }
 
 export interface MatchupResult {
@@ -23,17 +24,18 @@ export interface MatchupResult {
   winnerId?: string;
 }
 
+export type ChoiceMap = { [idAwardKey: string]: number };
+
 const matchupKey = (a: Option, b: Option): string => [a.id, b.id].sort().join("_");
 
 export const VoteRoute: FunctionComponent = () => {
-  console.log("rendering the route!");
   const params = useParams();
 
   const [voting, setVoting] = useState(true);
-  const [ranking, setRanking] = useState<Option[]>([]);
+  const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number}>({});
+  const [ranking, setRanking] = useState<PendingRanking | null>(null);
   const [progress, setProgress] = useState(0);
   const [sorter, setSorter] = useState<Generator<SortStepResult, Option[], string | undefined> | null>(null);
-  const [matchupResults, setMatchupResults] = useState<{ [ids: string ]: string | undefined }>({});
   const [poll, setPoll] = useState<Poll | null>(null);
   const [optionA, setOptionA] = useState<Option | null>(null);
   const [optionB, setOptionB] = useState<Option | null>(null);
@@ -44,18 +46,15 @@ export const VoteRoute: FunctionComponent = () => {
       alert("POLL NOT FOUND");
       return;
     }
-
     setPoll(p);
+
     const generator = insertionSort(p.optionsList);
     setSorter(generator);
 
     const initialRes = generator.next();
     if (initialRes.done) {
-      alert("AREADY SORTED?!");
       return;
     }
-
-    console.log("initial sort step prog:", initialRes.value.progress);
 
     setOptionA(initialRes.value.choiceA);
     setOptionB(initialRes.value.choiceB);
@@ -67,47 +66,66 @@ export const VoteRoute: FunctionComponent = () => {
     fetchPoll(params.pollId);
   }, [params.pollId, fetchPoll]);
 
-  const onMatchupResult = useCallback((res: MatchupResult) => {
-    let stepResult: IteratorResult<SortStepResult, Option[]>;
-    while (true) {
-      stepResult = sorter!.next(res.winnerId);
-      if (stepResult.done) {
-        console.log("TODO: DISPLAY RESULTS!!!", stepResult.value);
-        setRanking(stepResult.value);
-        setVoting(false);
-  
-        return;
-      }
-      const key = matchupKey(stepResult.value.choiceA, stepResult.value.choiceB);
-      if (!(key in matchupResults)) {
-        // set options, add matchup result, and break
-        setMatchupResults({
-          ...matchupResults,
-          [key]: res.winnerId,
-        });
-        setOptionA(stepResult.value.choiceA);
-        setOptionB(stepResult.value.choiceB);
-        setProgress(stepResult.value.progress);
-        
-        break;
-      }
-      // feed result to sorter
-      stepResult = sorter!.next(matchupResults[key]);
+  const submitRanking = useCallback(async (ranking: PendingRanking) => {
+
+    const created = await groupthink.createRanking(ranking);
+    setRanking(created);
+    setVoting(false);
+  }, []);
+
+  const onMatchupResult = useCallback(async (res: MatchupResult) => {  
+    if (!poll ) {
+      alert("no poll!");
+      return;
     }
-  }, [sorter, matchupResults])
+
+    const optionAAwardKey = optionAwardKey(optionA!.id, res.optionA);
+    const optionBAwardKey = optionAwardKey(optionB!.id, res.optionB);
+
+    const updatedAwardMap = {
+      ...awardMap,
+      [optionAAwardKey]: (awardMap![optionAAwardKey] || 0) + 1,
+      [optionBAwardKey]: (awardMap![optionBAwardKey] || 0) + 1,
+    }
+    // Record sentiment
+    setAwardMap(updatedAwardMap);
+
+
+    const stepResult = sorter!.next(res.winnerId);
+
+    if (stepResult.done) {
+      const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
+
+      console.log({ ranking });
+      submitRanking(ranking);
+
+      return;
+    }
+
+    // new matchup and not done, so set next matchup
+    setOptionA(stepResult.value.choiceA);
+    setOptionB(stepResult.value.choiceB);
+    setProgress(stepResult.value.progress);
+  }, [sorter, awardMap, poll, submitRanking, optionA, optionB]);
 
   if (!poll) {
     return <CircularProgress />;
   }
 
-  console.log("doing matchup between", { optionA, optionB });
-
-  return voting ? <Matchup
-    options={poll.optionsList}
-    prompt={poll.description}
-    optionA={optionA!}
-    optionB={optionB!}
-    onResult={onMatchupResult}
-  /> : <ManualReview ranking={ranking} />;
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        {poll.description}
+      </Grid>
+      {voting && <Matchup
+        options={poll.optionsList}
+        optionA={optionA!}
+        optionB={optionB!}
+        onResult={onMatchupResult}
+      />}
+      {!voting && ranking && <ManualReview ranking={ranking} />}
+    </Grid>
+    
+  );
 
 }

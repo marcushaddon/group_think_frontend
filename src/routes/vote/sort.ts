@@ -13,10 +13,6 @@ export type SortStepResult = SearchStepResult & {
   progress: number;
 }
 
-const log = (...msg: any[]) => { 
-  console.log("INSERT IDX:", ...msg);
-};
-
 export function* insertIdx(
   opt: Option,
   opts: Option[],
