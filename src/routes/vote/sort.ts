@@ -72,5 +72,5 @@ export function* insertionSort(opts: Option[]): Generator<SortStepResult, Option
     }
   }
 
-  return sorted;
+  return sorted.reverse();
 }

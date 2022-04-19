@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { GoogleSearch } from "./google-search";
 import { PollInfo, Info } from "./poll-info";
 import { Participants } from "./participants";
-import { PendingOption, Participant } from "../../models";
+import { PendingOption, PendingParticipant } from "../../models";
 import groupthink, { PendingPoll } from '../../client/groupthink';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ export function CreateRoute() {
   const [step, setStep] = useState(Step.OPTONS)
   const [options, setOptions] = useState<PendingOption[]>([]);
   const [info, setInfo] = useState<Info | null>(null);
-  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [participants, setParticipants] = useState<PendingParticipant[]>([]);
 
   const next = useCallback(async () => {
     const stepIdx = STEPS.indexOf(step);

@@ -1,9 +1,9 @@
 import { Grid, Typography } from "@mui/material";
 import React, { FunctionComponent } from "react";
-import { Participant as ParticipantModel, VoteStatus } from "../models";
+import { PendingParticipant, Participant as ParticipantModel, VoteStatus } from "../models";
 
 export interface Props {
-  participant: ParticipantModel;
+  participant: ParticipantModel | PendingParticipant;
 }
 
 const voteStatusText = (s: VoteStatus): string => {

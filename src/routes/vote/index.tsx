@@ -1,6 +1,6 @@
 import { CircularProgress, Grid } from "@mui/material";
 import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import groupthink, { Poll } from "../../client/groupthink";
 import { Option, PendingRanking, Choice } from "../../models";
 import { ManualReview } from "./manual-review";
@@ -30,6 +30,7 @@ const matchupKey = (a: Option, b: Option): string => [a.id, b.id].sort().join("_
 
 export const VoteRoute: FunctionComponent = () => {
   const params = useParams();
+  const navigate = useNavigate();
 
   const [voting, setVoting] = useState(true);
   const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number}>({});
@@ -71,7 +72,8 @@ export const VoteRoute: FunctionComponent = () => {
     const created = await groupthink.createRanking(ranking);
     setRanking(created);
     setVoting(false);
-  }, []);
+    navigate(`/${poll!.id}`)
+  }, [poll, navigate]);
 
   const onMatchupResult = useCallback(async (res: MatchupResult) => {  
     if (!poll ) {
@@ -95,8 +97,6 @@ export const VoteRoute: FunctionComponent = () => {
 
     if (stepResult.done) {
       const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
-
-      console.log({ ranking });
       submitRanking(ranking);
 
       return;
@@ -123,7 +123,6 @@ export const VoteRoute: FunctionComponent = () => {
         optionB={optionB!}
         onResult={onMatchupResult}
       />}
-      {!voting && ranking && <ManualReview ranking={ranking} />}
     </Grid>
     
   );

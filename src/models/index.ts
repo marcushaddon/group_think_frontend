@@ -18,11 +18,14 @@ export enum VoteStatus {
 }
 
 export interface Participant {
+  id: string;
   name: string;
   phone?: string;
   email?: string;
   status?: VoteStatus;
 }
+
+export type PendingParticipant = Omit<Participant, "id">;
 
 export interface Choice {
   optionId: string;
