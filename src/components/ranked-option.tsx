@@ -5,7 +5,7 @@ import { ScoresComponent } from "./scores";
 
 export interface Props {
   option: Option;
-  scores?: Choice;
+  scores?: Choice["choiceTypes"];
   winner?: boolean;
 }
 

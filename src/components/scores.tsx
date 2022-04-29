@@ -2,13 +2,11 @@ import React, { FunctionComponent } from "react";
 import { Choice } from "../models";
 import { ScoreColors } from "./consts";
 
-export type Scores = Omit<Choice, "optionId">;
+export type Scores = Choice["choiceTypes"];
 
 export interface Props {
   scores: Scores;
 }
-
-
 
 export const ScoresComponent: FunctionComponent<Props> = ({
   scores
@@ -16,13 +14,10 @@ export const ScoresComponent: FunctionComponent<Props> = ({
   const total = Object.entries(scores)
     .reduce((t, [ _, val ]) => typeof val === "number" ? t + val : t, 0);
   const ratios: { [key in keyof Scores]: number } = Object.entries(scores)
-    .reduce((r, [key, val]) => {
-      if (typeof val !== "number") return r;
-      return {
-        ...r,
-        [key]: val / total
-      }
-    }, {} as { [key in keyof Choice]: number });
+    .reduce((r, [key, val]) => ({
+      ...r,
+      [key]: val / total
+    }), {} as { [key in keyof Choice["choiceTypes"]]: number });
   
   
   const scoreNames: (keyof Scores)[] = [

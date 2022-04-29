@@ -40,7 +40,7 @@ export const Participants: FunctionComponent<Props> = ({
           <Input type="text" required placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <Input type="tel" required placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
+          <Input type="phone" required placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
           <Button type="submit">Add</Button>

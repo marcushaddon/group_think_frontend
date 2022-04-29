@@ -29,13 +29,15 @@ export type PendingParticipant = Omit<Participant, "id">;
 
 export interface Choice {
   optionId: string;
-  explicitWins: number;
-  implicitWins: number;
-  explicitLosses: number;
-  implicitLosses: number;
-  negativeTies: number;
-  ambivalentTies: number;
-  positiveTies: number;
+  choiceTypes: {
+    explicitWins: number;
+    implicitWins: number;
+    explicitLosses: number;
+    implicitLosses: number;
+    negativeTies: number;
+    ambivalentTies: number;
+    positiveTies: number;
+  }
 }
 
 export interface Ranking {

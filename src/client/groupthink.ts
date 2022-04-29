@@ -44,8 +44,8 @@ export class GroupthinkClient {
   }
 
   async getPoll(pollId: string): Promise<Poll | null> {
-    const accessToken = localStorage.getItem(`${pollId}token`);
-    if (!accessToken) return null;
+    const accessToken = this.getToken(pollId);
+    if (!accessToken) throw new Error("No access token found for poll: " + pollId);
 
     const url = `${this.baseUrl}/polls/${pollId}`;
 
@@ -57,7 +57,7 @@ export class GroupthinkClient {
   }
 
   async createRanking(pending: PendingRanking): Promise<Ranking> {
-    const accessToken = localStorage.getItem(`${pending.pollId}token`);
+    const accessToken = this.getToken(pending.pollId);
     if (!accessToken) throw new Error("No token found for poll: " + pending.pollId);
 
     const url = `${this.baseUrl}/rankings`;
@@ -71,8 +71,23 @@ export class GroupthinkClient {
 
     return resBody as Ranking;
   }
+
+  getToken(pollId: string): string | null {
+    const fromQuery = new URLSearchParams(window.location.search).get("token");
+    if (fromQuery) {
+      console.log("setting token for poll", pollId, fromQuery);
+      localStorage.setItem(`${pollId}token`, fromQuery);
+
+      return fromQuery;
+    }
+
+    const fromLocal = localStorage.getItem(`${pollId}token`);
+    if (fromLocal) return fromLocal;
+
+    return null;
+  }
 }
 
-const groupthink = new GroupthinkClient("http://localhost:8080");
+const groupthink = new GroupthinkClient("http://192.168.0.67:8080");
 
 export default groupthink;

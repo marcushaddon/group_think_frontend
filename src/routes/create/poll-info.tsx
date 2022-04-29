@@ -53,7 +53,7 @@ export const PollInfo: FunctionComponent<Props> = ({
           <Input type="text" required name="ownerName" value={ownerName} placeholder="Your name" onChange={e => setOwnerName(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <Input type="tel" required name="ownerPhone" value={ownerPhone} placeholder="Your phone" onChange={e => setOwnerPhone(e.target.value)} />
+          <Input type="phone" required name="ownerPhone" value={ownerPhone} placeholder="Your phone" onChange={e => setOwnerPhone(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
           <Input type="date" required name="expires" value={expires} onChange={e => setExpires(e.target.value)} />

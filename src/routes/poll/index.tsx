@@ -63,7 +63,7 @@ export const PollRoute: FunctionComponent = () => {
         <RankedOption
           key={winner.id}
           option={winner}
-          scores={scores?.[winner.id]}
+          scores={scores?.[winner.id].choiceTypes}
           winner={true}
         />
       )}
@@ -71,7 +71,7 @@ export const PollRoute: FunctionComponent = () => {
         <RankedOption
           key={o.id}
           option={o}
-          scores={scores?.[o.id]}
+          scores={scores?.[o.id].choiceTypes}
         />
       ))}
     </Grid>

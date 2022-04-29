@@ -45,7 +45,6 @@ let input: -1 | 0 | 1 = 0;
 let i = 0;
 while (i++ < 10) {
   const choices = bin.next(input);
-  console.log({ choices });
   if (choices.done) {
     break;
   }

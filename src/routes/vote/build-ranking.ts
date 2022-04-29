@@ -9,8 +9,11 @@ export const buildRanking = (sortedOptions: Option[], awardMap: ChoiceMap, poll:
     opt => Object.values(OptionAward)
       .reduce((choice, awardName) => ({
         ...choice,
-        [awardName]: awardMap[optionAwardKey(opt.id, awardName as OptionAward)] || 0,
-      }), { optionId: opt.id })
+        choiceTypes: {
+          ...choice.choiceTypes,
+          [awardName]: awardMap[optionAwardKey(opt.id, awardName as OptionAward)] || 0
+        },
+      }), { optionId: opt.id, choiceTypes: {} })
   ) as Choice[];
 
   return {
