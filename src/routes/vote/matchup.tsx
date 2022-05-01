@@ -106,12 +106,17 @@ export const Matchup: FunctionComponent<Props> = ({
         </Grid>
         {/* MIDDLE */}
         <Grid item xs={12}>
-          <Tie 
-            negativeTie={negativeTie}
-            positiveTie={positiveTie}
-            ambivalentTie={ambivalentTie}
+          <Swipe
+            onLeft={negativeTie}
+            onRight={positiveTie}
+            visible={true}
             refreshKey={optionA.id + optionB.id}
-          />
+          >
+            <Tie 
+              ambivalentTie={ambivalentTie}
+              refreshKey={optionA.id + optionB.id}
+            />
+          </Swipe>
         </Grid>
         {/* BOTTOM HALF */}
         <Grid item xs={12} style={{ height: "40%" }}>
@@ -141,14 +146,10 @@ export const Matchup: FunctionComponent<Props> = ({
 }
 
 interface TieProps {
-  negativeTie: () => void;
-  positiveTie: () => void;
   ambivalentTie: () => void;
   refreshKey: string;
 }
 const Tie: FunctionComponent<TieProps> = ({
-  negativeTie,
-  positiveTie,
   ambivalentTie,
   refreshKey
 }) => (
@@ -161,7 +162,7 @@ const Tie: FunctionComponent<TieProps> = ({
       padding: "16px",
     }}
   >
-    <Grid item xs={4} style={{ backgroundColor: "red" }} onClick={negativeTie}>
+    <Grid item xs={4} style={{ backgroundColor: "red" }}>
       <Typography variant="subtitle2">
         &lt;&lt;&lt; x (hate both)
       </Typography>
@@ -171,7 +172,7 @@ const Tie: FunctionComponent<TieProps> = ({
         ¯\_(ツ)_/¯ (meh)
       </Typography>
     </Grid>
-    <Grid item xs={4} style={{ backgroundColor: "green" }} onClick={positiveTie}>
+    <Grid item xs={4} style={{ backgroundColor: "green" }}>
       <Typography variant="subtitle2">
         + (love both) &gt;&gt;&gt;
       </Typography>

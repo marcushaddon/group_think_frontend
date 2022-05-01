@@ -31,6 +31,30 @@ const calcDir = ([x, y]: [number, number]): Dir => {
   return delta < 0 ? axis[0] : axis[1];
 }
 
+const Confirm = () => (
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      backgroundColor: "green"
+    }}
+  >
+    +
+  </div>
+);
+
+const Reject = () => (
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      backgroundColor: "red"
+    }}
+  >
+    -
+  </div>
+);
+
 export const Swipe: FunctionComponent<Props> = ({
   visible,
   children,
@@ -41,10 +65,12 @@ export const Swipe: FunctionComponent<Props> = ({
   const [dir, setDir] = useState<Dir | null>(null);
   const [hDelta, setHDelta] = useState(0);
   const [vDelta, setVDelta] = useState(0);
+  const [displayConfirm, setDisplayConfirm] = useState(false);
+  const [displayReject, setDisplayReject] = useState(false);
 
   const touchMove: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
     if (swipeStart === null) {
-      console.log("swipe start null!");
+      console.log("swipe start null! visible?", visible);
       return
     }
     const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
@@ -69,7 +95,7 @@ export const Swipe: FunctionComponent<Props> = ({
       // set vDelta
       setVDelta(delta[1]);
     }
-  }, [swipeStart, dir]);
+  }, [swipeStart, dir, visible]);
   
   const touchStart: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
     setSwipeStart([e.changedTouches[0].clientX, e.changedTouches[0].clientY]);
@@ -81,13 +107,21 @@ export const Swipe: FunctionComponent<Props> = ({
     setVDelta(0);
   }, []);
 
-  if (hDelta > 100 && onLeft) {
+  if (hDelta > 100 && onRight) {
     touchEnd(null as any);
-    onRight();
+    setDisplayConfirm(true);
+    setTimeout(() => {
+      onRight();
+      setDisplayConfirm(false);
+    }, 500);
   }
   if (hDelta < -100 && onLeft) {
     touchEnd(null as any);
-    onLeft();
+    setDisplayReject(true);
+    setTimeout(() => {
+      onLeft();
+      setDisplayReject(false);
+    }, 500);
   }
 
   return visible ? (
@@ -95,6 +129,9 @@ export const Swipe: FunctionComponent<Props> = ({
       onTouchStart={touchStart}
       onTouchEnd={touchEnd}
       onTouchMove={touchMove}
+      style={{
+        position: "relative"
+      }}
     >
       <div
         style={{
@@ -103,11 +140,14 @@ export const Swipe: FunctionComponent<Props> = ({
           marginLeft: `${hDelta}px`,
           marginTop: `${vDelta}px`,
           marginRight: `${-hDelta}px`,
-          marginBottom: `${-vDelta}px`
+          marginBottom: `${-vDelta}px`,
+          opacity: displayConfirm || displayReject ? 0 : 1
         }}
       >
         {children}
       </div>
+      {displayConfirm && <Confirm />}
+      {displayReject && <Reject />}
     </div>
   ) : <></>;
 }
