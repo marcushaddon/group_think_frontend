@@ -1,5 +1,4 @@
-import { Button, Grid, Typography } from "@mui/material";
-import React, { useRef, FunctionComponent, useCallback, useState, useEffect } from "react";
+import React, { FunctionComponent, useState, useCallback } from "react";
 
 export interface Props {
   visible: boolean;
@@ -9,98 +8,106 @@ export interface Props {
   onRight: () => void;
 }
 
-const Rejected: FunctionComponent = () => (
-  <div
-    style={{
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      left: 0,
-      top: 0,
-      backgroundColor: "red"
-    }}
-  >
-    <Typography variant="h3">X</Typography>
-  </div>
-);
+enum Dir {
+  LEFT,
+  RIGHT,
+  UP,
+  DOWN,
+}
 
-const Selected: FunctionComponent = () => (
-  <div
-    style={{
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      left: 0,
-      top: 0,
-      backgroundColor: "green"
-    }}
-  >
-    <Typography variant="h3">YES</Typography>
-  </div>
-)
+const THRESHOLD = 20;
+
+const getDist = ([x1, y1]: [number, number], [x2, y2]: [number, number]): number =>
+  Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+
+const calcDelta = ([x1, y1]: [number, number], [x2, y2]: [number, number]): [number, number] =>
+  [x2 - x1, y2 - y1];
+
+const calcDir = ([x, y]: [number, number]): Dir => {
+  const horizontal = Math.abs(x) >= Math.abs(y);
+  const axis = horizontal ? [Dir.LEFT, Dir.RIGHT] : [Dir.DOWN, Dir.UP];
+  const delta = horizontal ? x : y;
+  
+  return delta < 0 ? axis[0] : axis[1];
+}
 
 export const Swipe: FunctionComponent<Props> = ({
   visible,
   children,
   onLeft,
-  onRight,
-  refreshKey
+  onRight
 }) => {
-  const [rejected, setRejected] = useState(false);
-  const [selected, setSelected] = useState(false);
-  const [dragStart, setDragStart] = useState(-1);
-  const [leftTimeout, setLeftTimeout] = useState<any>(null);
-  const [rightTimeout, setRightTimeout] = useState<any>(null);
+  const [swipeStart, setSwipeStart] = useState<[number, number] | null>(null);
+  const [dir, setDir] = useState<Dir | null>(null);
+  const [hDelta, setHDelta] = useState(0);
+  const [vDelta, setVDelta] = useState(0);
 
-  const clearTimeouts = useCallback(() => {
-    if (leftTimeout) {
-      clearTimeout(leftTimeout);
-      setLeftTimeout(null);
+  const touchMove: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
+    if (swipeStart === null) {
+      console.log("swipe start null!");
+      return
     }
-    if (rightTimeout) {
-      clearTimeout(rightTimeout);
-      setRightTimeout(null);
+    const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+    const dist = getDist(coord, swipeStart)
+    if (dist < THRESHOLD) {
+      return;
     }
-  }, [leftTimeout, rightTimeout]);
 
-  useEffect(() => {
-    setRejected(false);
-    setSelected(false);
-    setDragStart(-1);
-    clearTimeouts();
-  }, [refreshKey]);
+    const delta = calcDelta(swipeStart, coord);
 
-  const onLeftWrapper = useCallback(() => {
-    setRejected(true);
-    onLeft(); // TODO: clear prev timeout!!!!
-  }, [onLeft]);
-  const onRightWrapper = useCallback(() => {
-    setSelected(true);
+    if (dir === null) {
+      setDir(calcDir(delta));
+      // TODO: calc delta from dir/delta in this block
+
+      return;
+    }
+
+    if (dir === Dir.LEFT || dir === Dir.RIGHT) {
+      setHDelta(delta[0]);
+    } else {
+      return; // TEMP
+      // set vDelta
+      setVDelta(delta[1]);
+    }
+  }, [swipeStart, dir]);
+  
+  const touchStart: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
+    setSwipeStart([e.changedTouches[0].clientX, e.changedTouches[0].clientY]);
+  }, []);
+
+  const touchEnd: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
+    setSwipeStart(null);
+    setHDelta(0);
+    setVDelta(0);
+  }, []);
+
+  if (hDelta > 100 && onLeft) {
+    touchEnd(null as any);
     onRight();
-  }, [onRight]);
-
-  if (!visible) {
-    return <></>;
+  }
+  if (hDelta < -100 && onLeft) {
+    touchEnd(null as any);
+    onLeft();
   }
 
-  return (
+  return visible ? (
     <div
-      style={{
-        width: "100%",
-        height: "100%"
-      }}
+      onTouchStart={touchStart}
+      onTouchEnd={touchEnd}
+      onTouchMove={touchMove}
     >
-      {/* {rejected && <Rejected />}
-      {selected && <Selected />} */}
-      {children}
-      <Grid container item style={{ width: "100%" }}>
-        <Button color="error" variant="contained" style={{ width: "50%"}} onClick={onLeftWrapper}>
-          No
-        </Button>
-        <Button color="success"variant="contained" style={{ width: "50%"}} onClick={onRightWrapper}>
-          Yes
-        </Button>
-      </Grid>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          marginLeft: `${hDelta}px`,
+          marginTop: `${vDelta}px`,
+          marginRight: `${-hDelta}px`,
+          marginBottom: `${-vDelta}px`
+        }}
+      >
+        {children}
+      </div>
     </div>
-  );
+  ) : <></>;
 }
