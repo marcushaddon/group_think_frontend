@@ -113,7 +113,13 @@ export const VoteRoute: FunctionComponent = () => {
   }
 
   return (
-    <Grid container>
+    <Grid
+      container
+      style={{
+        height: "100vh",
+        overflowY: "hidden"
+      }}
+    >
       <Grid item xs={12}>
         {poll.description}
       </Grid>

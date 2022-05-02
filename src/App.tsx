@@ -13,7 +13,7 @@ function App() {
         width: "100vw",
         height: "100vh",
         overflowY: "scroll",
-        WebkitOverflowScrolling: "touch",
+        // WebkitOverflowScrolling: "touch",
       }}
     >
       <BrowserRouter>

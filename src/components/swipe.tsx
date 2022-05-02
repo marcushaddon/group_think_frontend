@@ -9,10 +9,10 @@ export interface Props {
 }
 
 enum Dir {
-  LEFT,
-  RIGHT,
-  UP,
-  DOWN,
+  LEFT = "L",
+  RIGHT = "R",
+  UP = "U",
+  DOWN = "D",
 }
 
 const THRESHOLD = 20;
@@ -23,12 +23,21 @@ const getDist = ([x1, y1]: [number, number], [x2, y2]: [number, number]): number
 const calcDelta = ([x1, y1]: [number, number], [x2, y2]: [number, number]): [number, number] =>
   [x2 - x1, y2 - y1];
 
-const calcDir = ([x, y]: [number, number]): Dir => {
-  const horizontal = Math.abs(x) >= Math.abs(y);
-  const axis = horizontal ? [Dir.LEFT, Dir.RIGHT] : [Dir.DOWN, Dir.UP];
-  const delta = horizontal ? x : y;
-  
-  return delta < 0 ? axis[0] : axis[1];
+const calcDir = ([x, y]: [number, number]): Dir | undefined => {
+  if (x === y) return;
+
+  if (x < -THRESHOLD) {
+    return Dir.LEFT;
+  } 
+  if (x > THRESHOLD) {
+    return Dir.RIGHT;
+  }
+  if (y < -THRESHOLD) {
+    return Dir.DOWN;
+  }
+  if (y > THRESHOLD) {
+    return Dir.UP;
+  }
 }
 
 const Confirm = () => (
@@ -63,6 +72,8 @@ export const Swipe: FunctionComponent<Props> = ({
 }) => {
   const [swipeStart, setSwipeStart] = useState<[number, number] | null>(null);
   const [dir, setDir] = useState<Dir | null>(null);
+  const [xDelta, setXDelta] = useState(0);
+  const [yDelta, setYDelta] = useState(0);
   const [hDelta, setHDelta] = useState(0);
   const [vDelta, setVDelta] = useState(0);
   const [displayConfirm, setDisplayConfirm] = useState(false);
@@ -71,29 +82,32 @@ export const Swipe: FunctionComponent<Props> = ({
   const touchMove: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
     if (swipeStart === null) {
       console.log("swipe start null! visible?", visible);
-      return
+      return;
     }
     const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
-    const dist = getDist(coord, swipeStart)
-    if (dist < THRESHOLD) {
-      return;
-    }
 
-    const delta = calcDelta(swipeStart, coord);
-
-    if (dir === null) {
-      setDir(calcDir(delta));
-      // TODO: calc delta from dir/delta in this block
-
-      return;
-    }
+    const [xDelt, yDelt] = calcDelta(swipeStart, coord);
+    setXDelta(xDelt);
+    setYDelta(yDelt);
 
     if (dir === Dir.LEFT || dir === Dir.RIGHT) {
-      setHDelta(delta[0]);
-    } else {
-      return; // TEMP
-      // set vDelta
-      setVDelta(delta[1]);
+      setHDelta(xDelt);
+      return;
+    } else if (dir === Dir.DOWN || dir === Dir.UP) {
+      // setVDelta(yDelt);
+      return;
+    }
+
+    const maybeDir = calcDir([xDelt, yDelt]);
+    if (maybeDir) {
+      // setDir(maybeDir);
+      // TODO: calc delta from dir/delta in this block
+      if (maybeDir === Dir.LEFT || maybeDir === Dir.RIGHT) {
+        setDir(maybeDir);
+        setHDelta(xDelt);
+      } else {
+        // setVDelta(yDelt);
+      }
     }
   }, [swipeStart, dir, visible]);
   
@@ -105,9 +119,12 @@ export const Swipe: FunctionComponent<Props> = ({
     setSwipeStart(null);
     setHDelta(0);
     setVDelta(0);
+    setXDelta(0);
+    setYDelta(0);
+    setDir(null);
   }, []);
 
-  if (hDelta > 100 && onRight) {
+  if (hDelta > 200 && onRight) {
     touchEnd(null as any);
     setDisplayConfirm(true);
     setTimeout(() => {
@@ -115,7 +132,7 @@ export const Swipe: FunctionComponent<Props> = ({
       setDisplayConfirm(false);
     }, 600);
   }
-  if (hDelta < -100 && onLeft) {
+  if (hDelta < -200 && onLeft) {
     touchEnd(null as any);
     setDisplayReject(true);
     setTimeout(() => {
@@ -124,14 +141,19 @@ export const Swipe: FunctionComponent<Props> = ({
     }, 500);
   }
 
+  const bgColor = xDelta > 0 ? `rgb(${255 - xDelta},255,${255 - xDelta})` :
+    `rgb(255,${255 + xDelta},${255 + xDelta})`;
+
   return visible ? (
     <div
       onTouchStart={touchStart}
       onTouchEnd={touchEnd}
       onTouchMove={touchMove}
       style={{
-        position: "relative"
+        position: "relative",
+        backgroundColor: bgColor
       }}
+      
     >
       <div
         style={{
