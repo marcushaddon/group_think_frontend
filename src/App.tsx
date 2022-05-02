@@ -8,13 +8,23 @@ import { VoteRoute } from './routes/vote';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<CreateRoute />} />
-        <Route path="/:pollId" element={<PollRoute />} />
-        <Route path="/vote/:pollId" element={<VoteRoute />} />
-      </Routes>
-    </BrowserRouter>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        overflowY: "scroll",
+        WebkitOverflowScrolling: "touch",
+      }}
+    >
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<CreateRoute />} />
+          <Route path="/:pollId" element={<PollRoute />} />
+          <Route path="/vote/:pollId" element={<VoteRoute />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+    
   )
 }
 

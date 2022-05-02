@@ -25,7 +25,7 @@ export const Matchup: FunctionComponent<Props> = ({
       optionA: OptionAward.EXPLICIT_WIN,
       optionB: OptionAward.IMPLICIT_LOSS,
     });
-    setSnackMessage(`+1 for ${optionA.name}`);
+    setSnackMessage(`+1 ${optionA.name}`);
   }, [onResult, optionA]);
 
   const chooseB = useCallback(() => {
@@ -35,7 +35,7 @@ export const Matchup: FunctionComponent<Props> = ({
       optionA: OptionAward.IMPLICIT_LOSS,
       optionB: OptionAward.EXPLICIT_WIN,
     });
-    setSnackMessage(`+1 for ${optionB.name}`);
+    setSnackMessage(`+1 ${optionB.name}`);
   }, [onResult, optionB]);
 
   const rejectA = useCallback(() => {
@@ -73,7 +73,7 @@ export const Matchup: FunctionComponent<Props> = ({
       optionA: OptionAward.POSITIVE_TIE,
       optionB: OptionAward.POSITIVE_TIE,
     });
-    setSnackMessage("i cant choose!");
+    setSnackMessage("+1 for both");
   }, [onResult]);
 
   const negativeTie = useCallback(() => {
@@ -82,7 +82,7 @@ export const Matchup: FunctionComponent<Props> = ({
       optionA: OptionAward.NEGATIVE_TIE,
       optionB: OptionAward.NEGATIVE_TIE,
     });
-    setSnackMessage("ugh, neither one please");
+    setSnackMessage("-1 for both");
   }, [onResult]);
 
   return (
@@ -164,17 +164,17 @@ const Tie: FunctionComponent<TieProps> = ({
   >
     <Grid item xs={4} style={{ backgroundColor: "red" }}>
       <Typography variant="subtitle2">
-        &lt;&lt;&lt; x (hate both)
+        &lt;&lt;&lt; x neither
       </Typography>
     </Grid>
     <Grid item xs={4} onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
       <Typography variant="subtitle2">
-        ¯\_(ツ)_/¯ (meh)
+        ~ ambivalent
       </Typography>
     </Grid>
     <Grid item xs={4} style={{ backgroundColor: "green" }}>
       <Typography variant="subtitle2">
-        + (love both) &gt;&gt;&gt;
+        + both &gt;&gt;&gt;
       </Typography>
     </Grid>
   </Grid>

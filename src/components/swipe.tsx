@@ -113,7 +113,7 @@ export const Swipe: FunctionComponent<Props> = ({
     setTimeout(() => {
       onRight();
       setDisplayConfirm(false);
-    }, 500);
+    }, 600);
   }
   if (hDelta < -100 && onLeft) {
     touchEnd(null as any);
