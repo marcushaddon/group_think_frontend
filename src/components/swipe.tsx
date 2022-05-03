@@ -1,3 +1,5 @@
+import { PlusOne, Check, Cancel } from "@mui/icons-material";
+import { Zoom } from "@mui/material";
 import React, { FunctionComponent, useState, useCallback } from "react";
 
 export interface Props {
@@ -40,27 +42,41 @@ const calcDir = ([x, y]: [number, number]): Dir | undefined => {
   }
 }
 
+const ResultStyle: React.CSSProperties = {
+  position: "absolute",
+    inset: 0,
+    color: "white",
+    margin: "auto",
+    width: "50%",
+    height: "50%",
+    textAlign: "center"
+}
+
 const Confirm = () => (
   <div
     style={{
-      position: "absolute",
-      inset: 0,
-      backgroundColor: "green"
+      ...ResultStyle,
+      backgroundColor: "green",
     }}
   >
-    +
+    <Zoom in={true} style={{ transitionDelay: "100ms" }}>
+      <Check sx={{ fontSize: "200px"}} />
+    </Zoom>
+    
   </div>
 );
 
 const Reject = () => (
   <div
     style={{
-      position: "absolute",
-      inset: 0,
-      backgroundColor: "red"
+      ...ResultStyle,
+      backgroundColor: "red",
     }}
   >
-    -
+    <Zoom in={true} style={{ transitionDelay: "100ms" }}>
+      <Cancel sx={{ fontSize: "200px"}} />
+    </Zoom>
+    
   </div>
 );
 
@@ -151,7 +167,7 @@ export const Swipe: FunctionComponent<Props> = ({
       onTouchMove={touchMove}
       style={{
         position: "relative",
-        backgroundColor: bgColor
+        backgroundColor: displayConfirm ? "green" : displayReject ? "red " : bgColor
       }}
       
     >

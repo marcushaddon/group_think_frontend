@@ -12,7 +12,7 @@ function App() {
       style={{
         width: "100vw",
         height: "100vh",
-        overflowY: "scroll",
+        // overflowY: "scroll",
         // WebkitOverflowScrolling: "touch",
       }}
     >
