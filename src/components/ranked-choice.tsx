@@ -1,17 +1,17 @@
 import { Grid, Typography } from "@mui/material";
 import React, { FunctionComponent } from "react";
-import { Option, Choice } from "../models";
+import { Choice, Option } from "../models";
 import { ScoresComponent } from "./scores";
 
 export interface Props {
-  option: Option;
-  scores?: Choice["choiceTypes"];
+  option: Option
+  choice: Choice;
   winner?: boolean;
 }
 
-export const RankedOption: FunctionComponent<Props> = ({
+export const RankedChoice: FunctionComponent<Props> = ({
+  choice,
   option,
-  scores,
   winner = false,
 }) => {
   
@@ -25,7 +25,7 @@ export const RankedOption: FunctionComponent<Props> = ({
         <Grid item xs={12}>
           <Typography variant="subtitle1">{option.name}</Typography>
         </Grid>
-        {scores && <ScoresComponent scores={scores} />}
+        <ScoresComponent scores={choice.choiceTypes} />
       </Grid>
     </Grid>
   );

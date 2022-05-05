@@ -3,8 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { GoogleSearch } from "./google-search";
 import { PollInfo, Info } from "./poll-info";
 import { Participants } from "./participants";
-import { PendingOption, PendingParticipant } from "../../models";
-import groupthink, { PendingPoll } from '../../client/groupthink';
+import { PendingOption, PendingParticipant, PendingPoll } from "../../models";
+import groupthink from '../../client/groupthink';
 import { useNavigate } from 'react-router-dom';
 
 export enum Step {

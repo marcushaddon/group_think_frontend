@@ -1,9 +1,12 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React, { FunctionComponent } from "react";
 import { PendingParticipant, Participant as ParticipantModel, VoteStatus } from "../models";
+import { Action } from "./action";
 
 export interface Props {
   participant: ParticipantModel | PendingParticipant;
+  action?: Action;
+  highlight?: boolean;
 }
 
 const voteStatusText = (s: VoteStatus): string => {
@@ -22,14 +25,18 @@ const voteStatusText = (s: VoteStatus): string => {
 }
 
 export const Participant: FunctionComponent<Props> = ({
-  participant
+  participant,
+  action,
+  highlight
 }) => {
 
   return (
-    <Grid container>
+    <Grid container style={{
+      border: highlight ? "1px dashed green" : ""
+    }}>
       <Grid item xs={12}>
         <Typography variant="body1">
-          {participant.name}
+          {participant.name} {action && <Button onClick={action.cb}>{action.name}</Button>}
         </Typography>
       </Grid>
       <Grid item xs={12}>

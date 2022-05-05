@@ -49,3 +49,29 @@ export interface Ranking {
 }
 
 export type PendingRanking = Omit<Ranking, "id" | "participantId">;
+
+export interface Poll {
+  id: string;
+  name: string;
+  description: string;
+  ownerName: string;
+  ownerToken: string;
+  ownerPhone: string;
+  optionsList: Option[];
+  optionsMap: { [id: string]: Option };
+  participants: Participant[];
+  expires: string;
+
+  // TODO: expiration
+  result: {
+    ranked: Choice[];
+    done: boolean;
+  }
+
+  rankings: Ranking[];
+}
+
+export type PendingPoll = Omit<Poll, "id" | "ownerToken" | "optionsMap" | "optionsList" | "result" | "participants"| "rankings"> & {
+  optionsList: PendingOption[];
+  participants: PendingParticipant[];
+};

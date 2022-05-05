@@ -12,7 +12,7 @@ export const ManualReview: FunctionComponent<Props> = ({
   return (
     <ol>
       {ranking.choices.map(ch => (
-        <li>{ch.optionId}</li>
+        <li key={ch.optionId}>{ch.optionId}</li>
       ))}
     </ol>
   );

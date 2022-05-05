@@ -49,7 +49,7 @@ export const Participants: FunctionComponent<Props> = ({
           <Typography variant="body1">
             {participants.length} participants
           </Typography>
-          {participants.map(p => <Participant participant={p} />)}
+          {participants.map(p => <Participant key={p.name + (p.email || p.phone)} participant={p} />)}
         </Grid>
         <Button onClick={onComplete}>Next</Button>
       </Grid>

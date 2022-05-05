@@ -1,8 +1,8 @@
 import { CircularProgress, Grid } from "@mui/material";
 import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import groupthink, { Poll } from "../../client/groupthink";
-import { Option, PendingRanking, Choice } from "../../models";
+import groupthink from "../../client/groupthink";
+import { Option, PendingRanking, Choice, Poll } from "../../models";
 import { ManualReview } from "./manual-review";
 import { Matchup } from "./matchup";
 import { insertionSort, SortStepResult } from "./sort";
@@ -72,7 +72,7 @@ export const VoteRoute: FunctionComponent = () => {
     const created = await groupthink.createRanking(ranking);
     setRanking(created);
     setVoting(false);
-    navigate(`/${poll!.id}`)
+    navigate(`/${poll!.id}?participantId=${created.participantId}`);
   }, [poll, navigate]);
 
   const onMatchupResult = useCallback(async (res: MatchupResult) => {  
@@ -91,7 +91,6 @@ export const VoteRoute: FunctionComponent = () => {
     }
     // Record sentiment
     setAwardMap(updatedAwardMap);
-
 
     const stepResult = sorter!.next(res.winnerId);
 
@@ -116,7 +115,7 @@ export const VoteRoute: FunctionComponent = () => {
     <Grid
       container
       style={{
-        height: "100vh",
+        height: "100dvh",
         overflowY: "hidden"
       }}
     >

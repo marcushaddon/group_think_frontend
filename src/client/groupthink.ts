@@ -1,29 +1,10 @@
-import { PendingOption, Option, Participant, PendingRanking, Ranking, Choice, PendingParticipant } from "../models";
+import {
+  PendingRanking,
+  Ranking,
+  Poll, 
+  PendingPoll,
+} from "../models";
 
-export type PendingPoll = Omit<Poll, "id" | "ownerToken" | "optionsMap" | "optionsList" | "result" | "participants"> & {
-  optionsList: PendingOption[];
-  participants: PendingParticipant[];
-};
-
-export interface Poll {
-  id: string;
-  name: string;
-  description: string;
-  ownerName: string;
-  ownerToken: string;
-  ownerPhone: string;
-  optionsList: Option[];
-  optionsMap: { [id: string]: Option };
-  participants: Participant[];
-  expires: string;
-
-  // TODO: expiration
-  result: {
-    winner: Option;
-    ratios: Choice[];
-    done: boolean;
-  }
-}
 
 export class GroupthinkClient {
   constructor(private baseUrl: string) {}

@@ -1,6 +1,5 @@
 import { ChoiceMap, OptionAward } from ".";
-import { Poll } from "../../client/groupthink";
-import { Choice, Option, PendingRanking } from "../../models";
+import { Choice, Option, PendingRanking, Poll } from "../../models";
 
 export const optionAwardKey = (optId: string, award: OptionAward) => `${optId}-${award}`;
 
