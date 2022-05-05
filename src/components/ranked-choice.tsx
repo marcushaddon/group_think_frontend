@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import React, { FunctionComponent } from "react";
 import { Choice, Option } from "../models";
 import { ScoresComponent } from "./scores";
+import { Vibes, gradStr } from "./vibes";
 
 export interface Props {
   option: Option
@@ -17,15 +18,30 @@ export const RankedChoice: FunctionComponent<Props> = ({
   
 
   return (
-    <Grid container style={{ border: winner ? "1px solid green" : "" }}>
+    <Grid container style={{
+        border: winner ? "1px solid green" : "",
+      }}
+    >
       <Grid item xs={3}>
         <img src={option.img} style={{ maxWidth: "100%" }} alt={option.name} />
       </Grid>
-      <Grid item container xs={9}>
+      <Grid
+        item
+        container
+        xs={9}
+        style={{
+          background: gradStr(choice.choiceTypes),
+          textDecoration: "h"
+        }}
+      >
         <Grid item xs={12}>
-          <Typography variant="subtitle1">{option.name}</Typography>
+          <Typography
+            variant="body1"
+            // style={{ color: "white", backgroundColor: "black" }}
+          >
+            {option.name}
+          </Typography>
         </Grid>
-        <ScoresComponent scores={choice.choiceTypes} />
       </Grid>
     </Grid>
   );
