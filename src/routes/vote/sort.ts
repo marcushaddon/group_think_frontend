@@ -67,7 +67,7 @@ export function* insertionSort(opts: Option[]): Generator<SortStepResult, Option
         sorted.splice(step.value, 0, toInsert);
         break;
       } else {
-        winnerId = yield { ...step.value, progress: sorted.length };
+        winnerId = yield { ...step.value, progress: sorted.length / opts.length };
       }
     }
   }

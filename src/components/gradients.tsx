@@ -2,28 +2,7 @@ import React, { FunctionComponent } from  "react";
 import { ScoreColors } from "./consts";
 import { Scores } from "./scores";
 
-export interface Props {
-  scores: Scores;
-  style?: React.CSSProperties;
-}
-
-export const Vibes: FunctionComponent<Props> = ({ scores, style }) => {
-
-  const gradient = gradStr(scores);
-
-  return (
-    <div
-      style={{
-        ...(style ? style : {}),
-        background: gradient
-      }}
-    >
-
-    </div>
-  );
-};
-
-export const gradStr = (scores: Scores): string => {
+export const vibes = (scores: Scores): string => {
   const scoreNames: (keyof Scores)[] = [
     "explicitLosses",
     "negativeTies",
@@ -62,4 +41,10 @@ export const gradStr = (scores: Scores): string => {
     .join(", ");
   
   return `linear-gradient(90deg, ${joined })`
+}
+
+export const progress = (prog: number): string => {
+  const to = (prog * 100).toFixed(0);
+  const buffer = (Math.min(prog * 100 + 1, 100)).toFixed(0);
+  return `linear-gradient(90deg, rgb(0, 255, 0) 0%, rgb(0, 255, 0) ${to}%, rgb(255, 255, 255) ${buffer}%)`
 }

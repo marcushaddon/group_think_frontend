@@ -3,6 +3,7 @@ import React, { FunctionComponent, useCallback, useEffect, useState } from "reac
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import groupthink from "../../client/groupthink";
 import { Option, PendingRanking, Choice, Poll } from "../../models";
+import { progress as progGrad } from "../../components/gradients";
 import { ManualReview } from "./manual-review";
 import { Matchup } from "./matchup";
 import { insertionSort, SortStepResult } from "./sort";
@@ -113,16 +114,27 @@ export const VoteRoute: FunctionComponent = () => {
 
   return (
     <Grid
+      className="vote.root"
       container
       style={{
-        height: "100dvh",
-        overflowY: "hidden"
+        // height: "100vh",
+        overflowY: "hidden",
+        minHeight: "100vh"
       }}
     >
-      <Grid item xs={12}>
+      <Grid
+        item xs={12}
+        style={{
+          height: "10%",
+          background: progGrad(progress)
+        }}
+      >
         {poll.description}
       </Grid>
       {voting && <Matchup
+        style={{
+          height: "80%"
+        }}
         options={poll.optionsList}
         optionA={optionA!}
         optionB={optionB!}

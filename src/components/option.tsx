@@ -1,43 +1,48 @@
 import React, { FunctionComponent } from "react";
-import { Grid, Typography, Link, Button } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Link,
+  Button,
+  Card,
+  Paper,
+  CardContent,
+  CardActions,
+  CardMedia
+} from "@mui/material";
 import { PendingOption as OptionProps } from "../models";
 
-export interface Swipeable {
-  onSelect?: () => void;
-  onReject?: () => void;
-}
-
-export const Option: FunctionComponent<OptionProps & Swipeable> = ({
+export const Option: FunctionComponent<OptionProps> = ({
   name,
   img,
   uri,
   description,
-  onSelect,
-  onReject,
 }) => {
 
   return (
-    <Grid container>
-      <Grid item container xs={12}>
-          <img style={{ width: "100%" }} src={img} alt={name} />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          {name}
-        </Typography>
-        <Typography variant="body2">
-          {description}
-        </Typography>
-        </Grid>
-      <Grid item xs={12}>
-        <Link href={uri} target="_blank">More</Link>
-        {onSelect && (
-          <Button onClick={onSelect}>Select</Button>
-        )}
-        {onReject && (
-          <Button onClick={onReject}>Reject</Button>
-        )}
-      </Grid>
-    </Grid>
+    <div style={{ padding: "20px" }}>
+      <Card
+        component={Paper}
+        elevation={3}
+        variant="outlined"
+      >
+        <CardMedia
+          component="img"
+          image={img}
+          height="140"
+        />
+        <CardContent>
+          <Typography variant="h5" component="div">{name}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small" href={uri} target="_blank">
+            more
+          </Button>
+        </CardActions>
+      </Card>
+    </div>
   );
 }

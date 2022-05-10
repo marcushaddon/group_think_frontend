@@ -2,7 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import React, { FunctionComponent } from "react";
 import { Choice, Option } from "../models";
 import { ScoresComponent } from "./scores";
-import { Vibes, gradStr } from "./vibes";
+import { vibes } from "./gradients";
 
 export interface Props {
   option: Option
@@ -30,7 +30,7 @@ export const RankedChoice: FunctionComponent<Props> = ({
         container
         xs={9}
         style={{
-          background: gradStr(choice.choiceTypes),
+          background: vibes(choice.choiceTypes),
           textDecoration: "h"
         }}
       >

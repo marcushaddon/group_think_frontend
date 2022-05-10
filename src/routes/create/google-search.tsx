@@ -3,6 +3,7 @@ import { Button, Input, Grid } from "@mui/material";
 import googleSearch from "../../client/google";
 import { Option as OptionComponent } from "../../components/option";
 import { PendingOption } from "../../models";
+import { Swipe } from "../../components/swipe";
 
 export interface Props {
   onSelectOption: (option: PendingOption) => void;
@@ -17,25 +18,26 @@ export const GoogleSearch: FunctionComponent<Props> = ({
   const [results, setResults] = useState<PendingOption[]>([]);
   const [term, setTerm] = useState("");
   const [offset, setOffset] = useState(0);
+  const [selected, setSelected] = useState<{ [uri: string]: boolean }>({});
 
   const updateTerm = useCallback((term: string) => {
     setOffset(0);
     setTerm(term);
   }, [])
 
-  const doSearch = useCallback(async () => {
+  const doSearch = useCallback(async (offset: number = 0) => {
     const res = await googleSearch.search(term, offset);
     setResults(res.items);
-  }, [term, offset]);
+  }, [term]);
 
   const pageBack = useCallback(() => {
     setOffset(Math.max(0, offset - PAGE_SIZE));
-    doSearch();
+    doSearch(Math.max(0, offset - PAGE_SIZE));
   }, [offset, doSearch]);
 
   const pageForward = useCallback(() => {
     setOffset(offset + PAGE_SIZE);
-    doSearch();
+    doSearch(offset + PAGE_SIZE);
   }, [offset, doSearch]);
 
   const selectOption = useCallback((option: PendingOption) => {
@@ -52,15 +54,35 @@ export const GoogleSearch: FunctionComponent<Props> = ({
         />
       </Grid>
       <Grid item xs={12}>
-        <Button onClick={doSearch}>Search</Button>
+        <Button onClick={() => {
+          setOffset(0);
+          doSearch(0);
+        }}>Search</Button>
       </Grid>
       <Grid item xs={12}>
-        {results.map(result => (
-          <OptionComponent
-            {...result}
-            key={result.name}
-            onSelect={() => selectOption(result)}
-          />
+        {results
+          .map(result => result.uri in selected ? (
+            <div>(TODO: STYLE) {result.name} added to poll</div>
+          ) : (
+          <Swipe
+            onRight={() => {
+              setSelected({
+                ...selected,
+                [result.uri]: true
+              });
+              selectOption(result);
+            }}
+            visible={true}
+            refreshKey={result.uri}
+            onLeft={() => alert("TODO: remove this")}
+          >
+            <OptionComponent
+              {...result}
+              key={result.name}
+              
+            />
+          </Swipe>
+          
         ))}
       </Grid>
       <Grid item container xs={12}>

@@ -10,6 +10,7 @@ export interface Props {
   optionA: OptionModel;
   optionB: OptionModel;
   onResult: (res: MatchupResult) => void;
+  style?: React.CSSProperties;
 }
 
 export const Matchup: FunctionComponent<Props> = ({
@@ -17,6 +18,7 @@ export const Matchup: FunctionComponent<Props> = ({
   optionA,
   optionB,
   onResult,
+  style,
 }) => {
   const [snackMessage, setSnackMessage] = useState<string | null>(null);
   const chooseA = useCallback(() => {
@@ -86,55 +88,62 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult]);
 
   return (
-    <Grid container>
+    <Grid
+      container
+      style={{
+        ...(style || {})
+      }}
+    > {/* BOOKMARK: block this out and debug how to make it fit */}
+      {/* TOP HALF */}
       <Grid item xs={12}>
         {/* TOP HALF */}
-        <Grid item xs={12}>
-          {options.map(o => (
-            <Swipe
-              key={o.id}
-              visible={o.id === optionA.id}
-              onLeft={rejectA}
-              onRight={chooseA}
-              refreshKey={optionA!.id + optionB!.id}
-            >
-              <Option
-                {...optionA}
-              />
-            </Swipe>
-          ))}
-        </Grid>
-        {/* MIDDLE */}
-        <Grid item xs={12}>
+        {options.map(o => (
           <Swipe
-            onLeft={negativeTie}
-            onRight={positiveTie}
-            visible={true}
-            refreshKey={optionA.id + optionB.id}
+            key={o.id}
+            visible={o.id === optionA.id}
+            onLeft={rejectA}
+            onRight={chooseA}
+            refreshKey={optionA!.id + optionB!.id}
           >
-            <Tie 
-              ambivalentTie={ambivalentTie}
-              refreshKey={optionA.id + optionB.id}
+            <Option
+              {...optionA}
             />
           </Swipe>
-        </Grid>
-        {/* BOTTOM HALF */}
-        <Grid item xs={12} style={{ height: "40%" }}>
-          {options.map(o => (
-              <Swipe
-                key={o.id}
-                visible={o.id === optionB.id}
-                onLeft={rejectB}
-                onRight={chooseB}
-                refreshKey={optionA.id + optionB.id}
-              >
-                <Option
-                  {...optionB}
-                />
-              </Swipe>
-          ))}
-        </Grid>
+        ))}
       </Grid>
+      {/* MIDDLE */}
+      <Grid item xs={12}>
+        {/* MIDDLE */}
+        <Swipe
+          onLeft={negativeTie}
+          onRight={positiveTie}
+          visible={true}
+          refreshKey={optionA.id + optionB.id}
+        >
+          <Tie 
+            ambivalentTie={ambivalentTie}
+            refreshKey={optionA.id + optionB.id}
+          />
+        </Swipe>
+      </Grid>
+      {/* BOTTOM HALF */}
+      <Grid item xs={12} style={{ height: "40%" }}>
+        {/* BOTTOM HALF */}
+        {options.map(o => (
+            <Swipe
+              key={o.id}
+              visible={o.id === optionB.id}
+              onLeft={rejectB}
+              onRight={chooseB}
+              refreshKey={optionA.id + optionB.id}
+            >
+              <Option
+                {...optionB}
+              />
+            </Swipe>
+        ))}
+      </Grid>
+
       <Snackbar
         open={typeof snackMessage === "string"}
         autoHideDuration={2000}
@@ -157,10 +166,6 @@ const Tie: FunctionComponent<TieProps> = ({
     container
     item
     xs={12}
-    style={{
-      border: "1px solid grey",
-      padding: "16px",
-    }}
   >
     <Grid item xs={4} style={{ backgroundColor: "red" }}>
       <Typography variant="subtitle2">
