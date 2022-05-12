@@ -47,7 +47,7 @@ export const RankedChoice: FunctionComponent<Props> = ({
           </Typography>
         </Grid>
       </Grid>
-      {breakdown && <Breakdown {...breakdown} style={{ height: "80px" }} />}
+      {breakdown && <Breakdown {...breakdown} style={{  }} />}
     </Grid>
   );
 };

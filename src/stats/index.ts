@@ -28,7 +28,7 @@ export type ChoiceBreakdown = {
   // a place-wise representation of how an option was placed, in ratios
   placements: number[];
   // std dev of placement of an option (lower indicates more consensus)
-  placementsStdDev: number;
+  consensus: number;
   // ratio of how many wins were explicit
   winExplicitness: number;
   // ratio of how man losses were explicit
@@ -36,13 +36,6 @@ export type ChoiceBreakdown = {
 };
 
 export type ChoiceReport = { [optionId: string]: ChoiceBreakdown };
-
-const stdDev = (vals: number[]): number => {
-  const mean = vals.reduce((total, curr) => total + curr) / vals.length;
-  return Math.sqrt(
-    vals.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / vals.length
-  );
-}
 
 export const choiceBreakdowns = (rankings: Ranking[], result: Choice[]): ChoiceReport => {
   const resultMap = result
@@ -94,7 +87,7 @@ export const choiceBreakdowns = (rankings: Ranking[], result: Choice[]): ChoiceR
     
     report[option] = {
       placements: normalizedPlaces,
-      placementsStdDev: stdDev(normalizedPlaces),
+      consensus: 0, // TODO: write trig consensus func
       winExplicitness:
         (explicitWins + positiveTies) /
         (explicitWins + positiveTies + implicitWins),
