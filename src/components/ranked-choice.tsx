@@ -3,17 +3,21 @@ import React, { FunctionComponent } from "react";
 import { Choice, Option } from "../models";
 import { ScoresComponent } from "./scores";
 import { vibes } from "./gradients";
+import { ChoiceBreakdown } from "../stats";
+import { Breakdown } from "./breakdown";
 
 export interface Props {
   option: Option
   choice: Choice;
   winner?: boolean;
+  breakdown?: ChoiceBreakdown;
 }
 
 export const RankedChoice: FunctionComponent<Props> = ({
   choice,
   option,
   winner = false,
+  breakdown,
 }) => {
   
 
@@ -43,6 +47,7 @@ export const RankedChoice: FunctionComponent<Props> = ({
           </Typography>
         </Grid>
       </Grid>
+      {breakdown && <Breakdown {...breakdown} style={{ height: "80px" }} />}
     </Grid>
   );
 };

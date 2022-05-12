@@ -5,6 +5,7 @@ import groupthink from "../../client/groupthink";
 import { Choice, Poll, Ranking } from "../../models";
 import { Participant } from "../../components/participant";
 import { RankedChoice } from "../../components/ranked-choice";
+import { choiceBreakdowns } from "../../stats";
 
 type RankingDisplay = Ranking & { name: string; participantId: string };
 
@@ -61,7 +62,9 @@ export const PollRoute: FunctionComponent = () => {
     <>Final Results</>
   ) : (
     <>Poll results will be viewable when all participants have submitted.</>
-  )
+  );
+
+  const breakdowns = choiceBreakdowns(poll.rankings, poll.result.ranked);
 
   return (
     <Grid container>
@@ -124,6 +127,7 @@ export const PollRoute: FunctionComponent = () => {
           option={poll.optionsMap[ch.optionId]}
           choice={ch}
           winner={i === 0}
+          breakdown={breakdowns[ch.optionId]}
         />
       ))}
     </Grid>
