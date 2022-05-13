@@ -17,7 +17,7 @@ enum Dir {
   DOWN = "D",
 }
 
-const THRESHOLD = 10;
+const THRESHOLD = 20;
 
 const getDist = ([x1, y1]: [number, number], [x2, y2]: [number, number]): number =>
   Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
@@ -140,7 +140,7 @@ export const Swipe: FunctionComponent<Props> = ({
     setDir(null);
   }, []);
 
-  if (hDelta > 200 && onRight) {
+  if (hDelta > 120 && onRight) {
     touchEnd(null as any);
     setDisplayConfirm(true);
     setTimeout(() => {
@@ -148,7 +148,7 @@ export const Swipe: FunctionComponent<Props> = ({
       setDisplayConfirm(false);
     }, 600);
   }
-  if (hDelta < -200 && onLeft) {
+  if (hDelta < -120 && onLeft) {
     touchEnd(null as any);
     setDisplayReject(true);
     setTimeout(() => {
