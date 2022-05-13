@@ -88,8 +88,8 @@ const Explicitness: FunctionComponent<{ wins: number, losses: number }> = ({
   wins, losses
 }) => {
 
-  const leftGrad = `linear-gradient(90deg, rgba(255, 0, 0, ${losses}) 90%, rgba(127, 127, 0, ${wins}) 100%)`;
-  const rightGrad = `linear-gradient(90deg, rgba(126, 128, 0, ${losses}) 10%, rgba(0, 255, 0, ${wins}) 100%)`;
+  const rightGrad = `linear-gradient(90deg, rgba(127, 127, 0, 0) 0%, rgba(255, 0, 0, ${losses}) 100%)`;
+  const leftGrad = `linear-gradient(90deg, rgba(0, 255, 0, ${wins}) 0%, rgba(127, 127, 0, 0) 100%)`;
 
   return (
     <Grid container style={{ height: "30px" }}>

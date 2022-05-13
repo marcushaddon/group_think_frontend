@@ -1,4 +1,5 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Paper } from "@mui/material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import React, { FunctionComponent } from "react";
 import { Choice, Option } from "../models";
 import { ScoresComponent } from "./scores";
@@ -22,9 +23,8 @@ export const RankedChoice: FunctionComponent<Props> = ({
   
 
   return (
-    <Grid container style={{
-        border: winner ? "1px solid green" : "",
-      }}
+    <Grid
+      container
     >
       <Grid item xs={3}>
         <img src={option.img} style={{ maxWidth: "100%" }} alt={option.name} />
@@ -34,17 +34,20 @@ export const RankedChoice: FunctionComponent<Props> = ({
         container
         xs={9}
         style={{
-          background: vibes(choice.choiceTypes),
           textDecoration: "h"
         }}
       >
         <Grid item xs={12}>
+          
           <Typography
             variant="body1"
             // style={{ color: "white", backgroundColor: "black" }}
           >
+            {winner && <FavoriteIcon color="error" />}
             {option.name}
+            {winner && <FavoriteIcon color="error" />}
           </Typography>
+          
         </Grid>
       </Grid>
       {breakdown && <Breakdown {...breakdown} style={{  }} />}

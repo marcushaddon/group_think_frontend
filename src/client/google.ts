@@ -1,8 +1,14 @@
 import { PendingOption } from "../models";
 import * as gt from "./google-types";
 
+const cleanTitle = (unclean: string): string => {
+  const parts = unclean.split(/[(|]/);
+
+  return parts[0];
+}
+
 const itemToOption = (item: gt.Item): PendingOption => ({
-  name: item.title,
+  name: cleanTitle(item.title),
   uri: item.link,
   description: item.snippet,
   img: item.pagemap?.cse_image?.[0]?.src, // TODO: Default

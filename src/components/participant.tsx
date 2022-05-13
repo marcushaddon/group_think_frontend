@@ -1,4 +1,6 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Alert, Button, Grid, Typography } from "@mui/material";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PendingIcon from '@mui/icons-material/Pending';
 import React, { FunctionComponent } from "react";
 import { PendingParticipant, Participant as ParticipantModel, VoteStatus } from "../models";
 import { Action } from "./action";
@@ -29,24 +31,28 @@ export const Participant: FunctionComponent<Props> = ({
   action,
   highlight
 }) => {
+  const { status } = participant;
+
+  const text = (
+    <Typography variant="body1" component={status === VoteStatus.Pending ? "i" : "span"}>
+      {participant.name} {action && <Button onClick={action.cb}>{action.name}</Button>}
+    </Typography>
+  );
+
+  const icon = participant.status === VoteStatus.Decided ? (
+    <CheckCircleOutlineIcon color="success" />
+  ) : participant.status === VoteStatus.Pending ? (
+    <PendingIcon color="info" />
+  ) : (
+    <span>TODO: handle other statuses</span>
+  )
 
   return (
     <Grid container style={{
-      border: highlight ? "1px dashed green" : ""
+      border: highlight ? "1px dashed green" : "",
     }}>
       <Grid item xs={12}>
-        <Typography variant="body1">
-          {participant.name} {action && <Button onClick={action.cb}>{action.name}</Button>}
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        {participant.phone && (<><Typography variant="subtitle1">Phone:</Typography> {participant.phone} </>)}
-      </Grid>
-      <Grid item xs={12}>
-        {participant.email && (<><Typography variant="subtitle1">Phone:</Typography> {participant.email} </>)}
-      </Grid>
-      <Grid item xs={12}>
-        {voteStatusText(participant.status!)}
+        {icon} {text}
       </Grid>
     </Grid>
   );

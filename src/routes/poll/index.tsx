@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import { Alert, AlertTitle, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import groupthink from "../../client/groupthink";
 import { Choice, Poll, Ranking } from "../../models";
 import { Participant } from "../../components/participant";
@@ -69,19 +70,28 @@ export const PollRoute: FunctionComponent = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography variant="h1">
-          {poll.name}: {poll.result.done ? "DECIDED" : "in progress"}
+        <Typography variant="h3">
+          {poll.name}: {poll.result.done ? (
+            <Alert severity="success">
+              <AlertTitle>Complete</AlertTitle>
+              The results are in! Check them out below...
+            </Alert>
+          ) : (
+            <Alert severity="warning">
+              <AlertTitle>In progress</AlertTitle>
+              We are still wating on {poll.participants.length - poll.rankings.length} participants to submit their votes
+            </Alert>
+          )}
         </Typography>
         <Typography variant="subtitle1">
           by {poll.ownerName}
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          {poll.description}
-        </Typography>
-      </Grid>
-      {poll.participants.length} participants
+
+      <Typography variant="subtitle2">
+        {poll.participants.length} participants
+      </Typography>
+      
       {poll.participants.map(p => {
         const pRanking = poll.rankings.find(r => r.participantId === p.id);
         const action = pRanking && ranking?.participantId !== p.id ? {
