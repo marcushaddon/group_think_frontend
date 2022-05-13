@@ -17,7 +17,7 @@ enum Dir {
   DOWN = "D",
 }
 
-const THRESHOLD = 20;
+const THRESHOLD = 10;
 
 const getDist = ([x1, y1]: [number, number], [x2, y2]: [number, number]): number =>
   Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
