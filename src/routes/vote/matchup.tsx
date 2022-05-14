@@ -31,8 +31,7 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult, optionA]);
 
   const chooseB = useCallback(() => {
-    // debugger;
-    onResult({
+        onResult({
       winnerId: optionB.id,
       optionA: OptionAward.IMPLICIT_LOSS,
       optionB: OptionAward.EXPLICIT_WIN,
@@ -41,8 +40,7 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult, optionB]);
 
   const rejectA = useCallback(() => {
-    // debugger;
-    onResult({
+        onResult({
       winnerId: optionB.id,
       optionA: OptionAward.EXPLICIT_LOSS,
       optionB: OptionAward.IMPLICIT_WIN,
@@ -51,8 +49,7 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult, optionB, optionA]);
 
   const rejectB = useCallback(() => {
-    // debugger;
-    onResult({
+        onResult({
       winnerId: optionA.id,
       optionA: OptionAward.IMPLICIT_WIN,
       optionB: OptionAward.EXPLICIT_LOSS,
@@ -61,8 +58,7 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult, optionA, optionB]);
 
   const ambivalentTie = useCallback(() => {
-    // debugger;
-    onResult({
+        onResult({
       optionA: OptionAward.AMBIVALENT_TIE,
       optionB: OptionAward.AMBIVALENT_TIE,
     });
@@ -70,8 +66,7 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult]);
 
   const positiveTie = useCallback(() => {
-    // debugger;
-    onResult({
+        onResult({
       optionA: OptionAward.POSITIVE_TIE,
       optionB: OptionAward.POSITIVE_TIE,
     });
@@ -79,8 +74,7 @@ export const Matchup: FunctionComponent<Props> = ({
   }, [onResult]);
 
   const negativeTie = useCallback(() => {
-    // debugger;
-    onResult({
+        onResult({
       optionA: OptionAward.NEGATIVE_TIE,
       optionB: OptionAward.NEGATIVE_TIE,
     });

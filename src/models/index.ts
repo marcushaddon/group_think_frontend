@@ -64,7 +64,7 @@ export interface Poll {
 
   // TODO: expiration
   result: {
-    ranked: Choice[];
+    ranked?: Choice[];
     done: boolean;
   }
 

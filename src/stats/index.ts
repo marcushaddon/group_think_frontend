@@ -68,7 +68,6 @@ export const choiceBreakdowns = (rankings: Ranking[], result: Choice[]): ChoiceR
 
   // arrange everything
   for (const option of options) {
-    debugger;
     const placesForOption = places.
       map(place => placeCounts[option].count(place));
     

@@ -12,6 +12,7 @@ export interface Props {
   choice: Choice;
   winner?: boolean;
   breakdown?: ChoiceBreakdown;
+  viewBreakdown?: boolean;
 }
 
 export const RankedChoice: FunctionComponent<Props> = ({
@@ -19,6 +20,7 @@ export const RankedChoice: FunctionComponent<Props> = ({
   option,
   winner = false,
   breakdown,
+  viewBreakdown = false,
 }) => {
   
 
@@ -33,24 +35,25 @@ export const RankedChoice: FunctionComponent<Props> = ({
         item
         container
         xs={9}
-        style={{
-          textDecoration: "h"
-        }}
       >
-        <Grid item xs={12}>
-          
-          <Typography
-            variant="body1"
-            // style={{ color: "white", backgroundColor: "black" }}
-          >
-            {winner && <FavoriteIcon color="error" />}
-            {option.name}
-            {winner && <FavoriteIcon color="error" />}
-          </Typography>
-          
-        </Grid>
+        {breakdown && viewBreakdown ? (
+          <Breakdown {...breakdown} style={{  }} />
+        ) : (
+          <Grid item xs={12}>
+            <Typography
+              variant="body1"
+              // style={{ color: "white", backgroundColor: "black" }}
+            >
+              {winner && <FavoriteIcon color="error" />}
+              {option.name}
+              {winner && <FavoriteIcon color="error" />}
+            </Typography>
+            
+          </Grid>
+        )}
+        
       </Grid>
-      {breakdown && <Breakdown {...breakdown} style={{  }} />}
+      
     </Grid>
   );
 };

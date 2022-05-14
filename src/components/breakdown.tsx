@@ -7,8 +7,9 @@ type RGB = [number, number, number];
 const rgbStr = ([r, g, b]: RGB): string => `rgb(${r}, ${g}, ${b})`;
 
 const lerpColor = (from: RGB, to: RGB, steps: number): RGB[] => {
+  // TODO: This is stopping one step before 'to'
   const delta = from.map((ch, i) => to[i] - ch);
-  const inc = delta.map(ch => ch / steps); 
+  const inc = delta.map(ch => ch / (steps - 1)); 
 
   const stops = [...Array(steps)]
     .map((_, step) => {

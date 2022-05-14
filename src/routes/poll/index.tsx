@@ -6,7 +6,7 @@ import groupthink from "../../client/groupthink";
 import { Choice, Poll, Ranking } from "../../models";
 import { Participant } from "../../components/participant";
 import { RankedChoice } from "../../components/ranked-choice";
-import { choiceBreakdowns } from "../../stats";
+import { choiceBreakdowns, ChoiceReport } from "../../stats";
 
 type RankingDisplay = Ranking & { name: string; participantId: string };
 
@@ -18,6 +18,7 @@ export const PollRoute: FunctionComponent = () => {
 
   const [poll, setPoll] = useState<Poll | null>(null);
   const [ranking, setRanking] = useState<RankingDisplay | null>(null);
+  const [viewBreakdown, setViewBreakdown] = useState(false);
 
   useEffect(() => {
     setParticipantId(searchParams.get("participantId"));
@@ -56,33 +57,33 @@ export const PollRoute: FunctionComponent = () => {
     return <CircularProgress />
   }
 
-  const choices = ranking ? ranking.choices : poll.result.done ? poll.result.ranked : [];
+  const choices = ranking ? ranking.choices : poll.result.done ? poll.result.ranked! : [];
   const title = ranking?.name ? (
     `${ranking.name}'s ranking`
-  ) : poll.result.done ? (
-    <>Final Results</>
   ) : (
-    <>Poll results will be viewable when all participants have submitted.</>
+    <>Final Results</>
   );
 
-  const breakdowns = choiceBreakdowns(poll.rankings, poll.result.ranked);
+  let breakdowns: ChoiceReport | undefined;
+  breakdowns = poll.result.ranked ? choiceBreakdowns(poll.rankings, poll.result.ranked) : undefined;
 
   return (
     <Grid container>
       <Grid item xs={12}>
         <Typography variant="h3">
-          {poll.name}: {poll.result.done ? (
-            <Alert severity="success">
-              <AlertTitle>Complete</AlertTitle>
-              The results are in! Check them out below...
-            </Alert>
-          ) : (
-            <Alert severity="warning">
-              <AlertTitle>In progress</AlertTitle>
-              We are still wating on {poll.participants.length - poll.rankings.length} participants to submit their votes
-            </Alert>
-          )}
+          {poll.name}
         </Typography>
+        {poll.result.done ? (
+          <Alert severity="success">
+            <AlertTitle>Complete</AlertTitle>
+            The results are in! Check them out below...
+          </Alert>
+        ) : (
+          <Alert severity="warning">
+            <AlertTitle>In progress</AlertTitle>
+            We are still wating on {poll.participants.length - poll.rankings.length} participants to submit their votes
+          </Alert>
+        )}
         <Typography variant="subtitle1">
           by {poll.ownerName}
         </Typography>
@@ -120,6 +121,10 @@ export const PollRoute: FunctionComponent = () => {
         {title}
       </Typography>
 
+      {!poll.result.done && (
+        <>Poll results will be viewable when all participants have submitted.</>
+      )}
+
       {ranking && poll.result.done && (
         <Button
           onClick={() => {
@@ -131,13 +136,21 @@ export const PollRoute: FunctionComponent = () => {
         </Button>
       )}
 
+      <Button
+        variant={viewBreakdown ? "outlined" : "contained"}
+        onClick={() => setViewBreakdown(!viewBreakdown)}
+      >
+        {viewBreakdown ? "Hide breakdown" : "Show breakdown"}
+      </Button>
+
       {choices.map((ch, i) => (
         <RankedChoice
           key={ch.optionId}
           option={poll.optionsMap[ch.optionId]}
           choice={ch}
           winner={i === 0}
-          breakdown={breakdowns[ch.optionId]}
+          breakdown={breakdowns?.[ch.optionId]}
+          viewBreakdown={viewBreakdown}
         />
       ))}
     </Grid>
