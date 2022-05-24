@@ -20,11 +20,12 @@ const lerpColor = (from: RGB, to: RGB, steps: number): RGB[] => {
   return stops as RGB[];
 }
 
-export const Breakdown: FunctionComponent<ChoiceBreakdown & { style?: React.CSSProperties}> = ({
+export const VisualBreakdown: FunctionComponent<ChoiceBreakdown & { style?: React.CSSProperties}> = ({
   placements,
   winExplicitness,
   lossExplicitness,
   style,
+  consensus
 }) => {
 
   return (
@@ -39,6 +40,7 @@ export const Breakdown: FunctionComponent<ChoiceBreakdown & { style?: React.CSSP
       {/* PLACEMENTS */}
       <Placements placements={placements} />
       <Explicitness wins={winExplicitness} losses={lossExplicitness} />
+      <Consensus consensus={consensus} />
     </Grid>
   );
 };
@@ -88,7 +90,6 @@ const Placements: FunctionComponent<{ placements: number[] }> = ({
 const Explicitness: FunctionComponent<{ wins: number, losses: number }> = ({
   wins, losses
 }) => {
-
   const rightGrad = `linear-gradient(90deg, rgba(127, 127, 0, 0) 0%, rgba(255, 0, 0, ${losses}) 100%)`;
   const leftGrad = `linear-gradient(90deg, rgba(0, 255, 0, ${wins}) 0%, rgba(127, 127, 0, 0) 100%)`;
 
@@ -114,4 +115,34 @@ const Explicitness: FunctionComponent<{ wins: number, losses: number }> = ({
         ></Grid>
     </Grid>
   );
-}
+};
+
+export const Consensus: FunctionComponent<{ consensus: number }> = ({
+  consensus
+}) => {
+  const width = 100 - 80 * consensus;
+  const height = 50 + 50 * consensus;
+  const opacity = 0.10 + 0.9 * consensus;
+  // TODO: radial gradient? BBOKMARKE
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "30px"
+      }}
+    >
+      <div
+        style={{
+          width: `${width}%`,
+          height: `${height}%`,
+          backgroundColor: `rgb(0,127,255)`,
+          opacity,
+          borderRadius: `50%`
+        }}
+      >
+
+      </div>
+    </div>
+  )
+};

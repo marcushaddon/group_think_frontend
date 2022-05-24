@@ -5,14 +5,15 @@ import { Choice, Option } from "../models";
 import { ScoresComponent } from "./scores";
 import { vibes } from "./gradients";
 import { ChoiceBreakdown } from "../stats";
-import { Breakdown } from "./breakdown";
+import { VisualBreakdown } from "./visual-breakdown";
+import { NLBreakdown } from "./nl-breakdown";
 
 export interface Props {
   option: Option
   choice: Choice;
   winner?: boolean;
   breakdown?: ChoiceBreakdown;
-  viewBreakdown?: boolean;
+  breakdownType?: "visual" | "nl";
 }
 
 export const RankedChoice: FunctionComponent<Props> = ({
@@ -20,7 +21,7 @@ export const RankedChoice: FunctionComponent<Props> = ({
   option,
   winner = false,
   breakdown,
-  viewBreakdown = false,
+  breakdownType = "nl",
 }) => {
   
 
@@ -36,9 +37,10 @@ export const RankedChoice: FunctionComponent<Props> = ({
         container
         xs={9}
       >
-        {breakdown && viewBreakdown ? (
-          <Breakdown {...breakdown} style={{  }} />
-        ) : (
+        {breakdown && breakdownType === "visual" ? (
+          <VisualBreakdown {...breakdown} />
+        ) : breakdown && breakdownType === "nl" ?
+        (
           <Grid item xs={12}>
             <Typography
               variant="body1"
@@ -48,9 +50,10 @@ export const RankedChoice: FunctionComponent<Props> = ({
               {option.name}
               {winner && <FavoriteIcon color="error" />}
             </Typography>
+            <NLBreakdown {...breakdown} />
             
           </Grid>
-        )}
+        ): (<></>)}
         
       </Grid>
       

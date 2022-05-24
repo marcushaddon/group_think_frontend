@@ -1,4 +1,5 @@
 import { Choice, Option, Ranking } from "../models";
+import { consensus } from "./consensus";
 
 class Counter {
   private _counts: { [key: string | number]: number };
@@ -74,7 +75,6 @@ export const choiceBreakdowns = (rankings: Ranking[], result: Choice[]): ChoiceR
     const total = placesForOption.reduce((acc, curr) => acc + curr);
     const normalizedPlaces = placesForOption.map(p => p / total);
 
-    const result = resultMap[option];
     const {
       explicitWins,
       implicitWins,
@@ -82,17 +82,22 @@ export const choiceBreakdowns = (rankings: Ranking[], result: Choice[]): ChoiceR
       implicitLosses,
       positiveTies,
       negativeTies
-    } = result.choiceTypes;
+    } = resultMap[option].choiceTypes;
+
+    const wins = (explicitWins + positiveTies + implicitWins);
+    const losses = (explicitLosses + negativeTies + implicitLosses);
     
     report[option] = {
       placements: normalizedPlaces,
-      consensus: 0, // TODO: write trig consensus func
+      consensus: consensus(placesForOption), // TODO: write trig consensus func
       winExplicitness:
+        wins === 0 ? 0 :
         (explicitWins + positiveTies) /
-        (explicitWins + positiveTies + implicitWins),
+        wins,
       lossExplicitness:
+        losses === 0 ? 0 :
         (explicitLosses + negativeTies) /
-        (explicitLosses + negativeTies + implicitLosses),
+        losses,
     };
   }
 

@@ -1,9 +1,8 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Alert, AlertTitle, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import groupthink from "../../client/groupthink";
-import { Choice, Poll, Ranking } from "../../models";
+import { Poll, Ranking } from "../../models";
 import { Participant } from "../../components/participant";
 import { RankedChoice } from "../../components/ranked-choice";
 import { choiceBreakdowns, ChoiceReport } from "../../stats";
@@ -18,7 +17,7 @@ export const PollRoute: FunctionComponent = () => {
 
   const [poll, setPoll] = useState<Poll | null>(null);
   const [ranking, setRanking] = useState<RankingDisplay | null>(null);
-  const [viewBreakdown, setViewBreakdown] = useState(false);
+  const [breakdownType, setBreakdownType] = useState<"nl" | "visual">("nl");
 
   useEffect(() => {
     setParticipantId(searchParams.get("participantId"));
@@ -137,10 +136,10 @@ export const PollRoute: FunctionComponent = () => {
       )}
 
       <Button
-        variant={viewBreakdown ? "outlined" : "contained"}
-        onClick={() => setViewBreakdown(!viewBreakdown)}
+        variant={breakdownType === "visual" ? "outlined" : "contained"}
+        onClick={() => breakdownType === "nl" ? setBreakdownType("visual") : setBreakdownType("nl")}
       >
-        {viewBreakdown ? "Hide breakdown" : "Show breakdown"}
+        {breakdownType === "nl" ? "Visual breakdown" : "Text breakdown"}
       </Button>
 
       {choices.map((ch, i) => (
@@ -150,7 +149,7 @@ export const PollRoute: FunctionComponent = () => {
           choice={ch}
           winner={i === 0}
           breakdown={breakdowns?.[ch.optionId]}
-          viewBreakdown={viewBreakdown}
+          breakdownType={breakdownType}
         />
       ))}
     </Grid>

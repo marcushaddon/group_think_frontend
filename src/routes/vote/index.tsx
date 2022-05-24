@@ -25,9 +25,11 @@ export interface MatchupResult {
   winnerId?: string;
 }
 
-export type ChoiceMap = { [idAwardKey: string]: number };
-
 const matchupKey = (a: Option, b: Option): string => [a.id, b.id].sort().join("_");
+
+const memoMap = new Map<string, string>();
+
+export type ChoiceMap = { [idAwardKey: string]: number };
 
 export const VoteRoute: FunctionComponent = () => {
   const params = useParams();
@@ -93,7 +95,20 @@ export const VoteRoute: FunctionComponent = () => {
     // Record sentiment
     setAwardMap(updatedAwardMap);
 
-    const stepResult = sorter!.next(res.winnerId);
+    let stepResult = sorter!.next(res.winnerId);
+
+    while (!stepResult.done) {
+      const muKey = matchupKey(stepResult.value.choiceA, stepResult.value.choiceB);
+      const redundant = memoMap.has(muKey);
+      if (!redundant) {
+        break;
+      }
+      console.log("skipping duplicate matchup!");
+
+      const prevResult = memoMap.get(muKey); // BOOKMARK: might be undefined if previously tie, need to explicitly check if has it, also need to set it
+
+      stepResult = sorter!.next(prevResult);
+    }
 
     if (stepResult.done) {
       const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
@@ -101,6 +116,8 @@ export const VoteRoute: FunctionComponent = () => {
 
       return;
     }
+
+    
 
     // new matchup and not done, so set next matchup
     setOptionA(stepResult.value.choiceA);

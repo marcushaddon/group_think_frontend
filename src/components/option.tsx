@@ -24,7 +24,6 @@ export const Option: FunctionComponent<OptionProps> = ({
       <Card
         component={Paper}
         elevation={3}
-        variant="outlined"
       >
         <CardMedia
           component="img"

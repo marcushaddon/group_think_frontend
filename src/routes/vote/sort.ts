@@ -17,7 +17,7 @@ export function* insertIdx(
   opt: Option,
   opts: Option[],
   low = 0,
-  high = opts.length -1
+  high = opts.length -1,
 ): Generator<SearchStepResult, InsertionIdx, WinnerId> {
   if (opts.length === 0) {
     return 0;
