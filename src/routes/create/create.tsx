@@ -1,9 +1,10 @@
-import { Typography } from '@mui/material';
-import React, { ReactNode, useCallback, useState } from 'react';
+import { Alert, Typography } from '@mui/material';
+import React, { useCallback, useState } from 'react';
 import { GoogleSearch } from "./google-search";
 import { PlacesSearch } from "./places-search";
 import { PollInfo, Info } from "./poll-info";
 import { Participants } from "./participants";
+import { SelectSearchType } from "./search-type";
 import { PendingOption, PendingParticipant, PendingPoll } from "../../models";
 import groupthink from '../../client/groupthink';
 import { useNavigate } from 'react-router-dom';
@@ -17,9 +18,15 @@ export enum Step {
 
 const STEPS = [Step.SEARCH_TYPE, Step.OPTIONS, Step.POLL_INFO, Step.PARTICIPANTS];
 
+export enum SearchType {
+  PLACES,
+  GOOGLE,
+}
+
 export function CreateRoute() {
   const navigate = useNavigate();
   const [step, setStep] = useState(Step.SEARCH_TYPE);
+  const [searchType, setSearchType] = useState<SearchType>();
   const [options, setOptions] = useState<PendingOption[]>([]);
   const [info, setInfo] = useState<Info | null>(null);
   const [participants, setParticipants] = useState<PendingParticipant[]>([]);
@@ -51,23 +58,18 @@ export function CreateRoute() {
     setOptions([...options, opt]);
   }, [options]);
 
-  let component: ReactNode;
-  switch (step) {
-    case Step.SEARCH_TYPE:
-      component = <div>TODO: choose search type</div>;
-      break;
-    case Step.OPTIONS:
-      component = <
-  }
+  const optionStep = searchType === SearchType.GOOGLE ?
+    <GoogleSearch onSelectOption={opt => onSelectOption(opt)} onComplete={next} /> :
+    searchType === SearchType.PLACES ? <PlacesSearch onSelectOption={opt => onSelectOption(opt)} onComplete={next} /> :
+    <Alert color="error">ERROR: unknown searchtype: {searchType}</Alert>;
 
   return (
     <div>
       <Typography variant="h2">
         {options.length + " options selected"}
       </Typography>
-      {step === Step.OPTONS && (
-        <GoogleSearch onSelectOption={opt => onSelectOption(opt)} onComplete={next} />
-      )}
+      {step === Step.SEARCH_TYPE && <SelectSearchType onSelectSearchType={st => { setSearchType(st); next(); }} />}
+      {step === Step.OPTIONS && optionStep}
       {step === Step.POLL_INFO && <PollInfo onSubmit={pollInfo => { setInfo(pollInfo); next(); } }/>}
       {step === Step.PARTICIPANTS &&
         <Participants

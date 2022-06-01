@@ -20,7 +20,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<CreateRoute />} />
-          <Route path="/create/places" element={<PlacesSearch />} />
           <Route path="/:pollId" element={<PollRoute />} />
           <Route path="/vote/:pollId" element={<VoteRoute />} />
         </Routes>

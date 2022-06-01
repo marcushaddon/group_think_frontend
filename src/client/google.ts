@@ -8,11 +8,12 @@ const cleanTitle = (unclean: string): string => {
   return parts[0];
 }
 
-const itemToOption = (item: gt.Item): PendingOption => ({
+const itemToOption = (item: gt.Item): PendingOption<gt.Item> => ({
   name: cleanTitle(item.title),
   uri: item.link,
   description: item.snippet,
   img: item.pagemap?.cse_image?.[0]?.src, // TODO: Default
+  original: item,
 })
 
 export class GoogleSearchClient {

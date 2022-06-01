@@ -14,7 +14,9 @@ export interface Option {
   infoItems?: InfoItem[]
 }
 
-export type PendingOption = Omit<Option, "id">;
+export type PendingOption<T = undefined> = Omit<Option, "id"> & {
+  original: T;
+};
 
 export enum VoteStatus {
   // TODO: get from backend

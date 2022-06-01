@@ -35,7 +35,7 @@ class PlacesApi {
     this._service = service;
   }
 
-  async search(query: PlacesQuery): Promise<PendingOption[]> {
+  async search(query: PlacesQuery): Promise<PendingOption<google.maps.places.PlaceResult>[]> {
     return new Promise((res, rej) => {
       this._service.nearbySearch({
         type: query.type,
@@ -53,20 +53,37 @@ class PlacesApi {
 
         const mapped = results?.map(place => placeToOption(place)) || [];
 
-        console.log({ results, mapped });
-
         res(mapped);
       })
     });
   }
+
+  async getDetails(placeId: string): Promise<PendingOption<google.maps.places.PlaceResult>> {
+    const details: google.maps.places.PlaceResult = await new Promise((res, rej) => {
+      this._service.getDetails({
+        placeId,
+        fields: ['rating', 'price_level', 'user_ratings_total', 'website']
+      }, (response, status) => {
+        if (status !== google.maps.places.PlacesServiceStatus.OK) {
+          return rej(status);
+        }
+
+        res(response as google.maps.places.PlaceResult);
+      });
+    });
+
+    return placeToOption(details);
+
+  }
 }
 
-const placeToOption = (place: google.maps.places.PlaceResult): PendingOption => ({
+const placeToOption = (place: google.maps.places.PlaceResult): PendingOption<google.maps.places.PlaceResult> => ({
   name: place.name || "NAME NOT FOUND",
-  description: "TODO",
-  uri: place.url || "TODO",
-  img: getImg(place.photos) || place.icon || "TODO: data url for placeholder",
-  infoItems: mapInfoItems(place)
+  description: "TODO: place description",
+  uri: place.website || "TODO: get uri",
+  img: getImg(place.photos) || "TODO: data url for placeholder",
+  infoItems: mapInfoItems(place),
+  original: place,
 });
 
 const getImg = (options: google.maps.places.PlacePhoto[] | undefined) => {
@@ -95,10 +112,33 @@ const mapInfoItems = (place: google.maps.places.PlaceResult): InfoItem[] => {
         icon: "clock"
       });
     }
-  } else {
+  }
+
+  if (place.user_ratings_total) {
     items.push({
-      text: "Hours not available",
-      icon: "remove"
+      text: `${place.user_ratings_total} total ratings`,
+      icon: "starOutline"
+    });
+  }
+
+  if (place.rating) {
+    items.push({
+      text: `${place.rating} avg rating`, 
+      icon: "star",
+    });
+  }
+
+  if (place.price_level) {
+    items.push({
+      text: `price level: ${place.price_level}`,
+      icon: "money",
+    });
+  }
+
+  if (place.website) {
+    items.push({
+      text: place.website,
+      icon: "link"
     })
   }
 

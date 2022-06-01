@@ -11,10 +11,10 @@ import {
   CardMedia,
   Icon
 } from "@mui/material";
-import { PendingOption as OptionProps } from "../models";
+import { Option as OptionProps, PendingOption as PendingOptionProps } from "../models";
 import { DynamicIcon } from "./dynamic-icon";
 
-export const Option: FunctionComponent<OptionProps> = ({
+export const Option: FunctionComponent<PendingOptionProps<any> | OptionProps> = ({
   name,
   img,
   uri,
@@ -44,10 +44,11 @@ export const Option: FunctionComponent<OptionProps> = ({
             {infoItems && infoItems.length > 0 && (
               <Grid container item xs={12}>
                 {infoItems.map(ii => (
-                  <>
-                    <DynamicIcon name={ii.icon} /> {ii.text}
-                  </>
-                  
+                  <Grid xs={6}>
+                    <Typography variant="body2">
+                      <DynamicIcon name={ii.icon} /> {ii.text}
+                    </Typography>
+                  </Grid>
                 ))}
               </Grid>
             )}
