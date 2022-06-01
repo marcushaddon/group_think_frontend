@@ -1,0 +1,1127 @@
+[
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5172386,
+        "lng": -122.6751889
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51859892989272,
+          "lng": -122.6737251201073
+        },
+        "southwest": {
+          "lat": 45.51589927010728,
+          "lng": -122.6764247798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "MOD Pizza",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 6936,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/102757969614527662758\">Shawn McElroy</a>"
+        ],
+        "photo_reference": "Aap_uEAiJ32r2ziUn6kTFIJ2NFImObkmDqeXSPNCy8dxZTijVfrDhDidMIWktaV7N_7T-wqX6clRZ4UPA_OkU0N3bZSvc4ZWFA4WgeJV0eQ0uu27H2zNyptcY7ZOKqca4AlDAVW9yaOzQ7QXYQ0yJ-WRkPAz4ZcluXQYtuOp8qMDgfuWO9Y",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipNa6iEdEqNaNzAh4fHfCVG0jbixJeMAoZwOOWQ=k"
+        },
+        "width": 9248
+      }
+    ],
+    "place_id": "ChIJ_1_Yew8KlVQRu_YFZLBY1HM",
+    "plus_code": {
+      "compound_code": "G88F+VW Portland, Oregon",
+      "global_code": "84QVG88F+VW"
+    },
+    "price_level": 1,
+    "rating": 4.5,
+    "reference": "ChIJ_1_Yew8KlVQRu_YFZLBY1HM",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 1079,
+    "vicinity": "204 SW Yamhill St, Portland"
+  },
+  {
+    "business_status": "CLOSED_TEMPORARILY",
+    "geometry": {
+      "location": {
+        "lat": 45.5135061,
+        "lng": -122.6773209
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51484462989271,
+          "lng": -122.6758778701073
+        },
+        "southwest": {
+          "lat": 45.51214497010727,
+          "lng": -122.6785775298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Chiosco Pizza Window",
+    "permanently_closed": true,
+    "photos": [
+      {
+        "height": 4608,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/101142490101581695825\">Mike Fulton</a>"
+        ],
+        "photo_reference": "Aap_uECJQKfmlKWZmpXiTwWOiBw5gcQRrCYHrHg4LQKHpLNjURlWQ5-eBZsU84FsviGDTGYUYkp3oi6n9PZ-Su137bzYwucKVslKo1TyXigRUzXIIsXc5z5TOFWiYGGHzuzOINX9hPk-zl3_iS55ZORCzI08Rb7_LKJd40CHOg4p1cVlpVgt",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipOM1LFR0F_Yv4hLKgmeLEL2_Qgb1K1ly6BQr84x=k"
+        },
+        "width": 3456
+      }
+    ],
+    "place_id": "ChIJ6Q4vxxEKlVQRr1dpUUlpKrk",
+    "plus_code": {
+      "compound_code": "G87F+C3 Portland, Oregon",
+      "global_code": "84QVG87F+C3"
+    },
+    "rating": 3.8,
+    "reference": "ChIJ6Q4vxxEKlVQRr1dpUUlpKrk",
+    "scope": "GOOGLE",
+    "types": [
+      "meal_takeaway",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 29,
+    "vicinity": "1355 SW 2nd Ave, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5121623,
+        "lng": -122.6819312
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51360727989272,
+          "lng": -122.6805946201073
+        },
+        "southwest": {
+          "lat": 45.51090762010728,
+          "lng": -122.6832942798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Pizza Jerk - SW",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 960,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/117399990615949081702\">A Google User</a>"
+        ],
+        "photo_reference": "Aap_uEDBoNyZDGPtUB2RV7ixA8-FSxkwRlobJoti15ROf4bsD8h2wpwDC5Lr5ivnLO7v6spj0G-h6a3ajGOWvYF5Rl3GtENGM54Duj-k7EHDltneK8r-hkGBG8ohLzIZP3zh_L0ixnQCz1sK66fCN6TuakPSV4IYnrkgtii5hFTG3QAtP0dx",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipMO85NtPX-slUL-2FQwlmBWAzPg62jtwGd-0foN=k"
+        },
+        "width": 942
+      }
+    ],
+    "place_id": "ChIJ13nC1bELlVQRriFe7jXLIVg",
+    "plus_code": {
+      "compound_code": "G869+V6 Portland, Oregon",
+      "global_code": "84QVG869+V6"
+    },
+    "price_level": 1,
+    "rating": 4,
+    "reference": "ChIJ13nC1bELlVQRriFe7jXLIVg",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 32,
+    "vicinity": "1708 SW 6th Ave, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.511379,
+        "lng": -122.680671
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51282657989272,
+          "lng": -122.6797068701073
+        },
+        "southwest": {
+          "lat": 45.51012692010727,
+          "lng": -122.6824065298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Schmizza Pub & Grub",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 1960,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107750781493330531401\">Ricardo Diaz</a>"
+        ],
+        "photo_reference": "Aap_uEBEOuugIpYPaIvtg3YQ0dJNoMS5Zm5jmaXFVcubeBWhLzpTV6LJPzleJ7nWF_fe2LbjiF8adkpsKK_J0xEZIhfUzhkCx57ev5YubO4Pz_yvFIZBO2i-8NGhEaqB4wx4Ij-rQc3dPDiDjzJCglByoqsFNB6wXwUIsH4uD6Yw9xvMLTfi",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipMFmdTg-07lr8iIVLbjE1YI7BrWrtHdRjX3buxy=k"
+        },
+        "width": 4032
+      }
+    ],
+    "place_id": "ChIJIZA0RREKlVQRx7-hTigLST8",
+    "plus_code": {
+      "compound_code": "G869+HP Portland, Oregon",
+      "global_code": "84QVG869+HP"
+    },
+    "price_level": 1,
+    "rating": 4.3,
+    "reference": "ChIJIZA0RREKlVQRx7-hTigLST8",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 658,
+    "vicinity": "415 SW Montgomery St, Portland"
+  },
+  {
+    "business_status": "CLOSED_TEMPORARILY",
+    "geometry": {
+      "location": {
+        "lat": 45.5214294,
+        "lng": -122.6722094
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52283972989272,
+          "lng": -122.6710834701073
+        },
+        "southwest": {
+          "lat": 45.52014007010727,
+          "lng": -122.6737831298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Checkerboard Pizza",
+    "permanently_closed": true,
+    "photos": [
+      {
+        "height": 667,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/106548658807509927437\">A Google User</a>"
+        ],
+        "photo_reference": "Aap_uEDMXnDELf4CqMdWQg8eNNDTURnmOUv8HTt4bXcabczXkSeGmIbg8tbgacbHyuor_YcebK5CEkHG_lXZWby1JuM12Dge9vHNwhO8J0ke318ECRaSZ3A8cb0u3fbgTaV0EGW2MQlMmOQlfKKKYddFscpIeFWDvk-_tOnpRWzHRQKblXY",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipMcZGlVhE7zkO-i_ZPLOQD7WRkD3mJ63BbkYyA=k"
+        },
+        "width": 1000
+      }
+    ],
+    "place_id": "ChIJHShQ_gYKlVQR4UY9sIsMSsQ",
+    "plus_code": {
+      "compound_code": "G8CH+H4 Portland, Oregon",
+      "global_code": "84QVG8CH+H4"
+    },
+    "price_level": 1,
+    "rating": 4.3,
+    "reference": "ChIJHShQ_gYKlVQR4UY9sIsMSsQ",
+    "scope": "GOOGLE",
+    "types": [
+      "cafe",
+      "bakery",
+      "meal_takeaway",
+      "store",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 79,
+    "vicinity": "126 SW 2nd Ave, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.523378,
+        "lng": -122.6836954
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52485537989273,
+          "lng": -122.6824252201073
+        },
+        "southwest": {
+          "lat": 45.52215572010729,
+          "lng": -122.6851248798928
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Pizza",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 3072,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/113588353683839475501\">Yuri Voynalovich</a>"
+        ],
+        "photo_reference": "Aap_uEAGOz5hcBc9lFKqtk8-S4awVEinEulby_XB75dZOYox8ELgLGcCQ-MiQN6y_MExG8PX-eszArZQM6_3WavCHw_nei2LOBw18IHJ1nvmXHCCk8gA4RZN4onsVNTv9ZDIcRQK7ZvdiJvNqOZ13atbzAo44mxGy7S1yIpI2TyChFzdSDuh",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipMX0SVb5yt-dHvNc0T7sRzOmuiJtoNsBJfN53u0=k"
+        },
+        "width": 4080
+      }
+    ],
+    "place_id": "ChIJP1oMk6ELlVQR_GkiNMhYveM",
+    "plus_code": {
+      "compound_code": "G8F8+9G Portland, Oregon",
+      "global_code": "84QVG8F8+9G"
+    },
+    "rating": 0,
+    "reference": "ChIJP1oMk6ELlVQR_GkiNMhYveM",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 0,
+    "vicinity": "1210 NW Couch St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5229611,
+        "lng": -122.6736386
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52430907989272,
+          "lng": -122.6721517201073
+        },
+        "southwest": {
+          "lat": 45.52160942010728,
+          "lng": -122.6748513798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+    "icon_background_color": "#7B9EB0",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+    "name": "PizzaSlut",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 4032,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/104783356376622335549\">A Google User</a>"
+        ],
+        "photo_reference": "Aap_uECmbM735YFjJUAghrQ32C1Lxcj9U7stkKWDgHI6BVdMIiRp43u9BirVhGSAO8Kkooj7MkwrS2avCCZphuiRAUr1TtsgNbDf7vJD1PBEkjvx0KFwq40ULI1_OsWykHdFb2u2L7cM1HuFrola9dwzE8ZFeDBrfOlfSvvEh9RBTPGOc1p0",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipN3lL1NyJFcgJw9QYPe34_6ACN9hFa6iqmr6Vvo=k"
+        },
+        "width": 2268
+      }
+    ],
+    "place_id": "ChIJ-RVz324LlVQRov5mPIAsETc",
+    "plus_code": {
+      "compound_code": "G8FG+5G Portland, Oregon",
+      "global_code": "84QVG8FG+5G"
+    },
+    "rating": 4.4,
+    "reference": "ChIJ-RVz324LlVQRov5mPIAsETc",
+    "scope": "GOOGLE",
+    "types": [
+      "meal_delivery",
+      "meal_takeaway",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 71,
+    "vicinity": "1 SW 3rd Ave, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5228369,
+        "lng": -122.6808438
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52415347989272,
+          "lng": -122.6795445701073
+        },
+        "southwest": {
+          "lat": 45.52145382010728,
+          "lng": -122.6822442298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Sizzle Pie Downtown",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 1860,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/109913416547661552196\">Aurora Allshouse</a>"
+        ],
+        "photo_reference": "Aap_uEBSrvssyqTDuaCKux8QiNpEcxWZR1pXLNvqSAkoSUnbDdsiw10JMFOMCxex3nu7qt2EcV_iGBwj-eldmMnCe9y1Qmwzf1VuU3AWFGxmPnJjCNrZdJGuEryeCsKxqkIj-Rgs8VPAvuJOpB3FzI5gfBpGKkr8SZnXVXpMKjjP5G9-NFui",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipNA9dfjU6UFaBMtTiw6jjW2wC4xy-FecICo4wqz=k"
+        },
+        "width": 2592
+      }
+    ],
+    "place_id": "ChIJL6cxWK-glVQRmSctfDP9rCQ",
+    "plus_code": {
+      "compound_code": "G8F9+4M Portland, Oregon",
+      "global_code": "84QVG8F9+4M"
+    },
+    "price_level": 1,
+    "rating": 4.3,
+    "reference": "ChIJL6cxWK-glVQRmSctfDP9rCQ",
+    "scope": "GOOGLE",
+    "types": [
+      "meal_takeaway",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 2782,
+    "vicinity": "926 W Burnside St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5095709,
+        "lng": -122.683421
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51093007989273,
+          "lng": -122.6819526701073
+        },
+        "southwest": {
+          "lat": 45.50823042010728,
+          "lng": -122.6846523298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "LoveVerona Pizza&Pasta DownTown",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 1080,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/113715130786150961744\">Verona Pizza and Pasta</a>"
+        ],
+        "photo_reference": "Aap_uECwfGaoeh0is6WwqawpxTmarxurCIsppWzj0YhHil_1h5kgkbURcC5fxEGQ8nAVsEulvv_WSRpesZydPKoL36m-43o9hqoCQS7L1dPdjw0BwDRuzYZFTT1sHMdhvAKmOB80lKCTHAm8pjX6Vv1fAh2kPitwQ03a0ZKdrGq-EXsPaI0Y",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipPD5dSqVRyia7DDKue29T3Xj29Ma18hfbP6qLw-=k"
+        },
+        "width": 1080
+      }
+    ],
+    "place_id": "ChIJ2UJrfgQKlVQR6VB1XMNn328",
+    "plus_code": {
+      "compound_code": "G858+RJ Portland, Oregon",
+      "global_code": "84QVG858+RJ"
+    },
+    "price_level": 2,
+    "rating": 4.2,
+    "reference": "ChIJ2UJrfgQKlVQR6VB1XMNn328",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 263,
+    "vicinity": "540 SW College St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5273198,
+        "lng": -122.6845354
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52860392989272,
+          "lng": -122.6831342201073
+        },
+        "southwest": {
+          "lat": 45.52590427010728,
+          "lng": -122.6858338798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "The Star Portland",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 1782,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/115716792205081874550\">A Google User</a>"
+        ],
+        "photo_reference": "Aap_uECMRn1dE8CSJcrRKk7QluPqBiPYTDd9zK1HIkEV9pezD8N9qILdcZ5A5j7Ngz8eWwFEPDuGieRLWxBNmHqe5QMMnRWJDaNMFPhYo2h_-QWRmWc3Uzmt2w0Um5hGP8pO6mqmD4wyGVckJBPozdDk5l-j5DcRbQoySz9KNbKfuFsSBVHR",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipONsL27398bzcXwIo93HZa20jcwv2yhTAIVt1uo=k"
+        },
+        "width": 2760
+      }
+    ],
+    "place_id": "ChIJad-aqIgJlVQR1LY7Sc5lQD4",
+    "plus_code": {
+      "compound_code": "G8G8+W5 Portland, Oregon",
+      "global_code": "84QVG8G8+W5"
+    },
+    "price_level": 2,
+    "rating": 4.4,
+    "reference": "ChIJad-aqIgJlVQR1LY7Sc5lQD4",
+    "scope": "GOOGLE",
+    "types": [
+      "bar",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 489,
+    "vicinity": "1309 NW Hoyt St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5174303,
+        "lng": -122.659143
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51868037989272,
+          "lng": -122.6578356201073
+        },
+        "southwest": {
+          "lat": 45.51598072010728,
+          "lng": -122.6605352798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Pizza Jerk - SE",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 720,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/111376522731179513453\">Alvina Chan</a>"
+        ],
+        "photo_reference": "Aap_uEAXqLjUV4d_78s1U3G3Re5YjQTLgmCH826aI3eujEUikqkrU5ZL58M6ovH4Va2ZZU7dAUdE-u0E0v4uB_drZRfQNbcWZHuALZIXv9I7REEMqSJxWh-CQYQhy9RoQM_haFVTdNTunahi2XbJnlDU7Ih3-7dLz1ZU3pEQotdKTcRSOO4n",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipOg4rI45dzzq7tdvMvHE2VH6g5dHhJQEA1_RFYt=k"
+        },
+        "width": 1280
+      }
+    ],
+    "place_id": "ChIJycG5OBqhlVQR95O8WYKh44E",
+    "plus_code": {
+      "compound_code": "G88R+X8 Portland, Oregon",
+      "global_code": "84QVG88R+X8"
+    },
+    "price_level": 1,
+    "rating": 4.3,
+    "reference": "ChIJycG5OBqhlVQR95O8WYKh44E",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 147,
+    "vicinity": "621 SE Morrison St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5177653,
+        "lng": -122.6922762
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51917417989272,
+          "lng": -122.6909353201073
+        },
+        "southwest": {
+          "lat": 45.51647452010728,
+          "lng": -122.6936349798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Bellagios Pizza",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 1010,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/114263802307250197423\">Bellagios Pizza</a>"
+        ],
+        "photo_reference": "Aap_uECZTHe7xDghCJ6_oGvg4KFgPTOEyXpm4ojfdliLeu6YrVD5JgJKUOkzNVQYeJfsAdQena2VkBLfQcgVrBrZxdDnBady2g-ytg-vo1wm1Y0xOE0NGsi30B4bh7RtCFzs3XS3pBA8iwRThLRd39Lsyft_TaOwcNDWXX1R_BuFA7WNwP3F",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipONiBaTHgUgR719D2D2PeTeped_gdsR9Frzci0O=k"
+        },
+        "width": 1800
+      }
+    ],
+    "place_id": "ChIJO3HftR4KlVQRnXRYAS6tvuw",
+    "plus_code": {
+      "compound_code": "G895+43 Portland, Oregon",
+      "global_code": "84QVG895+43"
+    },
+    "price_level": 2,
+    "rating": 3.9,
+    "reference": "ChIJO3HftR4KlVQRnXRYAS6tvuw",
+    "scope": "GOOGLE",
+    "types": [
+      "meal_delivery",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 323,
+    "vicinity": "1742 SW Jefferson St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5167806,
+        "lng": -122.6575205
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51816607989272,
+          "lng": -122.6557584201072
+        },
+        "southwest": {
+          "lat": 45.51546642010728,
+          "lng": -122.6584580798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Sparky's Pizza: Belmont",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 900,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/102951642962671179478\">A Google User</a>"
+        ],
+        "photo_reference": "Aap_uED9Ol-Tpvizf9A8rpt2icLa18XrmxG4yZNjVW5PTsHqLmtdkClE7sqxdERk05PkBmAwuucHZTiieOxhzn6crH4PiZZqk12eO4TDVAJ58U_xeObmfwUhgvFjqRZxmI4jN9X-SIb6Hf6fqLk3zRcWvI-D3yQsdp7HqL0d3NFktcGuPRrC",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipNfUsWLHqKnlChSHgFZ3blBqb0eCKssKMK4Cz8f=k"
+        },
+        "width": 1500
+      }
+    ],
+    "place_id": "ChIJaTlb4aCglVQRxaDo86DZM5o",
+    "plus_code": {
+      "compound_code": "G88R+PX Portland, Oregon",
+      "global_code": "84QVG88R+PX"
+    },
+    "price_level": 1,
+    "rating": 4.3,
+    "reference": "ChIJaTlb4aCglVQRxaDo86DZM5o",
+    "scope": "GOOGLE",
+    "types": [
+      "meal_delivery",
+      "meal_takeaway",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 446,
+    "vicinity": "839 SE Belmont St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5273554,
+        "lng": -122.698353
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52867777989272,
+          "lng": -122.6970800201073
+        },
+        "southwest": {
+          "lat": 45.52597812010728,
+          "lng": -122.6997796798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Escape From New York Pizza",
+    "opening_hours": {
+      "open_now": false
+    },
+    "photos": [
+      {
+        "height": 3036,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/115411802369677357595\">Shaheed Abdulhaqq</a>"
+        ],
+        "photo_reference": "Aap_uEBqeuq3pFlAHBtB5GqypnOENFREW5zoaCN6UBscwj15kWw3qGmF_nlBMO4rcaKXbHG-w-kuRVIGs__mu3wTGDBgBUczaoFBon_aVE0RLzX4yPHwoxn5ptsfV-gPdTY9-ioBIBJzXSngLOQk4G1rqTg4B_PmrBabcWCEGC13P7CAZiPi",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipOnvf6_jeBPLNW3B96LwV4WdC3o5swGLCAzlhei=k"
+        },
+        "width": 4048
+      }
+    ],
+    "place_id": "ChIJUSkZH_EJlVQRH6F32ZlTYzU",
+    "plus_code": {
+      "compound_code": "G8G2+WM Portland, Oregon",
+      "global_code": "84QVG8G2+WM"
+    },
+    "price_level": 1,
+    "rating": 4.5,
+    "reference": "ChIJUSkZH_EJlVQRH6F32ZlTYzU",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 1324,
+    "vicinity": "622 NW 23rd Ave, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5319807,
+        "lng": -122.6816801
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.53334212989272,
+          "lng": -122.6802071201073
+        },
+        "southwest": {
+          "lat": 45.53064247010728,
+          "lng": -122.6829067798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Pizzicato Pizza",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 3024,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107505825869445523168\">Jason O&#39;Connell</a>"
+        ],
+        "photo_reference": "Aap_uEBCSUGxpjMeJPxQaNxiNjmTuD5CQP-IYrNWR7SUwDkcX8nBQ6wNUlmt6TiHP_AVriMpa6iFf_DdrzxszExPvf4NGIsltzkJf6PT5XVLAyOy2Swgn8PP6iEA841StbAwtBSctunJkRJtNepMTTR3GmEHjfaK5kwc2klI_yG0WoMTAodz",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipPJDwJe0DVNp-8wraFJXDAPcm1-duzkWTX2Pgcx=k"
+        },
+        "width": 4032
+      }
+    ],
+    "place_id": "ChIJv6nF-v0JlVQRuzCqOPZs5w0",
+    "plus_code": {
+      "compound_code": "G8J9+Q8 Portland, Oregon",
+      "global_code": "84QVG8J9+Q8"
+    },
+    "price_level": 2,
+    "rating": 4.3,
+    "reference": "ChIJv6nF-v0JlVQRuzCqOPZs5w0",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 198,
+    "vicinity": "1265 NW 10th Ave, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.522811,
+        "lng": -122.6590805
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52420002989272,
+          "lng": -122.6577296701073
+        },
+        "southwest": {
+          "lat": 45.52150037010728,
+          "lng": -122.6604293298928
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Sizzle Pie Central Eastside",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 3024,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/115529174181224272753\">Chau</a>"
+        ],
+        "photo_reference": "Aap_uEBjrj0b2drlB_djPV0a6VnNiNNjtZJifo4-jqqP7iGdb4cy6mCmH-F1GqvXxrHiwSIsiTfNM-LvYslAq8s3_JEd4AaWTSZWQ4-jnZgWYksj3P4k2q0ZpGjIkN9S0TK5ngXqAsWzsoy-KKub_s8agtrYlG3flTju-oE2UyVM0G_MR58m",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipMWj2FMEKlz0ClPiVviLZvTEHIiS7EUlHCsq7w2=k"
+        },
+        "width": 3024
+      }
+    ],
+    "place_id": "ChIJL6cxWK-glVQRQb0GBCQdRIU",
+    "plus_code": {
+      "compound_code": "G8FR+49 Portland, Oregon",
+      "global_code": "84QVG8FR+49"
+    },
+    "price_level": 1,
+    "rating": 4.4,
+    "reference": "ChIJL6cxWK-glVQRQb0GBCQdRIU",
+    "scope": "GOOGLE",
+    "types": [
+      "meal_delivery",
+      "bar",
+      "meal_takeaway",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 2095,
+    "vicinity": "624 E Burnside St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5349836,
+        "lng": -122.6989052
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.53634377989273,
+          "lng": -122.6975132201073
+        },
+        "southwest": {
+          "lat": 45.53364412010728,
+          "lng": -122.7002128798927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Life of Pie",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 12096,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/109927742310520189171\">A Google User</a>"
+        ],
+        "photo_reference": "Aap_uEADm9sV-1_VuvKlnWB-GB-yXCjtsD7oqiQUXj6y_YKTbC1rX99FD4qmMiH88FPYOqCZPZdEhdrsW7y5oVN--AHLT21zeNqtgvymgWcBeNTg_gm9TzhnUwbvUBQF6sQ6QBOcmT-vbV1YbQog3y5dV0ybluWjvupl8XvanoSmVl_8eRHD",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipMgW9feSGQWzJtkQfeq9uCpyOh56Rk44N_-onss=k"
+        },
+        "width": 9072
+      }
+    ],
+    "place_id": "ChIJRbnQwsMJlVQR1k1XDxvuX94",
+    "plus_code": {
+      "compound_code": "G8M2+XC Portland, Oregon",
+      "global_code": "84QVG8M2+XC"
+    },
+    "rating": 4.7,
+    "reference": "ChIJRbnQwsMJlVQR1k1XDxvuX94",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 564,
+    "vicinity": "1765 NW 23rd Ave, Portland"
+  },
+  {
+    "business_status": "CLOSED_TEMPORARILY",
+    "geometry": {
+      "location": {
+        "lat": 45.5225738,
+        "lng": -122.678694
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52394212989272,
+          "lng": -122.6773435701073
+        },
+        "southwest": {
+          "lat": 45.52124247010727,
+          "lng": -122.6800432298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Mariano's Pizza",
+    "permanently_closed": true,
+    "photos": [
+      {
+        "height": 4032,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/115994609531060155258\">Chad Henry</a>"
+        ],
+        "photo_reference": "Aap_uEAVa-8b_Qqk5h42hxdtobefFpLtNnDzm53H_kvRdhaKV6U80vtriv2klRv9TOgfondpmAfivpcr8-YXADfPQ_utgIDwiDTYIp0uyagGdDnF0oFXlsgFg7_XYR1FsDrpu8k2VcuHCYeVPOGoc15TAXmWhyMg8DwOguXP06q6a8nnsLcG",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipOYHS3CMJsongXAcjXbLUFWTIh0tkgwJhHXkVjP=k"
+        },
+        "width": 3024
+      }
+    ],
+    "place_id": "ChIJb8RECK4LlVQR9fvVHlatrxQ",
+    "plus_code": {
+      "compound_code": "G8FC+2G Portland, Oregon",
+      "global_code": "84QVG8FC+2G"
+    },
+    "rating": 5,
+    "reference": "ChIJb8RECK4LlVQR9fvVHlatrxQ",
+    "scope": "GOOGLE",
+    "types": [
+      "meal_takeaway",
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 1,
+    "vicinity": "751-799 SW Ankeny St, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.51235399999999,
+        "lng": -122.6533857
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.51363202989272,
+          "lng": -122.6520355701073
+        },
+        "southwest": {
+          "lat": 45.51093237010728,
+          "lng": -122.6547352298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Pyro Pizza",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 3464,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/106433989770145442241\">Robin Chance</a>"
+        ],
+        "photo_reference": "Aap_uECD_l-C7OaqP1OxrGjC8ftEqhR1kSjJR33Qxt72gNnL8Ml74fxhqH7VDZHI7kVxajJEHfgpTGTzwnzWaU4sdQ1EEAC7rfRNTcFFo31LMeWzKzn8EAIqH1egPbh0RSAShxo9m5YH19TS1b-5-HCWI43__mdEnsVpQ99PdtBP3Tm3jTY_",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipP3iVikcSAT_cf_I4zdNE2KnCSmScmqm8TPbeIY=k"
+        },
+        "width": 4618
+      }
+    ],
+    "place_id": "ChIJwVG1vp-glVQRopbp3Ha79Vk",
+    "plus_code": {
+      "compound_code": "G86W+WJ Portland, Oregon",
+      "global_code": "84QVG86W+WJ"
+    },
+    "price_level": 1,
+    "rating": 4.6,
+    "reference": "ChIJwVG1vp-glVQRopbp3Ha79Vk",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 215,
+    "vicinity": "1207 SE Hawthorne Blvd, Portland"
+  },
+  {
+    "business_status": "OPERATIONAL",
+    "geometry": {
+      "location": {
+        "lat": 45.5229878,
+        "lng": -122.6369926
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 45.52434852989271,
+          "lng": -122.6357768701073
+        },
+        "southwest": {
+          "lat": 45.52164887010727,
+          "lng": -122.6384765298927
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Pizzicato Pizza",
+    "opening_hours": {
+      "open_now": true
+    },
+    "photos": [
+      {
+        "height": 3024,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/115961050390549030738\">Esther Park</a>"
+        ],
+        "photo_reference": "Aap_uEDwFpZ05SzzSFSKCNIhQqP-H4h99e9uDO5i66GPqbLVJcj3ujeZrOBejFB3w2zbSI2vXzVirEGJuu6OQ_MTaDMwSDioHDXjYwOoks7fxXlmhu02wKtfmTOQoRb_y_gEJoHWJRO7b2y-iB4_gR93FURFOSmT58h-HoHqzFJgIMvJ_Ilp",
+        "raw_reference": {
+          "fife_url": "https://lh3.googleusercontent.com/p/AF1QipMY60gZ1gisX7XOIltcI_YJa5KCBZs4GO8LZ2R_=k"
+        },
+        "width": 3024
+      }
+    ],
+    "place_id": "ChIJWwkhGr-glVQRq24akjMzj6I",
+    "plus_code": {
+      "compound_code": "G9F7+56 Portland, Oregon",
+      "global_code": "84QVG9F7+56"
+    },
+    "price_level": 2,
+    "rating": 4.2,
+    "reference": "ChIJWwkhGr-glVQRq24akjMzj6I",
+    "scope": "GOOGLE",
+    "types": [
+      "restaurant",
+      "food",
+      "point_of_interest",
+      "establishment"
+    ],
+    "user_ratings_total": 117,
+    "vicinity": "2811 E Burnside St, Portland"
+  }
+]

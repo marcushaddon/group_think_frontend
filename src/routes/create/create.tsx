@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 import { GoogleSearch } from "./google-search";
+import { PlacesSearch } from "./places-search";
 import { PollInfo, Info } from "./poll-info";
 import { Participants } from "./participants";
 import { PendingOption, PendingParticipant, PendingPoll } from "../../models";
@@ -8,16 +9,17 @@ import groupthink from '../../client/groupthink';
 import { useNavigate } from 'react-router-dom';
 
 export enum Step {
-  OPTONS,
+  SEARCH_TYPE,
+  OPTIONS,
   POLL_INFO,
   PARTICIPANTS,
 }
 
-const STEPS = [Step.OPTONS, Step.POLL_INFO, Step.PARTICIPANTS];
+const STEPS = [Step.SEARCH_TYPE, Step.OPTIONS, Step.POLL_INFO, Step.PARTICIPANTS];
 
 export function CreateRoute() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(Step.OPTONS)
+  const [step, setStep] = useState(Step.SEARCH_TYPE);
   const [options, setOptions] = useState<PendingOption[]>([]);
   const [info, setInfo] = useState<Info | null>(null);
   const [participants, setParticipants] = useState<PendingParticipant[]>([]);
@@ -49,12 +51,23 @@ export function CreateRoute() {
     setOptions([...options, opt]);
   }, [options]);
 
+  let component: ReactNode;
+  switch (step) {
+    case Step.SEARCH_TYPE:
+      component = <div>TODO: choose search type</div>;
+      break;
+    case Step.OPTIONS:
+      component = <
+  }
+
   return (
     <div>
       <Typography variant="h2">
         {options.length + " options selected"}
       </Typography>
-      {step === Step.OPTONS && <GoogleSearch onSelectOption={opt => onSelectOption(opt)} onComplete={next} /> }
+      {step === Step.OPTONS && (
+        <GoogleSearch onSelectOption={opt => onSelectOption(opt)} onComplete={next} />
+      )}
       {step === Step.POLL_INFO && <PollInfo onSubmit={pollInfo => { setInfo(pollInfo); next(); } }/>}
       {step === Step.PARTICIPANTS &&
         <Participants

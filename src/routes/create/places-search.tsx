@@ -1,12 +1,10 @@
 import React, { useState, useCallback, FunctionComponent, useRef, useEffect } from "react";
-import { Button, Input, Grid } from "@mui/material";
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import { GOOGLE_API_KEY } from "../../consts";
+import { Button, Input, Grid, Alert } from "@mui/material";
 import { usePlaces } from "../../client/google-places";
 import { Option as OptionComponent } from "../../components/option";
 import { PendingOption } from "../../models";
 import { Swipe } from "../../components/swipe";
-import { GoogleMap } from "./google-map";
+import { useLocation } from "./location";
 
 export interface Props {
   onSelectOption?: (option: PendingOption) => void;
@@ -15,14 +13,26 @@ export interface Props {
 
 export const PlacesSearch: FunctionComponent<Props> = ({
   onSelectOption = console.log,
-  onComplete = console.log,
+  onComplete,
 }) => {
   const places = usePlaces();
   const PAGE_SIZE = 10;
   const [results, setResults] = useState<PendingOption[]>([]);
   const [term, setTerm] = useState("");
+  const [location, setLocation] = useLocation();
   const [offset, setOffset] = useState(0);
   const [selected, setSelected] = useState<{ [uri: string]: boolean }>({});
+
+  const getLocation = useCallback(() => {
+    try {
+      navigator
+        .geolocation
+        .getCurrentPosition(location => setLocation(location));
+    } catch (e) {
+      // TODO: display error permanently
+      alert("You must enable location services to use this app (currently).");
+    }
+  }, [setLocation]);
 
   const updateTerm = useCallback((term: string) => {
     setOffset(0);
@@ -30,13 +40,16 @@ export const PlacesSearch: FunctionComponent<Props> = ({
   }, [])
 
   const doSearch = useCallback(async (offset: number = 0) => {
-    if (!places) return;
+    if (!places || !location) return;
 
-    places.findPlaceFromQuery({
-      query: term,
-      fields: ["name", "types", "photos", "formatted_address", "business_status", "icon"]
-    }, res => console.log(res, "RESULTS"))
-  }, [term, places]);
+    const res = await places.search({
+      location: { lat: location.coords.latitude, lng: location.coords.longitude },
+      radius: 50 * 1000, // TODO: give option!
+      type: "restaurant", // TODO: give options!
+      term,
+    });
+    setResults(res);
+  }, [term, places, location]);
 
   const pageBack = useCallback(() => {
     setOffset(Math.max(0, offset - PAGE_SIZE));
@@ -53,17 +66,40 @@ export const PlacesSearch: FunctionComponent<Props> = ({
   }, [onSelectOption]);
 
   return (
-    <Grid container columns={12}>
+    <Grid
+      container
+      columns={12}
+      onTouchStart={!location ? getLocation : undefined}
+    >
       <Grid item xs={12}>
         <Input type="text" onChange={e => updateTerm(e.target.value)} />
       </Grid>
       <Grid item xs={12}>
         <Button
-          disabled={!places}
+          disabled={!places || !location}
           onClick={() => doSearch()}
         >
           Search
         </Button>
+      </Grid>
+      <Grid item xs={12}>
+        {!location && (
+          <Alert variant="outlined" color="warning">
+            Resolving location
+          </Alert>
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        {results.map(result => (
+          <Swipe
+            visible={true}
+            refreshKey={result.uri}
+            onRight={() => selectOption(result)}
+            onLeft={() => alert("TODO: disable left swiping")}
+          >
+            <OptionComponent {...result} />
+          </Swipe>
+        ))}
       </Grid>
     </Grid>
   );

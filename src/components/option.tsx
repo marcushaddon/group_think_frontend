@@ -8,15 +8,18 @@ import {
   Paper,
   CardContent,
   CardActions,
-  CardMedia
+  CardMedia,
+  Icon
 } from "@mui/material";
 import { PendingOption as OptionProps } from "../models";
+import { DynamicIcon } from "./dynamic-icon";
 
 export const Option: FunctionComponent<OptionProps> = ({
   name,
   img,
   uri,
   description,
+  infoItems
 }) => {
 
   return (
@@ -31,10 +34,24 @@ export const Option: FunctionComponent<OptionProps> = ({
           height="140"
         />
         <CardContent>
-          <Typography variant="h5" component="div">{name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {description}
-          </Typography>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="h5" component="div">{name}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {description}
+              </Typography>
+            </Grid>
+            {infoItems && infoItems.length > 0 && (
+              <Grid container item xs={12}>
+                {infoItems.map(ii => (
+                  <>
+                    <DynamicIcon name={ii.icon} /> {ii.text}
+                  </>
+                  
+                ))}
+              </Grid>
+            )}
+          </Grid>
         </CardContent>
         <CardActions>
           <Button size="small" href={uri} target="_blank">

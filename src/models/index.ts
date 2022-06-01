@@ -1,9 +1,17 @@
+import { IconName } from "../components/dynamic-icon";
+
+export interface InfoItem {
+  text: string;
+  icon: IconName;
+}
+
 export interface Option {
   id: string;
   name: string;
   description: string;
   uri: string;
   img: string;
+  infoItems?: InfoItem[]
 }
 
 export type PendingOption = Omit<Option, "id">;
