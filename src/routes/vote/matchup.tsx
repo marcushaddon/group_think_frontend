@@ -1,25 +1,25 @@
 import { Grid, Snackbar, Typography } from "@mui/material";
 import React, { FunctionComponent, useCallback, useState } from "react";
 import { MatchupResult, OptionAward } from ".";
-import { Option } from "../../components/option";
+import { Option } from "../../components/option/option";
 import { Swipe } from "../../components/swipe";
 import { Option as OptionModel } from "../../models";
 
-export interface Props {
-  options: OptionModel[];
-  optionA: OptionModel;
-  optionB: OptionModel;
+export interface Props<T> {
+  options: OptionModel<T>[];
+  optionA: OptionModel<T>;
+  optionB: OptionModel<T>;
   onResult: (res: MatchupResult) => void;
   style?: React.CSSProperties;
 }
 
-export const Matchup: FunctionComponent<Props> = ({
+export const Matchup = <T extends object>({
   options,
   optionA,
   optionB,
   onResult,
   style,
-}) => {
+}: Props<T>) => {
   const [snackMessage, setSnackMessage] = useState<string | null>(null);
   const chooseA = useCallback(() => {
     onResult({

@@ -27,7 +27,7 @@ export function CreateRoute() {
   const navigate = useNavigate();
   const [step, setStep] = useState(Step.SEARCH_TYPE);
   const [searchType, setSearchType] = useState<SearchType>();
-  const [options, setOptions] = useState<PendingOption[]>([]);
+  const [options, setOptions] = useState<PendingOption<any, any>[]>([]);
   const [info, setInfo] = useState<Info | null>(null);
   const [participants, setParticipants] = useState<PendingParticipant[]>([]);
 
@@ -54,7 +54,7 @@ export function CreateRoute() {
 
   }, [step, info, options, participants, navigate]);
 
-  const onSelectOption = useCallback((opt: PendingOption) => {
+  const onSelectOption = useCallback((opt: PendingOption<any, any>) => {
     setOptions([...options, opt]);
   }, [options]);
 

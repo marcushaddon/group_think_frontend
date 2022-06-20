@@ -69,6 +69,6 @@ export class GroupthinkClient {
   }
 }
 
-const groupthink = new GroupthinkClient("http://192.168.0.67:8080");
+const groupthink = new GroupthinkClient("http://192.168.0.67:8000");
 
 export default groupthink;

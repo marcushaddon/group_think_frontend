@@ -1,7 +1,7 @@
 import { Option } from "../../models";
 import { insertIdx, insertionSort } from "./sort";
 
-const mockOption = (id: string): Option => ({
+const mockOption = (id: string): Option<any> => ({
   id,
   name: id,
   description: id,
@@ -40,7 +40,7 @@ describe("insertIdx", () => {
 
 describe("insertionSort generator", () => {
   it("works", () => {
-    const options: Option[] = ["a", "b", "c", "d", "e", "f", "g"]
+    const options: Option<any>[] = ["a", "b", "c", "d", "e", "f", "g"]
       .map(letter => mockOption(letter));
     
     const shuffled = [...options].sort(() => Math.random() > 0.5 ? -1 : 1);

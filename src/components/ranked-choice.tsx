@@ -9,7 +9,7 @@ import { VisualBreakdown } from "./visual-breakdown";
 import { NLBreakdown } from "./nl-breakdown";
 
 export interface Props {
-  option: Option
+  option: Option<any>
   choice: Choice;
   winner?: boolean;
   breakdown?: ChoiceBreakdown;

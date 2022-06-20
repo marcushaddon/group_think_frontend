@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
+import { merge } from "lodash";
 import { GOOGLE_API_KEY } from "../consts";
-import { Option, PendingOption, InfoItem } from "../models";
+import { Option, PendingOption } from "../models";
+
+export interface PlaceInfo {
+  link?: string;
+  open?: boolean;
+  openingHours?: string[];
+  totalRatings?: number;
+  rating?: number;
+  priceLevel?: number;
+}
 
 export const usePlaces = () => {
   const [api, setApi] = useState<PlacesApi>();
@@ -35,7 +45,7 @@ class PlacesApi {
     this._service = service;
   }
 
-  async search(query: PlacesQuery): Promise<PendingOption<google.maps.places.PlaceResult>[]> {
+  async search(query: PlacesQuery): Promise<PendingOption<google.maps.places.PlaceResult, PlaceInfo>[]> {
     return new Promise((res, rej) => {
       this._service.nearbySearch({
         type: query.type,
@@ -58,10 +68,10 @@ class PlacesApi {
     });
   }
 
-  async getDetails(placeId: string): Promise<PendingOption<google.maps.places.PlaceResult>> {
+  async getDetails(place: google.maps.places.PlaceResult): Promise<PendingOption<google.maps.places.PlaceResult, PlaceInfo>> {
     const details: google.maps.places.PlaceResult = await new Promise((res, rej) => {
       this._service.getDetails({
-        placeId,
+        placeId: place.place_id!,
         fields: ['rating', 'price_level', 'user_ratings_total', 'website']
       }, (response, status) => {
         if (status !== google.maps.places.PlacesServiceStatus.OK) {
@@ -72,17 +82,18 @@ class PlacesApi {
       });
     });
 
-    return placeToOption(details);
+    const merged = merge(place, details);
 
+    return placeToOption(merged);
   }
 }
 
-const placeToOption = (place: google.maps.places.PlaceResult): PendingOption<google.maps.places.PlaceResult> => ({
+const placeToOption = (place: google.maps.places.PlaceResult): PendingOption<google.maps.places.PlaceResult, PlaceInfo> => ({
   name: place.name || "NAME NOT FOUND",
   description: "TODO: place description",
   uri: place.website || "TODO: get uri",
   img: getImg(place.photos) || "TODO: data url for placeholder",
-  infoItems: mapInfoItems(place),
+  info: mapInfoItems(place),
   original: place,
 });
 
@@ -92,57 +103,33 @@ const getImg = (options: google.maps.places.PlacePhoto[] | undefined) => {
   return options[0].getUrl();
 };
 
-const mapInfoItems = (place: google.maps.places.PlaceResult): InfoItem[] => {
-  const items: InfoItem[] = [];
+const mapInfoItems = (place: google.maps.places.PlaceResult): PlaceInfo => {
+  const info: PlaceInfo = {};
   const openStatus = place.opening_hours?.isOpen();
   const knowOpen = typeof openStatus === "boolean";
+
   if (knowOpen) {
-    items.push({
-      text: openStatus ? "open" : "closed",
-      icon: openStatus ? "check" : "cancel"
-    });
+    info.open = openStatus;
   }
 
   if (place.opening_hours?.periods) {
+    info.openingHours = [];
     for (const period of place.opening_hours.periods) {
       const open = fmtTime(period.open);
       const close = period.close ? ` - ${fmtTime(period.close)}` : "";
-      items.push({
-        text: open + close,
-        icon: "clock"
-      });
+      info.openingHours.push(open + close);
     }
   }
 
-  if (place.user_ratings_total) {
-    items.push({
-      text: `${place.user_ratings_total} total ratings`,
-      icon: "starOutline"
-    });
-  }
+  info.totalRatings = place.user_ratings_total;
 
-  if (place.rating) {
-    items.push({
-      text: `${place.rating} avg rating`, 
-      icon: "star",
-    });
-  }
+  info.rating = place.rating;
 
-  if (place.price_level) {
-    items.push({
-      text: `price level: ${place.price_level}`,
-      icon: "money",
-    });
-  }
+  info.priceLevel = place.price_level;
 
-  if (place.website) {
-    items.push({
-      text: place.website,
-      icon: "link"
-    })
-  }
+  info.link = place.website;
 
-  return items;
+  return info;
 };
 
 const days = [ // BIG TODO: get index offset from google docs!

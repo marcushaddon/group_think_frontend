@@ -1,7 +1,7 @@
 import React, { useState, useCallback, FunctionComponent } from "react";
 import { Button, Input, Grid } from "@mui/material";
 import googleSearch from "../../client/google";
-import { Option as OptionComponent } from "../../components/option";
+import { Option as OptionComponent } from "../../components/option/option";
 import { PendingOption } from "../../models";
 import { Swipe } from "../../components/swipe";
 

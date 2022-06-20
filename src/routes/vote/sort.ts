@@ -1,24 +1,24 @@
 import { assert } from "console";
 import { Option } from "../../models";
 
-export type SearchStepResult = {
-  choiceA: Option;
-  choiceB: Option;
+export type SearchStepResult<T> = {
+  choiceA: T;
+  choiceB: T;
 }
 
 type InsertionIdx = number;
 type WinnerId = string | undefined;
 
-export type SortStepResult = SearchStepResult & {
+export type SortStepResult<T> = SearchStepResult<T> & {
   progress: number;
 }
 
-export function* insertIdx(
-  opt: Option,
-  opts: Option[],
+export function* insertIdx<T extends { id: string }>(
+  opt: T,
+  opts: T[],
   low = 0,
   high = opts.length -1,
-): Generator<SearchStepResult, InsertionIdx, WinnerId> {
+): Generator<SearchStepResult<T>, InsertionIdx, WinnerId> {
   if (opts.length === 0) {
     return 0;
   }
@@ -53,9 +53,9 @@ export function* insertIdx(
   return mid;
 }
 
-export function* insertionSort(opts: Option[]): Generator<SortStepResult, Option[], WinnerId> {
+export function* insertionSort<T extends { id: string }>(opts: T[]): Generator<SortStepResult<T>, T[], WinnerId> {
   const unsorted = [...opts];
-  const sorted: Option[] = [];
+  const sorted: T[] = [];
 
   let winnerId: WinnerId = undefined;
   while (unsorted.length > 0) {

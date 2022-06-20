@@ -25,7 +25,7 @@ export interface MatchupResult {
   winnerId?: string;
 }
 
-const matchupKey = (a: Option, b: Option): string => [a.id, b.id].sort().join("_");
+const matchupKey = (a: Option<any>, b: Option<any>): string => [a.id, b.id].sort().join("_");
 
 const memoMap = new Map<string, string>();
 
@@ -39,10 +39,10 @@ export const VoteRoute: FunctionComponent = () => {
   const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number}>({});
   const [ranking, setRanking] = useState<PendingRanking | null>(null);
   const [progress, setProgress] = useState(0);
-  const [sorter, setSorter] = useState<Generator<SortStepResult, Option[], string | undefined> | null>(null);
+  const [sorter, setSorter] = useState<Generator<SortStepResult<any>, Option<any>[], string | undefined> | null>(null);
   const [poll, setPoll] = useState<Poll | null>(null);
-  const [optionA, setOptionA] = useState<Option | null>(null);
-  const [optionB, setOptionB] = useState<Option | null>(null);
+  const [optionA, setOptionA] = useState<Option<any> | null>(null);
+  const [optionB, setOptionB] = useState<Option<any> | null>(null);
 
   const fetchPoll = useCallback(async (pollId: string) => {
     const p = await groupthink.getPoll(pollId);

@@ -3,7 +3,7 @@ import { Choice, Option, PendingRanking, Poll } from "../../models";
 
 export const optionAwardKey = (optId: string, award: OptionAward) => `${optId}-${award}`;
 
-export const buildRanking = (sortedOptions: Option[], awardMap: ChoiceMap, poll: Poll): PendingRanking => {
+export const buildRanking = <T extends { id: string }>(sortedOptions: T[], awardMap: ChoiceMap, poll: Poll): PendingRanking => {
   const choices = sortedOptions.map(
     opt => Object.values(OptionAward)
       .reduce((choice, awardName) => ({

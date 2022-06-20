@@ -1,14 +1,13 @@
 import React, { useState, useCallback, FunctionComponent, useRef, useEffect } from "react";
 import { Button, Input, Grid, Alert } from "@mui/material";
-import { usePlaces } from "../../client/google-places";
-import { Option as OptionComponent } from "../../components/option";
-import { PendingOption } from "../../models";
+import { PlaceInfo, usePlaces } from "../../client/google-places";
+import { Option as OptionComponent } from "../../components/option/option";
+import { OptionType, PendingOption } from "../../models";
 import { Swipe } from "../../components/swipe";
 import { useLocation } from "./location";
-import { merge } from "./merge-option";
 
 export interface Props {
-  onSelectOption?: (option: PendingOption<any>) => void;
+  onSelectOption?: (option: PendingOption<google.maps.places.PlaceResult, PlaceInfo>) => void;
   onComplete?: () => void;
 }
 
@@ -18,17 +17,22 @@ export const PlacesSearch: FunctionComponent<Props> = ({
 }) => {
   const places = usePlaces();
   const PAGE_SIZE = 10;
-  const [results, setResults] = useState<PendingOption<google.maps.places.PlaceResult>[]>([]);
+  const [results, setResults] = useState<PendingOption<google.maps.places.PlaceResult, PlaceInfo>[]>([]);
   const [term, setTerm] = useState("");
   const [location, setLocation] = useLocation();
   const [offset, setOffset] = useState(0);
   const [selected, setSelected] = useState<{ [uri: string]: boolean }>({});
 
   const getLocation = useCallback(() => {
+    console.log("attempting to get location from browser");
     try {
       navigator
         .geolocation
-        .getCurrentPosition(location => setLocation(location));
+        .getCurrentPosition(
+          location => setLocation(location),
+          err => console.log("error resolving location", err),
+          { timeout: 10 * 1000 }
+        );
     } catch (e) {
       // TODO: display error permanently
       alert("You must enable location services to use this app (currently).");
@@ -62,7 +66,7 @@ export const PlacesSearch: FunctionComponent<Props> = ({
     doSearch(offset + PAGE_SIZE);
   }, [offset, doSearch]);
 
-  const selectOption = useCallback((option: PendingOption<google.maps.places.PlaceResult>) => {
+  const selectOption = useCallback((option: PendingOption<google.maps.places.PlaceResult, PlaceInfo>) => {
     onSelectOption && onSelectOption(option);
   }, [onSelectOption]);
 
@@ -103,14 +107,13 @@ export const PlacesSearch: FunctionComponent<Props> = ({
                 ...selected,
                 [result.original.place_id!]: true,
               });
-              const detailed = await places!.getDetails(result.original.place_id!);
-              const merged = merge(detailed, result);
+              const detailed = await places!.getDetails(result.original);
 
-              selectOption(merged);
+              selectOption(detailed);
             }}
             onLeft={() => alert("TODO: disable left swiping")}
           >
-            <OptionComponent {...result} />
+            <OptionComponent {...result} type={OptionType.GOOGLE_PLACE} />
           </Swipe>
         ))}
       </Grid>

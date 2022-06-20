@@ -1,21 +1,22 @@
 import { IconName } from "../components/dynamic-icon";
 
-export interface InfoItem {
-  text: string;
-  icon: IconName;
+export enum OptionType {
+  GOOGLE_PLACE = "google-place",
+  GOOGLE_SEARCH_RESULT = "google-search-result",
 }
 
-export interface Option {
+export interface Option<T> {
   id: string;
+  type?: OptionType;
   name: string;
   description: string;
   uri: string;
   img: string;
-  infoItems?: InfoItem[]
+  info?: T;
 }
 
-export type PendingOption<T = undefined> = Omit<Option, "id"> & {
-  original: T;
+export type PendingOption<O = undefined, I = undefined> = Omit<Option<I>, "id"> & {
+  original: O;
 };
 
 export enum VoteStatus {
@@ -67,8 +68,8 @@ export interface Poll {
   ownerName: string;
   ownerToken: string;
   ownerPhone: string;
-  optionsList: Option[];
-  optionsMap: { [id: string]: Option };
+  optionsList: Option<any>[];
+  optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
   expires: string;
 
