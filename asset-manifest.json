@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/group_think_frontend/static/css/main.aca85aab.css",
-    "main.js": "/group_think_frontend/static/js/main.96f0d4d4.js",
+    "main.js": "/group_think_frontend/static/js/main.68fa3eb4.js",
     "static/js/787.b9edd4c6.chunk.js": "/group_think_frontend/static/js/787.b9edd4c6.chunk.js",
     "index.html": "/group_think_frontend/index.html",
     "main.aca85aab.css.map": "/group_think_frontend/static/css/main.aca85aab.css.map",
-    "main.96f0d4d4.js.map": "/group_think_frontend/static/js/main.96f0d4d4.js.map",
+    "main.68fa3eb4.js.map": "/group_think_frontend/static/js/main.68fa3eb4.js.map",
     "787.b9edd4c6.chunk.js.map": "/group_think_frontend/static/js/787.b9edd4c6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.aca85aab.css",
-    "static/js/main.96f0d4d4.js"
+    "static/js/main.68fa3eb4.js"
   ]
 }
