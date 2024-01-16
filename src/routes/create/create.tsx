@@ -8,6 +8,7 @@ import { SelectSearchType } from "./search-type";
 import { PendingOption, PendingParticipant, PendingPoll } from "../../models";
 import groupthink from '../../client/groupthink';
 import { useNavigate } from 'react-router-dom';
+import { Options } from './options';
 
 export enum Step {
   SEARCH_TYPE,
@@ -69,7 +70,16 @@ export function CreateRoute() {
         {options.length + " options selected"}
       </Typography>
       {step === Step.SEARCH_TYPE && <SelectSearchType onSelectSearchType={st => { setSearchType(st); next(); }} />}
-      {step === Step.OPTIONS && optionStep}
+      {step === Step.OPTIONS && <Options onComplete={(opts) => {
+        setOptions(opts.map(opt => ({
+          name: opt,
+          description: "",
+          uri: "",
+          img: "",
+          original: {}
+        })));
+        next();
+      }} />}
       {step === Step.POLL_INFO && <PollInfo onSubmit={pollInfo => { setInfo(pollInfo); next(); } }/>}
       {step === Step.PARTICIPANTS &&
         <Participants

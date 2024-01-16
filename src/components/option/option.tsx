@@ -47,7 +47,6 @@ export const Option: FunctionComponent<Props> = ({
                 {description}
               </Typography>
             </Grid>
-            {resolveInfoRenderer(type)({ info })}
           </Grid>
         </CardContent>
         <CardActions>
@@ -66,23 +65,3 @@ interface InfoProps {
   info: OptionProps<any>["info"];
 }
 
-const DefaultInfo: FunctionComponent<InfoProps> = ({ info }) => (
-  <Grid container item xs={12}>
-    {Object.entries(info).map((k, v) => (
-      <Grid xs={6}>
-        <Typography variant="body2">
-          {k}: {v}
-        </Typography>
-      </Grid>
-    ))}
-  </Grid>
-);
-
-const resolveInfoRenderer = (itemType?: OptionType) => {
-  switch (itemType) {
-    case OptionType.GOOGLE_PLACE:
-      return PlacesInfo;
-    default:
-      return DefaultInfo;
-  }
-}

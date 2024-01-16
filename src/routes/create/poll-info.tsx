@@ -7,7 +7,6 @@ export interface Info {
   ownerName: string;
   ownerPhone: string;
   ownerEmail?: string;
-  expires: string;
 }
 
 export interface Props {
@@ -21,21 +20,19 @@ export const PollInfo: FunctionComponent<Props> = ({
   const [description, setDescription] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [ownerPhone, setOwnerPhone] = useState("");
-  const [expires, setExpires] = useState(new Date().toISOString());
 
-  const submit = useCallback((event) => {
+  const submit = useCallback((event: any) => {
     (event as any).preventDefault();
     onSubmit({
       name,
       description,
       ownerName,
       ownerPhone,
-      expires: new Date(expires).toISOString(),
     });
     setName("");
     setDescription("");
     setOwnerPhone("");
-  }, [onSubmit, name, ownerPhone, description, ownerName, expires]);
+  }, [onSubmit, name, ownerPhone, description, ownerName]);
 
   return (
     <form onSubmit={submit}>
@@ -54,9 +51,6 @@ export const PollInfo: FunctionComponent<Props> = ({
         </Grid>
         <Grid item xs={12}>
           <Input type="phone" required name="ownerPhone" value={ownerPhone} placeholder="Your phone" onChange={e => setOwnerPhone(e.target.value)} />
-        </Grid>
-        <Grid item xs={12}>
-          <Input type="date" required name="expires" value={expires} onChange={e => setExpires(e.target.value)} />
         </Grid>
         <Button type="submit">
           Continue

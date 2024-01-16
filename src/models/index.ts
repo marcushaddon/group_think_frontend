@@ -71,7 +71,6 @@ export interface Poll {
   optionsList: Option<any>[];
   optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
-  expires: string;
 
   // TODO: expiration
   result: {
