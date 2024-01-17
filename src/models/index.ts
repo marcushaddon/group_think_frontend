@@ -31,8 +31,8 @@ export enum VoteStatus {
 export interface Participant {
   id: string;
   name: string;
-  phone?: string;
-  email?: string;
+  email: string;
+  token?: string;
   status?: VoteStatus;
 }
 
@@ -65,9 +65,11 @@ export interface Poll {
   id: string;
   name: string;
   description: string;
-  ownerName: string;
-  ownerToken: string;
-  ownerPhone: string;
+  owner: {
+    name: string,
+    email: string,
+    token?: string
+  }
   optionsList: Option<any>[];
   optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
@@ -81,7 +83,7 @@ export interface Poll {
   rankings: Ranking[];
 }
 
-export type PendingPoll = Omit<Poll, "id" | "ownerToken" | "optionsMap" | "optionsList" | "result" | "participants"| "rankings"> & {
+export type PendingPoll = Omit<Poll, "id" | "owner.token" | "optionsMap" | "optionsList" | "result" | "participants"| "rankings"> & {
   optionsList: PendingOption[];
   participants: PendingParticipant[];
 };

@@ -15,18 +15,17 @@ export const Participants: FunctionComponent<Props> = ({
   participants
 }) => {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   const submit = useCallback((e) => {
     (e as any).preventDefault();
     onAddParticipant({
       name,
-      phone,
+      email,
       status: VoteStatus.Pending,
     });
     setName("");
-    setPhone("");
-  }, [name, phone, onAddParticipant]);
+  }, [name, email, onAddParticipant]);
 
   return (
     <form onSubmit={submit}>
@@ -40,7 +39,7 @@ export const Participants: FunctionComponent<Props> = ({
           <Input type="text" required placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <Input type="phone" required placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
+          <Input type="email" required placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
           <Button type="submit">Add</Button>
@@ -49,7 +48,7 @@ export const Participants: FunctionComponent<Props> = ({
           <Typography variant="body1">
             {participants.length} participants
           </Typography>
-          {participants.map(p => <Participant key={p.name + (p.email || p.phone)} participant={p} />)}
+          {participants.map(p => <Participant key={p.name + p.email} participant={p} />)}
         </Grid>
         <Button onClick={onComplete}>Next</Button>
       </Grid>

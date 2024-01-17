@@ -84,7 +84,7 @@ export const PollRoute: FunctionComponent = () => {
           </Alert>
         )}
         <Typography variant="subtitle1">
-          by {poll.ownerName}
+          by {poll.owner.name}
         </Typography>
       </Grid>
 

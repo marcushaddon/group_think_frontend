@@ -43,14 +43,18 @@ export function CreateRoute() {
     // time to create!
     const poll: PendingPoll = {
       ...info!,
+      owner: {
+        name: info!.ownerName,
+        email: info!.ownerEmail!,
+      },
       participants,
       optionsList: options,
     }
 
+    console.log("reawcting", { poll });
     const res = await groupthink.createPoll(poll);
 
-    // TODO: set token
-    localStorage.setItem(res.id + "token", res.ownerToken);
+    localStorage.setItem(res.id + "token", res.owner.token!);
     navigate(`/${res.id}`);
 
   }, [step, info, options, participants, navigate]);
@@ -66,9 +70,6 @@ export function CreateRoute() {
 
   return (
     <div>
-      <Typography variant="h2">
-        {options.length + " options selected"}
-      </Typography>
       {step === Step.SEARCH_TYPE && <SelectSearchType onSelectSearchType={st => { setSearchType(st); next(); }} />}
       {step === Step.OPTIONS && <Options onComplete={(opts) => {
         setOptions(opts.map(opt => ({

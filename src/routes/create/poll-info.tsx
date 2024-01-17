@@ -5,8 +5,7 @@ export interface Info {
   name: string;
   description: string;
   ownerName: string;
-  ownerPhone: string;
-  ownerEmail?: string;
+  ownerEmail: string;
 }
 
 export interface Props {
@@ -19,7 +18,7 @@ export const PollInfo: FunctionComponent<Props> = ({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [ownerName, setOwnerName] = useState("");
-  const [ownerPhone, setOwnerPhone] = useState("");
+  const [ownerEmail, setOwnerEmail] = useState("");
 
   const submit = useCallback((event: any) => {
     (event as any).preventDefault();
@@ -27,12 +26,12 @@ export const PollInfo: FunctionComponent<Props> = ({
       name,
       description,
       ownerName,
-      ownerPhone,
+      ownerEmail,
     });
     setName("");
     setDescription("");
-    setOwnerPhone("");
-  }, [onSubmit, name, ownerPhone, description, ownerName]);
+    setOwnerEmail("");
+  }, [onSubmit, name, ownerEmail, description, ownerName]);
 
   return (
     <form onSubmit={submit}>
@@ -50,7 +49,7 @@ export const PollInfo: FunctionComponent<Props> = ({
           <Input type="text" required name="ownerName" value={ownerName} placeholder="Your name" onChange={e => setOwnerName(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <Input type="phone" required name="ownerPhone" value={ownerPhone} placeholder="Your phone" onChange={e => setOwnerPhone(e.target.value)} />
+          <Input type="email" required name="ownerEmail" value={ownerEmail} placeholder="Your email" onChange={e => setOwnerEmail(e.target.value)} />
         </Grid>
         <Button type="submit">
           Continue

@@ -9,22 +9,22 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState<string | null>(null);
   const submit = useCallback(() => {
-    if (!value) {
+    console.log({ value });
+    if (!!!value?.length) {
       alert("Must provide at least two options!");
       return;
     }
     const opts = value.split("\n")
       .filter(l => l.length >= 2);
-    console.log({ opts });
     onComplete(opts);
-  }, [onComplete]);
+  }, [onComplete, value]);
   return (
     <Grid container
       style={{
         justifyContent: "center"
       }}
     >
-      <Typography variant="h3">Options</Typography>
+      <Typography variant="h4">Enter Options</Typography>
       <Grid item
         style={{
           width: "90%"
@@ -47,7 +47,10 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
             marginTop: "8px"
           }}
           value={value || ""}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setValue(e.target.value);
+          }}
         />
       </Grid>
       
