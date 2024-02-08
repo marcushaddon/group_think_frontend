@@ -70,12 +70,14 @@ export class GroupthinkClient {
 
   async createRanking(pending: PendingRanking): Promise<Ranking> {
     const accessToken = this.getToken(pending.pollId);
+    // poll/id/rankings/email.json
 
     // TODO: construct path, write file 
     return {} as Ranking;
   }
 
   getToken(pollId: string): string {
+    // This won work with our fragment router
     const fromQuery = new URLSearchParams(window.location.search).get("token");
     if (fromQuery) {
       const decoded = jwtDecode(fromQuery);
