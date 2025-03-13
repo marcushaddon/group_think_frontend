@@ -8,23 +8,23 @@ export interface Props {
 export const Options: FunctionComponent<Props> = ({ onComplete }) => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState<string | null>(null);
+  const [options, setOptions] = useState<string[]>([]);
   const submit = useCallback(() => {
-    console.log({ value });
-    if (!!!value?.length) {
+    if (options.length < 2) {
       alert("Must provide at least two options!");
       return;
     }
-    const opts = value.split("\n")
-      .filter(l => l.length >= 2);
-    onComplete(opts);
+
+    onComplete(options);
   }, [onComplete, value]);
+
   return (
     <Grid container
       style={{
         justifyContent: "center"
       }}
     >
-      <Typography variant="h4">Enter Options</Typography>
+      <Typography variant="h4">Enter Options (comma separated)</Typography>
       <Grid item
         style={{
           width: "90%"
@@ -48,11 +48,18 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
           }}
           value={value || ""}
           onChange={(e) => {
-            console.log(e.target.value);
             setValue(e.target.value);
+            setOptions(
+                e.target.value.split(/,\s*/ig).filter((opt) => !!opt.length)
+            );
           }}
         />
       </Grid>
+
+      <ol>
+      {options.map((opt) => <li>{opt}</li>)}
+      </ol>
+      
       
     </Grid>
   );

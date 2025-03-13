@@ -75,12 +75,12 @@ export interface Poll {
   participants: Participant[];
 
   // TODO: expiration
-  result: {
+  result?: {
     ranked?: Choice[];
     done: boolean;
   }
 
-  rankings: Ranking[];
+  rankings?: Ranking[];
 }
 
 export type PendingPoll = Omit<Poll, "id" | "owner.token" | "optionsMap" | "optionsList" | "result" | "participants"| "rankings"> & {

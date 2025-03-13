@@ -10,9 +10,9 @@ import {
 
 export class GroupthinkClient {
   constructor(
-    private createPollEndpoint: string = "https://omgwtfbrblolttyl-createpollendpoint.express.val.run/",
+    private createPollEndpoint: string = "https://omgwtfbrblolttyl-createpollendpoint.web.val.run/",
     private fsWriteEndpoint = "https://omgwtfbrblolttyl-writefileendpoint.express.val.run/",
-    private fsReadEndpoint = "https://omgwtfbrblolttyl-readfileendpoint.express.val.run/",
+    private fsReadEndpoint = "https://omgwtfbrblolttyl-readfileendpoint.web.val.run/",
     private fsReadGlobEndpoint = "https://omgwtfbrblolttyl-readglobendpoint.express.val.run/"
   ) {}
 
@@ -44,7 +44,7 @@ export class GroupthinkClient {
       }
     );
 
-    return await res.json();
+    return (await res.json()).file;
   }
 
   async createPoll(poll: PendingPoll): Promise<Poll> {
@@ -62,8 +62,10 @@ export class GroupthinkClient {
 
   async getPoll(pollId: string): Promise<Poll | null> {
     const accessToken = this.getToken(pollId);
-    const res = await this.readFile(`/polls/${pollId}`, accessToken);
+    const res = await this.readFile(`/polls/${pollId}/poll.json`, accessToken);
+
     const parsed = JSON.parse(res);
+    console.log('getPoll parsed', parsed);
     // TODO: read path, read glob for rankings, parse and construct
     return parsed as Poll;;
   }

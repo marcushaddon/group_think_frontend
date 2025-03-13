@@ -56,7 +56,7 @@ export const PollRoute: FunctionComponent = () => {
     return <CircularProgress />
   }
 
-  const choices = ranking ? ranking.choices : poll.result.done ? poll.result.ranked! : [];
+  const choices = ranking ? ranking.choices : poll.result?.done ? poll.result.ranked! : [];
   const title = ranking?.name ? (
     `${ranking.name}'s ranking`
   ) : (
@@ -64,7 +64,7 @@ export const PollRoute: FunctionComponent = () => {
   );
 
   let breakdowns: ChoiceReport | undefined;
-  breakdowns = poll.result.ranked ? choiceBreakdowns(poll.rankings, poll.result.ranked) : undefined;
+  breakdowns = poll.result?.ranked && poll.rankings ? choiceBreakdowns(poll.rankings, poll.result.ranked) : undefined;
 
   return (
     <Grid container>
@@ -72,7 +72,7 @@ export const PollRoute: FunctionComponent = () => {
         <Typography variant="h3">
           {poll.name}
         </Typography>
-        {poll.result.done ? (
+        {poll.result?.done ? (
           <Alert severity="success">
             <AlertTitle>Complete</AlertTitle>
             The results are in! Check them out below...
@@ -80,7 +80,7 @@ export const PollRoute: FunctionComponent = () => {
         ) : (
           <Alert severity="warning">
             <AlertTitle>In progress</AlertTitle>
-            We are still wating on {poll.participants.length - poll.rankings.length} participants to submit their votes
+            We are still wating on {poll.participants.length - (poll.rankings?.length || 0)} participants to submit their votes
           </Alert>
         )}
         <Typography variant="subtitle1">
@@ -93,7 +93,7 @@ export const PollRoute: FunctionComponent = () => {
       </Typography>
       
       {poll.participants.map(p => {
-        const pRanking = poll.rankings.find(r => r.participantId === p.id);
+        const pRanking = poll.rankings?.find(r => r.participantId === p.id);
         const action = pRanking && ranking?.participantId !== p.id ? {
           cb: () => {
             setSearchParams({
@@ -120,11 +120,11 @@ export const PollRoute: FunctionComponent = () => {
         {title}
       </Typography>
 
-      {!poll.result.done && (
+      {!poll.result?.done && (
         <>Poll results will be viewable when all participants have submitted.</>
       )}
 
-      {ranking && poll.result.done && (
+      {ranking && poll.result?.done && (
         <Button
           onClick={() => {
             searchParams.delete("participantId");
