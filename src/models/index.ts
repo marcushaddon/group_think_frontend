@@ -51,14 +51,13 @@ export interface Choice {
 }
 
 export interface Ranking {
-  id: string;
-  participantId: string;
+  participantEmail: string;
   pollId: string;
 
   choices: Choice[];
 }
 
-export type PendingRanking = Omit<Ranking, "id" | "participantId">;
+export type PendingRanking = Omit<Ranking, "id" | "participantEmail">;
 
 export interface Poll {
   id: string;
@@ -73,7 +72,6 @@ export interface Poll {
   optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
 
-  // TODO: expiration
   result?: {
     ranked?: Choice[];
     done: boolean;

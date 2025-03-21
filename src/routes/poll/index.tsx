@@ -6,51 +6,38 @@ import { Poll, Ranking } from "../../models";
 import { Participant } from "../../components/participant";
 import { RankedChoice } from "../../components/ranked-choice";
 import { choiceBreakdowns, ChoiceReport } from "../../stats";
+import { usePollWithRankings } from "../../hooks";
 
-type RankingDisplay = Ranking & { name: string; participantId: string };
+type RankingDisplay = Ranking & { name: string; participantEmail: string };
 
 export const PollRoute: FunctionComponent = () => {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const pollId = params.pollId;
-  const [participantId, setParticipantId] = useState(searchParams.get("participantId"));
+  const [participantEmail, setparticipantEmail] = useState(searchParams.get("participantEmail"));
 
-  const [poll, setPoll] = useState<Poll | null>(null);
+  const poll = usePollWithRankings(pollId);
+  console.log({ poll });
   const [ranking, setRanking] = useState<RankingDisplay | null>(null);
-  const [breakdownType, setBreakdownType] = useState<"nl" | "visual">("nl");
 
   useEffect(() => {
-    setParticipantId(searchParams.get("participantId"));
+    setparticipantEmail(searchParams.get("participantEmail"));
   }, [searchParams]);
 
   useEffect(() => {
     if (!poll) return;
     if (!poll.rankings || poll.rankings.length === 0) return;
 
-    if (participantId) {
-      const r = poll.rankings.find(r => r.participantId === participantId);
+    if (participantEmail) {
+      const r = poll.rankings.find(r => r.participantEmail === participantEmail);
       if (!r) return;
-      const p = poll.participants.find(p => p.id === r.participantId);
+      const p = poll.participants.find(p => p.email === r.participantEmail);
 
       setRanking({ ...r, name: p!.name });
     } else {
       setRanking(null);
     }
-  }, [setRanking, poll, searchParams, pollId, participantId]);
-
-  useEffect(() => {
-    if (!pollId) return;
-
-    groupthink.getPoll(pollId)
-      .then(poll => {
-        if (!poll) {
-          alert("poll not found");
-          return;
-        }
-        setPoll(poll);
-      });
-    
-  }, [pollId]);
+  }, [setRanking, poll, searchParams, pollId, participantEmail]);
 
   if (!poll) {
     return <CircularProgress />
@@ -93,12 +80,12 @@ export const PollRoute: FunctionComponent = () => {
       </Typography>
       
       {poll.participants.map(p => {
-        const pRanking = poll.rankings?.find(r => r.participantId === p.id);
-        const action = pRanking && ranking?.participantId !== p.id ? {
+        const pRanking = poll.rankings?.find(r => r.participantEmail === p.id);
+        const action = pRanking && ranking?.participantEmail !== p.id ? {
           cb: () => {
             setSearchParams({
               ...searchParams,
-              participantId: p.id
+              participantEmail: p.id
             });
           },
           name: `View ${p.name}'s ranking`
@@ -109,14 +96,14 @@ export const PollRoute: FunctionComponent = () => {
             key={p.id}
             participant={p}
             action={action}
-            highlight={ranking?.participantId === p.id}
+            highlight={ranking?.participantEmail === p.id}
           />
         );
       })}
 
       <Divider />
 
-      <Typography variant="h3">
+      <Typography variant="h5">
         {title}
       </Typography>
 
@@ -127,20 +114,13 @@ export const PollRoute: FunctionComponent = () => {
       {ranking && poll.result?.done && (
         <Button
           onClick={() => {
-            searchParams.delete("participantId");
+            searchParams.delete("participantEmail");
             setSearchParams(searchParams);
           }}
         >
           view results
         </Button>
       )}
-
-      <Button
-        variant={breakdownType === "visual" ? "outlined" : "contained"}
-        onClick={() => breakdownType === "nl" ? setBreakdownType("visual") : setBreakdownType("nl")}
-      >
-        {breakdownType === "nl" ? "Visual breakdown" : "Text breakdown"}
-      </Button>
 
       <ol>
         {choices.map((ch) => <li>{poll.optionsMap[ch.optionId].name}</li>)}

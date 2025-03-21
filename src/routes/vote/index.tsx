@@ -78,7 +78,7 @@ export const VoteRoute: FunctionComponent = () => {
     }
     setRanking(created);
     setVoting(false);
-    navigate(`/${poll!.id}?participantId=${created.participantId}`);
+    navigate(`/${poll!.id}?participantEmail=${created.participantEmail}`);
   }, [poll, navigate]);
 
   const onMatchupResult = useCallback(async (res: MatchupResult) => {  
