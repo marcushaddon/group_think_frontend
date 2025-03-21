@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 import groupthink from "../../client/groupthink";
-import { usePoll } from "../../hooks";
+import { usePoll, usePollAsOwner } from "../../hooks";
 import { Participant, Poll } from "../../models";
 
 const LINEBREAK = "%0D%0A";
@@ -93,11 +93,21 @@ const InviteButton: FunctionComponent<{ invite: ReturnType<typeof inviteFor>, gm
     )
 }
 
-
+const LinkButton: FunctionComponent<{ invite: ReturnType<typeof inviteFor> }> = ({
+    invite
+}) => (
+    <button
+        onClick={() => {
+            window.open(invite.href, "_blank")?.focus();
+        }}
+    >
+        Vote here
+    </button>
+)
 
 export const InviteRoute: FunctionComponent = () => {
     const params = useParams();
-    const poll = usePoll(params.pollId);
+    const poll = usePollAsOwner(params.pollId);
 
 
     return !poll ? (
@@ -116,6 +126,7 @@ export const InviteRoute: FunctionComponent = () => {
                                 {p.name}&nbsp;
                                 <InviteButton invite={invite} gmail />
                                 <InviteButton invite={invite} />
+                                <LinkButton invite={invite} />
                             </li>
                         )
                     })

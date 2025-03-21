@@ -1,76 +1,118 @@
 import { assert } from "console";
 import { Option } from "../../models";
+import { MatchupResult } from ".";
 
-export type SearchStepResult<T> = {
-  choiceA: T;
-  choiceB: T;
+type ID = { 
+    id: string;
 }
 
-type InsertionIdx = number;
-type WinnerId = string | undefined;
+export type Matchup<T extends ID> = {
+  inserted: T;
+  inserting: T;
+}
 
-export type SortStepResult<T> = SearchStepResult<T> & {
+export type MatchupWithProgress<T extends ID> = Matchup<T> & {
   progress: number;
 }
 
-export function* insertIdx<T extends { id: string }>(
-  opt: T,
-  opts: T[],
-  low = 0,
-  high = opts.length -1,
-): Generator<SearchStepResult<T>, InsertionIdx, WinnerId> {
-  if (opts.length === 0) {
-    return 0;
-  }
-
-  if (low === high) {
-    const winner = yield { choiceA: opts[low], choiceB: opt };
-    const optIsGT = winner === opt.id;
-
-    if (optIsGT) {
-      return low + 1;
-    }
-
-    return low;
-  }
-
-  const mid = Math.floor((low + high) / 2);
-  const candidate = opts[mid];
-  const winner = yield { choiceA: opt, choiceB: candidate };
-  const optIsGT = winner === opt.id;
-  const optIsLT = winner === candidate.id;
-
-  if (optIsGT) {
-    const idx = yield* insertIdx(opt, opts, mid + 1, high);
-    return idx;
-  }
-
-  if (optIsLT) {
-    const idx = yield* insertIdx(opt, opts, low, mid) // or mid - 1?
-    return idx;
-  }
-
-  return mid;
+enum Relation {
+    GT = "GT",
+    LT = "LT",
+    EQ = "EQ"
 }
 
-export function* insertionSort<T extends { id: string }>(opts: T[]): Generator<SortStepResult<T>, T[], WinnerId> {
-  const unsorted = [...opts];
-  const sorted: T[] = [];
+const matchupKey = (a: ID, b: ID) =>
+    [a, b].map(({ id }) => id).sort().join('_vs_');
 
-  let winnerId: WinnerId = undefined;
-  while (unsorted.length > 0) {
-    const toInsert = unsorted.pop()!;
-    const search = insertIdx(toInsert, sorted);
-    while (true) {
-      const step = search.next(winnerId);
-      if (step.done) {
-        sorted.splice(step.value, 0, toInsert);
-        break;
-      } else {
-        winnerId = yield { ...step.value, progress: sorted.length / opts.length };
-      }
+export const sorter = () => {
+    const comparisons = new Map<string, MatchupResult>();
+
+    const toRelation = (res: MatchupResult, inserting: ID): Relation =>
+        res.winnerId === inserting.id ? Relation.GT :
+            res.winnerId === inserting.id ? Relation.LT :
+            Relation.EQ;
+
+    function* compare<T extends ID>(inserted: T, inserting: T) {
+        const key = matchupKey(inserted, inserting);
+        debugger;
+        const existing = comparisons.get(key);
+        if (existing) {
+            debugger;
+            return toRelation(existing, inserting);
+        }
+
+        const matchup: Matchup<T> = {
+            inserted,
+            inserting
+        };
+    
+        debugger;
+        const res: MatchupResult = yield matchup;
+        debugger;
+        comparisons.set(key, res);
+    
+        return toRelation(res, inserting);
     }
-  }
-
-  return sorted.reverse();
+    
+    function* binarySearch<T extends ID>(
+        items: T[],
+        item: T,
+        left = 0,
+        right = items.length
+    ): Generator<Matchup<T>, T[], MatchupResult> {
+        debugger;
+        if (right <= left) {
+            debugger;
+            const finalRes = yield* compare(item, items[left]);
+            
+            const restingPlace = (finalRes === Relation.GT) ?
+                (left + 1) : left;
+            debugger;
+            
+            const result = [...items.slice(0, restingPlace), item, ...items.slice(restingPlace)];
+            return result;
+        }
+    
+        const middle = Math.floor((left + right) / 2);
+        debugger;
+        const res: Relation = yield* compare(items[left], item);
+        
+        if (res === Relation.EQ) {
+            debugger;
+            const result = [...items.slice(0, middle), item, ...items.slice(middle)];
+            return result;
+        }
+    
+        const [newLeft, newRight] = res === Relation.GT ?
+            [middle + 1, right] : [left, middle - 1];
+        debugger;
+    
+        yield* binarySearch(items, item, newLeft, newRight);
+        throw new Error('ASSERTION: UNREACHABLE');
+    }
+    
+    return function* insertionSort<T extends ID>(opts: T[]) {
+        let sorted: T[] = [];
+        const toSort = [...opts].sort(() => Math.random() > 0.5 ? 1 : -1);
+        console.log('insertionSort: toSort = ', toSort);
+        debugger;
+    
+        while (toSort.length > 0) {
+            const toInsert = toSort.pop()!;
+            console.log('sort: inserting', toInsert, 'remaining = ', toSort.length);
+            if (sorted.length === 0) {
+                sorted.push(toInsert);
+                continue;
+            }
+    
+            debugger;
+            sorted = yield* binarySearch(sorted, toInsert);
+            debugger;
+            console.log(`sort: inserted ${toInsert.id}, sorted = `, sorted)
+        }
+        console.log('sort: sort complete', toSort);
+    
+        return sorted;
+    }
 }
+

@@ -70,6 +70,16 @@ export class GroupthinkClient {
     return parsed as Poll;;
   }
 
+  async getPollAsOwner(pollId: string): Promise<Poll | null> {
+    const accessToken = this.getToken(pollId);
+    const res = await this.readFile(`/polls/${pollId}/owner/poll.json`, accessToken);
+
+    const parsed = JSON.parse(res);
+    console.log('getPollAsOwner parsed', parsed);
+    // TODO: read path, read glob for rankings, parse and construct
+    return parsed as Poll;;
+  }
+
   async createRanking(pending: PendingRanking): Promise<Ranking> {
     const accessToken = this.getToken(pending.pollId);
     // poll/id/rankings/email.json

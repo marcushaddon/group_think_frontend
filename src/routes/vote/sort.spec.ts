@@ -1,5 +1,5 @@
 import { Option } from "../../models";
-import { insertIdx, insertionSort } from "./sort";
+import { sorter as makeSorter } from "./sort";
 
 const mockOption = (id: string): Option<any> => ({
   id,
@@ -9,34 +9,6 @@ const mockOption = (id: string): Option<any> => ({
   img: id,
 });
 
-const driveInsertIdx = (gen: ReturnType<typeof insertIdx>): number => {
-  let winnerId: string | undefined = undefined;
-  while (true) {
-    const res = gen.next(winnerId);
-    if (res.done) {
-      return res.value
-    }
-    const { choiceA, choiceB } = res.value;
-    winnerId = [choiceA.id, choiceB.id].sort()[1];
-  }
-}
-
-describe("insertIdx", () => {
-  it("works", () => {
-    const opts = ["a", "b", "c", "d", "e", "f", "g"]
-      .map(letter => mockOption(letter));
-
-    for (let i = 0; i < opts.length; i++) {
-      const withTargetRemoved = [...opts];
-      const target = withTargetRemoved.splice(i, 1);
-
-      const gen = insertIdx(target[0], withTargetRemoved);
-      const res = driveInsertIdx(gen);
-
-      expect(res).toEqual(i);
-    }
-  })
-})
 
 describe("insertionSort generator", () => {
   it.skip("works", () => {
@@ -45,21 +17,22 @@ describe("insertionSort generator", () => {
     
     const shuffled = [...options].sort(() => Math.random() > 0.5 ? -1 : 1);
 
-    const sorter = insertionSort(shuffled);
+    const sorter = makeSorter()(shuffled);
 
     let resultStr: string;
     let winner: string | undefined = undefined;
+    let iterations
     while (true) {
-      const res = sorter.next(winner);
+      const res = sorter.next();
       if (res.done) {
         resultStr = res.value.map(o => o.id).join("");
         
         break;
       }
-      expect(res.value.choiceA).toBeDefined();
-      expect(res.value.choiceB).toBeDefined();
+      expect(res.value.inserted).toBeDefined();
+      expect(res.value.inserting).toBeDefined();
 
-      winner = [res.value.choiceA.id, res.value.choiceB.id].sort()[1];
+      winner = [res.value.inserted.id, res.value.inserting.id].sort()[0];
     }
     const sortedStr = options.map(o => o.id).join("");
     expect(resultStr).toEqual(sortedStr);

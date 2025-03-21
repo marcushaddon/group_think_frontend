@@ -4,9 +4,9 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import groupthink from "../../client/groupthink";
 import { Option, PendingRanking, Choice, Poll } from "../../models";
 import { progress as progGrad } from "../../components/gradients";
+import { Matchup as MatchupComponent } from "./matchup";
 import { ManualReview } from "./manual-review";
-import { Matchup } from "./matchup";
-import { insertionSort, SortStepResult } from "./sort";
+import { sorter as makeSorter, Matchup } from "./sort";
 import { buildRanking, optionAwardKey } from "./build-ranking";
 import DisableOverscroll from "../../hooks/overscroll";
 
@@ -40,7 +40,7 @@ export const VoteRoute: FunctionComponent = () => {
   const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number}>({});
   const [ranking, setRanking] = useState<PendingRanking | null>(null);
   const [progress, setProgress] = useState(0);
-  const [sorter, setSorter] = useState<Generator<SortStepResult<any>, Option<any>[], string | undefined> | null>(null);
+  const [sorter, setSorter] = useState<Generator<Matchup<any>, Option<any>[], MatchupResult> | null>(null);
   const [poll, setPoll] = useState<Poll | null>(null);
   const [optionA, setOptionA] = useState<Option<any> | null>(null);
   const [optionB, setOptionB] = useState<Option<any> | null>(null);
@@ -53,7 +53,7 @@ export const VoteRoute: FunctionComponent = () => {
     }
     setPoll(p);
 
-    const generator = insertionSort(p.optionsList);
+    const generator = makeSorter()(p.optionsList);
     setSorter(generator);
 
     const initialRes = generator.next();
@@ -61,9 +61,8 @@ export const VoteRoute: FunctionComponent = () => {
       return;
     }
 
-    setOptionA(initialRes.value.choiceA);
-    setOptionB(initialRes.value.choiceB);
-    setProgress(initialRes.value.progress);
+    setOptionA(initialRes.value.inserted);
+    setOptionB(initialRes.value.inserting);
   }, []);
 
   useEffect(() => {
@@ -96,20 +95,7 @@ export const VoteRoute: FunctionComponent = () => {
     // Record sentiment
     setAwardMap(updatedAwardMap);
 
-    let stepResult = sorter!.next(res.winnerId);
-
-    while (!stepResult.done) {
-      const muKey = matchupKey(stepResult.value.choiceA, stepResult.value.choiceB);
-      const redundant = memoMap.has(muKey);
-      if (!redundant) {
-        break;
-      }
-      console.log("skipping duplicate matchup!");
-
-      const prevResult = memoMap.get(muKey); // BOOKMARK: might be undefined if previously tie, need to explicitly check if has it, also need to set it
-
-      stepResult = sorter!.next(prevResult);
-    }
+    let stepResult = sorter!.next(res);
 
     if (stepResult.done) {
       const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
@@ -121,9 +107,8 @@ export const VoteRoute: FunctionComponent = () => {
     
 
     // new matchup and not done, so set next matchup
-    setOptionA(stepResult.value.choiceA);
-    setOptionB(stepResult.value.choiceB);
-    setProgress(stepResult.value.progress);
+    setOptionA(stepResult.value.inserted);
+    setOptionB(stepResult.value.inserting);
   }, [sorter, awardMap, poll, submitRanking, optionA, optionB]);
 
   if (!poll) {
@@ -151,9 +136,9 @@ export const VoteRoute: FunctionComponent = () => {
         >
             {poll.description}
         </Grid>
-        {voting && <Matchup
+        {voting && <MatchupComponent
             style={{
-            height: "80%"
+                height: "80%"
             }}
             options={poll.optionsList}
             optionA={optionA!}
