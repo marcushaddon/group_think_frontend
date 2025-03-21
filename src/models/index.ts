@@ -20,7 +20,6 @@ export type PendingOption<O = undefined, I = undefined> = Omit<Option<I>, "id"> 
 };
 
 export enum VoteStatus {
-  // TODO: get from backend
     Pending = 0,
     Notified = 1,
     InProgress = 2,

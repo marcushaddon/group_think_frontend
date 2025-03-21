@@ -10,7 +10,7 @@ const LINEBREAK = "%0D%0A";
 const inviteFor = (poll: Poll, p: Participant) => {
     const subject = `${poll.owner} wants you to vote on "${poll.name}"!}`;
     const origin = window.location.origin
-    const href = `${origin}/${poll.id}/vote?token=${p.token}`;
+    const href = `${origin}/vote/${poll.id}?token=${p.token}`;
     const body = `Hi! ${poll.owner.name} wants your input! Click <a href=${href}>here</a> to vote.`;
     const bodyEncoded = body
         .split(/[\.\!]/g)
@@ -60,9 +60,13 @@ const InviteButton: FunctionComponent<{ invite: ReturnType<typeof inviteFor>, gm
         const link = `${poll.owner.name} wants your input on <b>${poll.name}</b>` +
             '<br />'.repeat(2) + 
             `<a href="${href}">Click here to vote!</a>`;
+        const plaintext = `${poll.owner.name} wants your input on ${poll.name}` +
+            '\n'.repeat(2) + 
+            href;
         
         const linkBlob = new Blob([link], { type: "text/html" });
-        const blobText = new Blob(["TODO: PLAINTEXT"], { type: "text/plain" });
+        // TODO: could we have a separate link that causes fs to return a webpreview?
+        const blobText = new Blob([plaintext], { type: "text/plain" });
       
         const item: ClipboardItem[] = [
             new ClipboardItem({

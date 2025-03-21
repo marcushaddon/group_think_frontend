@@ -142,16 +142,9 @@ export const PollRoute: FunctionComponent = () => {
         {breakdownType === "nl" ? "Visual breakdown" : "Text breakdown"}
       </Button>
 
-      {choices.map((ch, i) => (
-        <RankedChoice
-          key={ch.optionId}
-          option={poll.optionsMap[ch.optionId]}
-          choice={ch}
-          winner={i === 0}
-          breakdown={breakdowns?.[ch.optionId]}
-          breakdownType={breakdownType}
-        />
-      ))}
+      <ol>
+        {choices.map((ch) => <li>{poll.optionsMap[ch.optionId].name}</li>)}
+      </ol>
     </Grid>
   )
 }
