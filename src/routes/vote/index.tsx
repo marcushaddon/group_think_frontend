@@ -73,6 +73,9 @@ export const VoteRoute: FunctionComponent = () => {
   const submitRanking = useCallback(async (ranking: PendingRanking) => {
 
     const created = await groupthink.createRanking(ranking);
+    if (!created) {
+        return;
+    }
     setRanking(created);
     setVoting(false);
     navigate(`/${poll!.id}?participantId=${created.participantId}`);
@@ -98,6 +101,7 @@ export const VoteRoute: FunctionComponent = () => {
     let stepResult = sorter!.next(res);
 
     if (stepResult.done) {
+    debugger;
       const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
       submitRanking(ranking);
 

@@ -11,7 +11,7 @@ import {
 export class GroupthinkClient {
   constructor(
     private createPollEndpoint: string = "https://omgwtfbrblolttyl-createpollendpoint.web.val.run/",
-    private fsWriteEndpoint = "https://omgwtfbrblolttyl-writefileendpoint.express.val.run/",
+    private fsWriteEndpoint = "https://omgwtfbrblolttyl-writefileendpoint.web.val.run/",
     private fsReadEndpoint = "https://omgwtfbrblolttyl-readfileendpoint.web.val.run/",
     private fsReadGlobEndpoint = "https://omgwtfbrblolttyl-readglobendpoint.express.val.run/"
   ) {}
@@ -33,7 +33,9 @@ export class GroupthinkClient {
       method: "POST",
       headers: { token },
       body: JSON.stringify({ path, file })
-    })
+    });
+
+    return res.json();
   }
 
   async readFile(path: string, token: string): Promise<string> {
@@ -80,12 +82,26 @@ export class GroupthinkClient {
     return parsed as Poll;;
   }
 
-  async createRanking(pending: PendingRanking): Promise<Ranking> {
+  async createRanking(pending: PendingRanking): Promise<Ranking | void> {
     const accessToken = this.getToken(pending.pollId);
     // poll/id/rankings/email.json
+    if (!accessToken) {
+        alert(`Could not find token for poll ${pending.pollId.slice(0, 5)}`);
+        return;
+    }
+
+    const parsed = jwtDecode(accessToken);
+    const email = (parsed as any)?.meta?.email;
+    if (!email) {
+        alert('Could not parse email from token');
+        return;
+    }
 
     // TODO: construct path, write file 
-    return {} as Ranking;
+    const path = `/polls/${pending.pollId}/rankings/${email}.json`;
+    const res = await this.writeFile(path, JSON.stringify(pending), accessToken);
+    console.log('createRanking: created', res);
+    return pending as Ranking;
   }
 
   getToken(pollId: string): string {
