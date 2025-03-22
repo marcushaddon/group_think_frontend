@@ -20,11 +20,11 @@ export type PendingOption<O = undefined, I = undefined> = Omit<Option<I>, "id"> 
 };
 
 export enum VoteStatus {
-    Pending = 0,
-    Notified = 1,
-    InProgress = 2,
-    Decided = 3,
-    Error = -1
+    Pending = 'Pending',
+    Notified = 'Notified',
+    InProgress = 'InProgress',
+    Decided = 'Decided',
+    Error = 'Error'
 }
 
 export interface Participant {
@@ -59,6 +59,16 @@ export interface Ranking {
 
 export type PendingRanking = Omit<Ranking, "id" | "participantEmail">;
 
+export type Result = {
+    winner: Option<unknown>;
+    tie: undefined;
+    done: boolean;
+  } | {
+    winner: undefined;
+    tie: Option<unknown>[];
+    done: boolean
+  }
+
 export interface Poll {
   id: string;
   name: string;
@@ -68,14 +78,11 @@ export interface Poll {
     email: string,
     token?: string
   }
-  optionsList: Option<any>[];
+  optionsList: Option<unknown>[];
   optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
 
-  result?: {
-    ranked?: Choice[];
-    done: boolean;
-  }
+  result?: Result;
 
   rankings?: Ranking[];
 }

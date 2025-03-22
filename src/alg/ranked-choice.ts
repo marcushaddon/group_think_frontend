@@ -3,17 +3,14 @@ type Option = { id: string };
 export const rankedChoice = <T extends Option>(rankings: T[][]): string | string[] => {
     let workingRankings = [...rankings];
     while (true) {
-        console.log('top of loop', workingRankings);
         // TODO: if we have a tie
         const scores = firstPlaceShares(workingRankings);
-        console.log('scores', scores);
         // 1st shares = shares(rankings)
         const results = superlatives(scores);
-        console.log('results', results);
-        console.log()
+
 
         const weHaveATie = results.winners && results.winners.length === workingRankings.length;
-        console.log({ weHaveATie, remainingOpts: workingRankings[0].length });
+
         if (weHaveATie) {
             return results.winners.map(([ id ]) => id)
         }
@@ -21,21 +18,15 @@ export const rankedChoice = <T extends Option>(rankings: T[][]): string | string
         const winner = results.winner;
         const share = results.winner ? results.winner[1] / workingRankings.length : 0;
 
-        console.log('winner?', { winner, share });
-
         // if winner return winner
         if (winner && share > 0.5) {
-            console.log('we have a winner');
             return results.winner[0];
         }
         // loser = find loser
         // rankings = filter(loser)
-        console.log('first choices before filtering', results.loser[0], workingRankings.map(r => r[0]));
         workingRankings = workingRankings.map(
             (ranking) => ranking.filter((opt) => opt.id !== results.loser[0])
         );
-        console.log('working rankings after filter', workingRankings.map(r => r[0]));
-
     }
 }
 

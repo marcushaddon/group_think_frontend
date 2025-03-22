@@ -24,7 +24,7 @@ export const PlacesSearch: FunctionComponent<Props> = ({
   const [selected, setSelected] = useState<{ [uri: string]: boolean }>({});
 
   const getLocation = useCallback(() => {
-    console.log("attempting to get location from browser");
+
     try {
       navigator
         .geolocation

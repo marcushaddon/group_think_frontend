@@ -4,9 +4,10 @@ import { Alert, AlertTitle, Button, CircularProgress, Divider, Grid, Typography 
 import groupthink from "../../client/groupthink";
 import { Poll, Ranking } from "../../models";
 import { Participant } from "../../components/participant";
+import { Option as OptionComponent } from "../../components/option";
 import { RankedChoice } from "../../components/ranked-choice";
 import { choiceBreakdowns, ChoiceReport } from "../../stats";
-import { usePollWithRankings } from "../../hooks";
+import { usePollWithRankings, useRankedChoice } from "../../hooks";
 
 type RankingDisplay = Ranking & { name: string; participantEmail: string };
 
@@ -17,6 +18,7 @@ export const PollRoute: FunctionComponent = () => {
   const [participantEmail, setparticipantEmail] = useState(searchParams.get("participantEmail"));
 
   const poll = usePollWithRankings(pollId);
+  const result = useRankedChoice(poll);
   console.log({ poll });
   const [ranking, setRanking] = useState<RankingDisplay | null>(null);
 
@@ -43,15 +45,12 @@ export const PollRoute: FunctionComponent = () => {
     return <CircularProgress />
   }
 
-  const choices = ranking ? ranking.choices : poll.result?.done ? poll.result.ranked! : [];
+  const choices = ranking && ranking.choices;
   const title = ranking?.name ? (
     `${ranking.name}'s ranking`
   ) : (
     <>Final Results</>
   );
-
-  let breakdowns: ChoiceReport | undefined;
-  breakdowns = poll.result?.ranked && poll.rankings ? choiceBreakdowns(poll.rankings, poll.result.ranked) : undefined;
 
   return (
     <Grid container>
@@ -59,20 +58,20 @@ export const PollRoute: FunctionComponent = () => {
         <Typography variant="h3">
           {poll.name}
         </Typography>
-        {poll.result?.done ? (
+        <Typography variant="subtitle1">
+          by {poll.owner.name}
+        </Typography>
+        {result?.done ? (
           <Alert severity="success">
             <AlertTitle>Complete</AlertTitle>
-            The results are in! Check them out below...
+            We have a winner{result?.tie && '...s'}!!!
           </Alert>
         ) : (
           <Alert severity="warning">
             <AlertTitle>In progress</AlertTitle>
-            We are still wating on {poll.participants.length - (poll.rankings?.length || 0)} participants to submit their votes
+            We are still wating on {poll.participants.length - (poll.rankings?.length || 0)} participants to submit their votes. The winner so far is...
           </Alert>
         )}
-        <Typography variant="subtitle1">
-          by {poll.owner.name}
-        </Typography>
       </Grid>
 
       <Typography variant="subtitle2">
@@ -103,13 +102,21 @@ export const PollRoute: FunctionComponent = () => {
 
       <Divider />
 
+      {result?.winner ? (
+        <>
+            <h4>Winner</h4>
+            <OptionComponent {...result.winner} />
+        </>
+      ) : result?.tie ? (
+        <>
+            <h4>{result.tie.length} way tie</h4>
+            {result.tie.map((opt) => <OptionComponent {...opt} /> )}
+        </>
+      ) : <></>}
+
       <Typography variant="h5">
         {title}
       </Typography>
-
-      {!poll.result?.done && (
-        <>Poll results will be viewable when all participants have submitted.</>
-      )}
 
       {ranking && poll.result?.done && (
         <Button
@@ -122,9 +129,12 @@ export const PollRoute: FunctionComponent = () => {
         </Button>
       )}
 
-      <ol>
-        {choices.map((ch) => <li>{poll.optionsMap[ch.optionId].name}</li>)}
-      </ol>
+      {choices && (
+        <ol>
+            {choices.map((ch) => <li>{poll.optionsMap[ch.optionId].name}</li>)}
+        </ol>
+      )}
+      
     </Grid>
   )
 }

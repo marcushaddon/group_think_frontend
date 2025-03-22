@@ -5,6 +5,7 @@ import {
   Ranking,
   Poll, 
   PendingPoll,
+  VoteStatus,
 } from "../models";
 import { rankedChoice } from "../alg/ranked-choice";
 
@@ -73,18 +74,18 @@ export class GroupthinkClient {
     const accessToken = this.getToken(pollId);
     const res = await this.readFile(`/polls/${pollId}/poll.json`, accessToken);
 
-    const parsed = JSON.parse(res);
+    const parsed = JSON.parse(res) as Poll;
 
     // TODO: read path, read glob for rankings, parse and construct
     const optionsMap = parsed.optionsList?.reduce((map, current) => ({
         ...map,
         [current.id]: current
     }), {});
-    
+
     return {
         ...parsed,
         optionsMap,
-    } as Poll;;
+    } as Poll;
   }
 
   async getPollWithRankings(pollId: string): Promise<Poll> {
@@ -103,15 +104,18 @@ export class GroupthinkClient {
         throw new Error('could not find rankings for poll');
     }
 
-    const rankedIds = rankedChoice(
-        rankings.map(
-            (r) => r.choices.map((choice) => ({ id: choice.optionId }))
-        )
-    )
+    const participansWithStatii = poll.participants.map(
+        (p) => ({
+            ...p,
+            status: rankings.find(({ participantEmail }) => participantEmail === p.email) ?
+                VoteStatus.Decided : VoteStatus.Pending
+        })
+    );
 
     return {
         ...poll,
-        rankings
+        rankings,
+        participants: participansWithStatii
     }
   }
 
@@ -121,8 +125,6 @@ export class GroupthinkClient {
         `/polls/${pollId}/rankings/*.json`,
         token
     );
-
-    console.log('fetched rankings', rankingsRes);
 
     return rankingsRes.map((fr) => JSON.parse(fr.file));
   }
@@ -158,7 +160,7 @@ export class GroupthinkClient {
         participantEmail: email
     };
     const res = await this.writeFile(path, JSON.stringify(created), accessToken);
-    console.log('createRanking: created', res);
+
     return created;
   }
 
@@ -167,7 +169,6 @@ export class GroupthinkClient {
     const fromQuery = new URLSearchParams(window.location.search).get("token");
     if (fromQuery) {
       const decoded = jwtDecode(fromQuery);
-      console.log("setting token for poll", pollId, { decoded });
 
       localStorage.setItem(`${pollId}token`, fromQuery);
 
@@ -176,7 +177,7 @@ export class GroupthinkClient {
 
     const fromLocal = localStorage.getItem(`${pollId}token`);
     const decoded = !fromLocal ? "NULL" : jwtDecode(fromLocal);
-    console.log("Token from local", { decoded });
+
     if (fromLocal) return fromLocal;
 
     throw new Error("No access token found for poll: " + pollId);
