@@ -97,7 +97,7 @@ export const Swipe: FunctionComponent<Props> = ({
 
   const touchMove: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
     if (swipeStart === null) {
-      console.log("swipe start null! visible?", visible);
+        
       return;
     }
     const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];

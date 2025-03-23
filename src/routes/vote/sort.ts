@@ -1,4 +1,4 @@
-import { assert } from "console";
+import * as logger from "../../common/logging";
 import { Option } from "../../models";
 import { MatchupResult } from ".";
 
@@ -22,7 +22,13 @@ enum Relation {
 }
 
 const matchupKey = (a: ID, b: ID) =>
-    [a, b].map(({ id }) => id).sort().join('_vs_');
+    [a, b].map(
+        (item) => logger.assert(
+            !!item?.id,
+            `Did not find field 'id' in item for matchupKey`,
+            { item }
+        ) && item.id
+    ).sort().join('_vs_');
 
 export const sorter = () => {
     const comparisons = new Map<string, MatchupResult>();
@@ -33,10 +39,13 @@ export const sorter = () => {
             Relation.EQ;
 
     function* compare<T extends ID>(inserted: T, inserting: T) {
+        logger.log(`compare: comparing`, { inserted, inserting });
         const key = matchupKey(inserted, inserting);
-                const existing = comparisons.get(key);
+        const existing = comparisons.get(key);
         if (existing) {
-                        return toRelation(existing, inserting);
+            logger.log(`compare: ${key} existing`, { existing });
+    
+            return toRelation(existing, inserting);
         }
 
         const matchup: Matchup<T> = {
@@ -44,8 +53,8 @@ export const sorter = () => {
             inserting
         };
     
-                const res: MatchupResult = yield matchup;
-                comparisons.set(key, res);
+        const res: MatchupResult = yield matchup;
+        comparisons.set(key, res);
     
         return toRelation(res, inserting);
     }
@@ -56,8 +65,9 @@ export const sorter = () => {
         left = 0,
         right = items.length
     ): Generator<Matchup<T>, T[], MatchupResult> {
-                if (right <= left) {
-                        const finalRes = yield* compare(item, items[left]);
+        logger.log(`binarySearch: left = ${left} right = ${right}, len = ${items.length}`, { items });
+        if (right <= left) {
+            const finalRes = yield* compare(items[left], item);
             
             const restingPlace = (finalRes === Relation.GT) ?
                 (left + 1) : left;
@@ -65,12 +75,20 @@ export const sorter = () => {
             const result = [...items.slice(0, restingPlace), item, ...items.slice(restingPlace)];
             return result;
         }
+
+        // logger.assert(left >= 0 && right < items.length, 'binarySearch: invalid bounds for binary search', {
+        //     left,
+        //     right, 
+        //     items,
+        //     count: items.length
+        // });
     
         const middle = Math.floor((left + right) / 2);
-                const res: Relation = yield* compare(items[left], item);
+        logger.log(`binarySearch: middle = ${middle}`);
+        const res: Relation = yield* compare(items[left], item);
         
         if (res === Relation.EQ) {
-                        const result = [...items.slice(0, middle), item, ...items.slice(middle)];
+            const result = [...items.slice(0, middle), item, ...items.slice(middle)];
             return result;
         }
     
@@ -84,22 +102,31 @@ export const sorter = () => {
     return function* insertionSort<T extends ID>(opts: T[]) {
         let sorted: T[] = [];
         const toSort = [...opts].sort(() => Math.random() > 0.5 ? 1 : -1);
-        console.log('insertionSort: toSort = ', toSort);
-            
-        while (toSort.length > 0) {
-            const toInsert = toSort.pop()!;
-            console.log('sort: inserting', toInsert, 'remaining = ', toSort.length);
-            if (sorted.length === 0) {
-                sorted.push(toInsert);
-                continue;
+        console.log('insertionSort: sorting = ', toSort);
+        try {  
+            while (toSort.length > 0) {
+                const toInsert = toSort.pop()!;
+                logger.log('sort: inserting', { toInsert, remaining: toSort.length });
+                if (sorted.length === 0) {
+                    sorted.push(toInsert);
+                    continue;
+                }
+        
+                sorted = yield* binarySearch(sorted, toInsert);
+                logger.log(`sort: inserted ${toInsert.id}`, { sorted });
             }
-    
-                        sorted = yield* binarySearch(sorted, toInsert);
-                        console.log(`sort: inserted ${toInsert.id}, sorted = `, sorted)
+            logger.log('sort: sort complete', { toSort });
+        
+            return sorted;
+        } catch (e) {
+            const msg = e instanceof Error ? `name: ${e.name}, cause: ${e.cause}, message: ${e.message}, stack: ${e.stack}` : `unknown: ${e}`;
+            logger.error('insertionSort: encountered error', {
+                error: msg
+            });
+            alert('Error during sorter, please export logs');
+            throw e;
         }
-        console.log('sort: sort complete', toSort);
-    
-        return sorted;
+        
     }
 }
 

@@ -19,7 +19,7 @@ export const PollRoute: FunctionComponent = () => {
 
   const poll = usePollWithRankings(pollId);
   const result = useRankedChoice(poll);
-  console.log({ poll });
+
   const [ranking, setRanking] = useState<RankingDisplay | null>(null);
 
   useEffect(() => {

@@ -1,14 +1,41 @@
 
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CreateRoute } from "./routes/create/create";
 import { PlacesSearch } from './routes/create/places-search';
 import { PollRoute } from "./routes/poll";
 import { VoteRoute } from './routes/vote';
 import { InviteRoute } from './routes/invite';
+import * as logger from './common/logging';
 
 
 function App() {
+  const [logsTimeout, setLogsTimeout] = useState<number>(0);
+  useEffect(() => {
+    window.onerror = function(message, source, lineno, colno, error) {
+      logger.error(`UNCAUGHT EXCEPTION: ${message}`, { 
+        source,
+        lineno,
+        colno,
+        error
+      });
+      alert('uncaught error, please export logs');
+
+    };
+
+  }, []);
+
+
+
+  const maybeExportLogs = useCallback(() => {
+    const timeout = window.setTimeout(() => logger.saveLogs(), 5000);
+    setLogsTimeout(timeout);
+  }, []);
+
+  const cancelLogsExport = useCallback(() => {
+    window.clearTimeout(logsTimeout);
+  }, [logsTimeout]);
+
   return (
     <div
       style={{
@@ -17,6 +44,8 @@ function App() {
         // overflowY: "scroll",
         // WebkitOverflowScrolling: "touch",
       }}
+      onTouchStart={maybeExportLogs}
+      onTouchEnd={cancelLogsExport}
     >
       <BrowserRouter>
         <Routes>
@@ -28,7 +57,7 @@ function App() {
       </BrowserRouter>
     </div>
     
-  )
+  );
 }
 
 export default App;
