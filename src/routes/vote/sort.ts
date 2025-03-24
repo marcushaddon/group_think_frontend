@@ -43,9 +43,10 @@ export const sorter = () => {
         const key = matchupKey(inserted, inserting);
         const existing = comparisons.get(key);
         if (existing) {
-            logger.log(`compare: ${key} existing`, { existing });
+            const relation = toRelation(existing, inserting);
+            logger.log(`compare: ${key} existing. result = ${relation}`);
     
-            return toRelation(existing, inserting);
+            return relation;
         }
 
         const matchup: Matchup<T> = {
@@ -56,9 +57,11 @@ export const sorter = () => {
         const res: MatchupResult = yield matchup;
         comparisons.set(key, res);
     
-        return toRelation(res, inserting);
+        const relation = toRelation(res, inserting);
+        logger.log(`compare: got result from user. result = ${relation}`)
+        return relation;
     }
-    
+
     function* binarySearch<T extends ID>(
         items: T[],
         item: T,
@@ -94,11 +97,11 @@ export const sorter = () => {
     
         const [newLeft, newRight] = res === Relation.GT ?
             [middle + 1, right] : [left, middle - 1];
-            
+
         yield* binarySearch(items, item, newLeft, newRight);
         throw new Error('ASSERTION: UNREACHABLE');
     }
-    
+
     return function* insertionSort<T extends ID>(opts: T[]) {
         let sorted: T[] = [];
         const toSort = [...opts].sort(() => Math.random() > 0.5 ? 1 : -1);
