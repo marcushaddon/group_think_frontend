@@ -38,7 +38,6 @@ export const VoteRoute: FunctionComponent = () => {
 
   const [voting, setVoting] = useState(true);
   const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number}>({});
-  const [ranking, setRanking] = useState<PendingRanking | null>(null);
   const [progress, setProgress] = useState(0);
   const [sorter, setSorter] = useState<Generator<Matchup<any>, Option<any>[], MatchupResult> | null>(null);
   const [poll, setPoll] = useState<Poll | null>(null);
@@ -53,7 +52,8 @@ export const VoteRoute: FunctionComponent = () => {
     }
     setPoll(p);
 
-    const generator = makeSorter()(p.optionsList);
+    const shuffled = [...p.optionsList].sort(() => Math.random() > 0.5 ? -1 : 1);
+    const generator = makeSorter()(shuffled);
     setSorter(generator);
 
     const initialRes = generator.next();
@@ -76,7 +76,7 @@ export const VoteRoute: FunctionComponent = () => {
     if (!created) {
         return;
     }
-    setRanking(created);
+
     setVoting(false);
     navigate(`/${poll!.id}?participantEmail=${created.participantEmail}`);
   }, [poll, navigate]);
@@ -101,7 +101,6 @@ export const VoteRoute: FunctionComponent = () => {
     let stepResult = sorter!.next(res);
 
     if (stepResult.done) {
-    debugger;
       const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
       submitRanking(ranking);
 

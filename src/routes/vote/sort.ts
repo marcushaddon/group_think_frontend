@@ -66,7 +66,7 @@ export const sorter = () => {
         items: T[],
         item: T,
         left = 0,
-        right = items.length
+        right = items.length - 1
     ): Generator<Matchup<T>, T[], MatchupResult> {
         logger.log(`binarySearch: left = ${left} right = ${right}, len = ${items.length}`, { items });
         if (right <= left) {
@@ -75,7 +75,11 @@ export const sorter = () => {
             const restingPlace = (finalRes === Relation.GT) ?
                 (left + 1) : left;
                         
-            const result = [...items.slice(0, restingPlace), item, ...items.slice(restingPlace)];
+            const result = [
+                ...items.slice(0, restingPlace),
+                item,
+                ...items.slice(restingPlace)
+            ];
             return result;
         }
 
@@ -91,20 +95,25 @@ export const sorter = () => {
         const res: Relation = yield* compare(items[left], item);
         
         if (res === Relation.EQ) {
-            const result = [...items.slice(0, middle), item, ...items.slice(middle)];
+            const result = [
+                ...items.slice(0, middle),
+                item,
+                ...items.slice(middle)
+            ];
+            logger.log(`binarySearch: found insertion point @ ${middle}`);
+
             return result;
         }
     
         const [newLeft, newRight] = res === Relation.GT ?
             [middle + 1, right] : [left, middle - 1];
 
-        yield* binarySearch(items, item, newLeft, newRight);
-        throw new Error('ASSERTION: UNREACHABLE');
+        return yield* binarySearch(items, item, newLeft, newRight);
     }
 
     return function* insertionSort<T extends ID>(opts: T[]) {
         let sorted: T[] = [];
-        const toSort = [...opts].sort(() => Math.random() > 0.5 ? 1 : -1);
+        const toSort = [...opts];
         console.log('insertionSort: sorting = ', toSort);
         try {  
             while (toSort.length > 0) {
