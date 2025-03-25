@@ -1,6 +1,3 @@
-import { Alert, Button, Grid, Typography } from "@mui/material";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import PendingIcon from '@mui/icons-material/Pending';
 import React, { FunctionComponent } from "react";
 import { PendingParticipant, Participant as ParticipantModel, VoteStatus } from "../models";
 import { Action } from "./action";
@@ -34,26 +31,24 @@ export const Participant: FunctionComponent<Props> = ({
   const { status } = participant;
 
   const text = (
-    <Typography variant="body1" component={status === VoteStatus.Pending ? "i" : "span"}>
-      {participant.name} {action && <Button onClick={action.cb}>{action.name}</Button>}
-    </Typography>
+    <>
+      {participant.name} {action && <button onClick={action.cb}>{action.name}</button>}
+    </>
   );
 
   const icon = participant.status === VoteStatus.Decided ? (
-    <CheckCircleOutlineIcon color="success" />
-  ) : participant.status === VoteStatus.Pending ? (
-    <PendingIcon color="info" />
-  ) : (
+    <>voted</>
+  ) : participant.status === VoteStatus.Pending ? <>pending</> : (
     <span>TODO: handle other statuses</span>
   )
 
   return (
-    <Grid container style={{
+    <div style={{
       border: highlight ? "1px dashed green" : "",
     }}>
-      <Grid item xs={12}>
+      <div>
         {icon} {text}
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 }

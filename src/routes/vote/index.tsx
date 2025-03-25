@@ -1,9 +1,7 @@
-import { CircularProgress, Grid } from "@mui/material";
 import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import groupthink from "../../client/groupthink";
 import { Option, PendingRanking, Choice, Poll } from "../../models";
-import { progress as progGrad } from "../../components/gradients";
 import { Matchup as MatchupComponent } from "./matchup";
 import { ManualReview } from "./manual-review";
 import { sorter as makeSorter, Matchup } from "./sort";
@@ -117,24 +115,21 @@ export const VoteRoute: FunctionComponent = () => {
   return (
     <>
       <DisableOverscroll />
-      <Grid
+      <div
         className="vote.root"
-        container
         style={{
             // height: "100vh",
             overflowY: "hidden",
             minHeight: "100vh"
         }}
         >
-        <Grid
-            item xs={12}
+        <div
             style={{
             height: "10%",
-            background: progGrad(progress)
             }}
         >
             {poll.description}
-        </Grid>
+        </div>
         {voting && <MatchupComponent
             style={{
                 height: "80%"
@@ -144,7 +139,7 @@ export const VoteRoute: FunctionComponent = () => {
             optionB={optionB!}
             onResult={onMatchupResult}
         />}
-      </Grid>
+      </div>
     </>
     
     

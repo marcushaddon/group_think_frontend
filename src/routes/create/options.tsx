@@ -1,4 +1,3 @@
-import { Button, Grid, TextareaAutosize, Typography } from "@mui/material";
 import React, { FunctionComponent, useCallback, useRef, useState } from "react";
 
 export interface Props {
@@ -19,25 +18,24 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
   }, [onComplete, value]);
 
   return (
-    <Grid container
+    <div
       style={{
         justifyContent: "center"
       }}
     >
-      <Typography variant="h4">Enter Options (comma separated)</Typography>
-      <Grid item
+      <h4>Enter Options (comma separated)</h4>
+      <div 
         style={{
           width: "90%"
         }}
       >
-        <Button
-          variant="outlined"
+        <button
           onClick={submit}
           disabled={!!!value}
         >
           Save
-        </Button>
-        <TextareaAutosize
+        </button>
+        <textarea
           ref={textRef}
           style={{
             width: "90%",
@@ -54,13 +52,13 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
             );
           }}
         />
-      </Grid>
+      </div>
 
       <ol>
       {options.map((opt) => <li>{opt}</li>)}
       </ol>
       
       
-    </Grid>
+    </div>
   );
 }

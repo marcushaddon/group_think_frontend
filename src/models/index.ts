@@ -1,5 +1,3 @@
-import { IconName } from "../components/dynamic-icon";
-
 export enum OptionType {
   GOOGLE_PLACE = "google-place",
   GOOGLE_SEARCH_RESULT = "google-search-result",

@@ -1,4 +1,3 @@
-import { Button, Grid, Typography } from "@mui/material";
 import React, { useRef, FunctionComponent, useCallback, useState, useEffect } from "react";
 
 export interface Props {
@@ -20,7 +19,7 @@ const Rejected: FunctionComponent = () => (
       backgroundColor: "red"
     }}
   >
-    <Typography variant="h3">X</Typography>
+    <h3>X</h3>
   </div>
 );
 
@@ -35,7 +34,7 @@ const Selected: FunctionComponent = () => (
       backgroundColor: "green"
     }}
   >
-    <Typography variant="h3">YES</Typography>
+    <h3>YES</h3>
   </div>
 )
 
@@ -93,14 +92,14 @@ export const Swipe: FunctionComponent<Props> = ({
       {/* {rejected && <Rejected />}
       {selected && <Selected />} */}
       {children}
-      <Grid container item style={{ width: "100%" }}>
-        <Button color="error" variant="contained" style={{ width: "50%"}} onClick={onLeftWrapper}>
+      <div style={{ width: "100%" }}>
+        <button style={{ width: "50%"}} onClick={onLeftWrapper}>
           No
-        </Button>
-        <Button color="success"variant="contained" style={{ width: "50%"}} onClick={onRightWrapper}>
+        </button>
+        <button style={{ width: "50%"}} onClick={onRightWrapper}>
           Yes
-        </Button>
-      </Grid>
+        </button>
+      </div>
     </div>
   );
 }

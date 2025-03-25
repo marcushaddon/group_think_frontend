@@ -1,12 +1,8 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Alert, AlertTitle, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
-import groupthink from "../../client/groupthink";
-import { Poll, Ranking } from "../../models";
+import { Ranking } from "../../models";
 import { Participant } from "../../components/participant";
 import { Option as OptionComponent } from "../../components/option";
-import { RankedChoice } from "../../components/ranked-choice";
-import { choiceBreakdowns, ChoiceReport } from "../../stats";
 import { usePollWithRankings, useRankedChoice } from "../../hooks";
 
 type RankingDisplay = Ranking & { name: string; participantEmail: string };
@@ -42,7 +38,7 @@ export const PollRoute: FunctionComponent = () => {
   }, [setRanking, poll, searchParams, pollId, participantEmail]);
 
   if (!poll) {
-    return <CircularProgress />
+    return <>TODO: progress</>
   }
 
   const choices = ranking && ranking.choices;
@@ -53,30 +49,30 @@ export const PollRoute: FunctionComponent = () => {
   );
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography variant="h3">
+    <div>
+      <div>
+        <h3>
           {poll.name}
-        </Typography>
-        <Typography variant="subtitle1">
+        </h3>
+        <small>
           by {poll.owner.name}
-        </Typography>
+        </small>
         {result?.done ? (
-          <Alert severity="success">
-            <AlertTitle>Complete</AlertTitle>
+          <div>
+            <div>Complete</div>
             We have a winner{result?.tie && '...s'}!!!
-          </Alert>
+          </div>
         ) : (
-          <Alert severity="warning">
-            <AlertTitle>In progress</AlertTitle>
+          <div>
+            <div>In progress</div>
             We are still wating on {poll.participants.length - (poll.rankings?.length || 0)} participants to submit their votes. The winner so far is...
-          </Alert>
+          </div>
         )}
-      </Grid>
+      </div>
 
-      <Typography variant="subtitle2">
+      <>
         {poll.participants.length} participants
-      </Typography>
+      </>
       
       {poll.participants.map(p => {
         const pRanking = poll.rankings?.find(r => r.participantEmail === p.id);
@@ -100,7 +96,7 @@ export const PollRoute: FunctionComponent = () => {
         );
       })}
 
-      <Divider />
+      <hr />
 
       {result?.winner ? (
         <>
@@ -114,19 +110,19 @@ export const PollRoute: FunctionComponent = () => {
         </>
       ) : <></>}
 
-      <Typography variant="h5">
+      <h5>
         {title}
-      </Typography>
+      </h5>
 
       {ranking && poll.result?.done && (
-        <Button
+        <button
           onClick={() => {
             searchParams.delete("participantEmail");
             setSearchParams(searchParams);
           }}
         >
           view results
-        </Button>
+        </button>
       )}
 
       {choices && (
@@ -135,6 +131,6 @@ export const PollRoute: FunctionComponent = () => {
         </ol>
       )}
       
-    </Grid>
+    </div>
   )
 }

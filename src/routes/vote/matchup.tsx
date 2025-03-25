@@ -1,4 +1,3 @@
-import { Grid, Snackbar, Typography } from "@mui/material";
 import React, { FunctionComponent, useCallback, useState } from "react";
 import { MatchupResult, OptionAward } from ".";
 import { Option } from "../../components/option/option";
@@ -82,14 +81,13 @@ export const Matchup = <T extends object>({
   }, [onResult]);
 
   return (
-    <Grid
-      container
+    <div
       style={{
         ...(style || {})
       }}
     > {/* BOOKMARK: block this out and debug how to make it fit */}
       {/* TOP HALF */}
-      <Grid item xs={12}>
+      <div>
         {/* TOP HALF */}
         {options.map(o => (
           <Swipe
@@ -104,9 +102,9 @@ export const Matchup = <T extends object>({
             />
           </Swipe>
         ))}
-      </Grid>
+      </div>
       {/* MIDDLE */}
-      <Grid item xs={12}>
+      <div>
         {/* MIDDLE */}
         <Swipe
           onLeft={negativeTie}
@@ -119,9 +117,9 @@ export const Matchup = <T extends object>({
             refreshKey={optionA.id + optionB.id}
           />
         </Swipe>
-      </Grid>
+      </div>
       {/* BOTTOM HALF */}
-      <Grid item xs={12} style={{ height: "40%" }}>
+      <div style={{ height: "40%" }}>
         {/* BOTTOM HALF */}
         {options.map(o => (
             <Swipe
@@ -136,15 +134,8 @@ export const Matchup = <T extends object>({
               />
             </Swipe>
         ))}
-      </Grid>
-
-      <Snackbar
-        open={typeof snackMessage === "string"}
-        autoHideDuration={2000}
-        onClose={() => setSnackMessage(null)}
-        message={snackMessage}
-      />
-    </Grid>
+      </div>
+    </div>
   );
 }
 
@@ -156,25 +147,21 @@ const Tie: FunctionComponent<TieProps> = ({
   ambivalentTie,
   refreshKey
 }) => (
-  <Grid
-    container
-    item
-    xs={12}
-  >
-    <Grid item xs={4} style={{ backgroundColor: "red" }}>
-      <Typography variant="subtitle2">
+  <div>
+    <div  style={{ backgroundColor: "red" }}>
+      <small>
         &lt;&lt;&lt; x neither
-      </Typography>
-    </Grid>
-    <Grid item xs={4} onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
-      <Typography variant="subtitle2">
+      </small>
+    </div>
+    <div onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
+      <small>
         ~ ambivalent
-      </Typography>
-    </Grid>
-    <Grid item xs={4} style={{ backgroundColor: "green" }}>
-      <Typography variant="subtitle2">
+      </small>
+    </div>
+    <div  style={{ backgroundColor: "green" }}>
+      <small>
         + both &gt;&gt;&gt;
-      </Typography>
-    </Grid>
-  </Grid>
+      </small>
+    </div>
+  </div>
 )

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 const DisableOverscroll = () => {
   useEffect(() => {
-    const preventOverscroll = (event) => {
+    const preventOverscroll = (event: TouchEvent) => {
       event.preventDefault();
     };
 

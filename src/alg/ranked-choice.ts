@@ -35,7 +35,7 @@ const firstPlaceShares = (
 ): Record<string, number> => rs.reduce((counts, current) => ({
     ...counts,
     [current[0].id]: (counts[current[0].id] || 0) + 1
-}), {});
+}), {} as Record<string, number>);
 
 type Highest = {
     winner: [string, number],

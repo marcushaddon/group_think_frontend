@@ -1,5 +1,3 @@
-import { PlusOne, Check, Cancel } from "@mui/icons-material";
-import { Zoom } from "@mui/material";
 import React, { FunctionComponent, useState, useCallback } from "react";
 
 export interface Props {
@@ -59,9 +57,9 @@ const Confirm = () => (
       backgroundColor: "green",
     }}
   >
-    <Zoom in={true} style={{ transitionDelay: "100ms" }}>
-      <Check sx={{ fontSize: "200px"}} />
-    </Zoom>
+    <div style={{ transitionDelay: "100ms" }}>
+      <>TODO: check mark</>
+    </div>
     
   </div>
 );
@@ -73,9 +71,9 @@ const Reject = () => (
       backgroundColor: "red",
     }}
   >
-    <Zoom in={true} style={{ transitionDelay: "100ms" }}>
-      <Cancel sx={{ fontSize: "200px"}} />
-    </Zoom>
+    <div style={{ transitionDelay: "100ms" }}>
+      <>TODO: cancel icon</>
+    </div>
     
   </div>
 );

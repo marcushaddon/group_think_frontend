@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CreateRoute } from "./routes/create/create";
-import { PlacesSearch } from './routes/create/places-search';
 import { PollRoute } from "./routes/poll";
 import { VoteRoute } from './routes/vote';
 import { InviteRoute } from './routes/invite';
