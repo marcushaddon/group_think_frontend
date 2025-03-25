@@ -11,13 +11,13 @@ import { buildRanking, optionAwardKey } from "./build-ranking";
 import DisableOverscroll from "../../hooks/overscroll";
 
 export enum OptionAward {
-  EXPLICIT_WIN = "explicitWins",
-  EXPLICIT_LOSS = "explicitLosses",
-  IMPLICIT_WIN = "implicitWins",
-  IMPLICIT_LOSS = "implicitLosses",
-  POSITIVE_TIE = "positiveTies",
-  NEGATIVE_TIE = "negativeTies",
-  AMBIVALENT_TIE = "ambivalentTies"
+  EXPLICIT_WIN = "explicitWin",
+  EXPLICIT_LOSS = "explicitLoss",
+  IMPLICIT_WIN = "implicitWin",
+  IMPLICIT_LOSS = "implicitLoss",
+  POSITIVE_TIE = "positiveTie",
+  NEGATIVE_TIE = "negativeTie",
+  AMBIVALENT_TIE = "ambivalentTie"
 }
 
 export interface MatchupResult {
@@ -25,10 +25,6 @@ export interface MatchupResult {
   optionB: OptionAward;
   winnerId?: string;
 }
-
-const matchupKey = (a: Option<any>, b: Option<any>): string => [a.id, b.id].sort().join("_");
-
-const memoMap = new Map<string, string>();
 
 export type ChoiceMap = { [idAwardKey: string]: number };
 
