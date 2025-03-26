@@ -2,14 +2,23 @@ import { FunctionComponent } from "react";
 
 import { Option as OptionProps } from "../../models";
 
-export type Props = Partial<OptionProps<any>>;
+export type Props = Partial<OptionProps<any>> & {
+    className?: string;
+};
 
 // TODO: make generic?
 export const Option: FunctionComponent<Props> = ({
   name,
+  className = ""
 }) => {
   // TODO: typeguard on 'type' field
 
-  return <div style={{ padding: "20px" }}>STYLE ME: {name}</div>;
+  return (
+    <div
+        className={`${className} text-center content-center border-2 border-double text-xl`}
+    >
+       {name}
+    </div>
+  );
 };
 

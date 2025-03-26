@@ -6,6 +6,8 @@ export interface Props {
   children: React.ReactNode;
   onLeft: () => void;
   onRight: () => void;
+
+  className?: string;
 }
 
 enum Dir {
@@ -80,6 +82,8 @@ export const Swipe: FunctionComponent<Props> = ({
   children,
   onLeft,
   onRight,
+
+  className = ""
 }) => {
   const [swipeStart, setSwipeStart] = useState<[number, number] | null>(null);
   const [dir, setDir] = useState<Dir | null>(null);
@@ -134,7 +138,7 @@ export const Swipe: FunctionComponent<Props> = ({
     [],
   );
 
-  const touchEnd: React.TouchEventHandler<HTMLDivElement> = useCallback(() => {
+  const touchEnd: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
     setSwipeStart(null);
     setHDelta(0);
     setVDelta(0);
@@ -170,6 +174,7 @@ export const Swipe: FunctionComponent<Props> = ({
       onTouchStart={touchStart}
       onTouchEnd={touchEnd}
       onTouchMove={touchMove}
+      className={className}
       style={{
         position: "relative",
         backgroundColor: displayConfirm

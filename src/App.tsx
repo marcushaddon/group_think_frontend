@@ -6,6 +6,7 @@ import { VoteRoute } from "./routes/vote";
 import { InviteRoute } from "./routes/invite";
 import * as logger from "./common/logging";
 
+
 function App() {
   const [logsTimeout, setLogsTimeout] = useState<number>(0);
   useEffect(() => {
