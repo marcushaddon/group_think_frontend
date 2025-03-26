@@ -130,7 +130,6 @@ export const VoteRoute: FunctionComponent = () => {
     <>
       <DisableOverscroll />
       <div
-        className="vote.root"
         style={{
           // height: "100vh",
           overflowY: "hidden",

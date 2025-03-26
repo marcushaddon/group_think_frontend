@@ -10,6 +10,6 @@ export const Option: FunctionComponent<Props> = ({
 }) => {
   // TODO: typeguard on 'type' field
 
-  return <div style={{ padding: "20px" }}>STYLE ME: {name}</div>;
+  return <div style={{ padding: "20px" }}>STYLE ME BITCH: {name}</div>;
 };
 
