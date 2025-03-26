@@ -13,6 +13,3 @@ export const Option: FunctionComponent<Props> = ({
   return <div style={{ padding: "20px" }}>STYLE ME: {name}</div>;
 };
 
-interface InfoProps {
-  info: OptionProps<any>["info"];
-}

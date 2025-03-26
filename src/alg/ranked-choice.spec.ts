@@ -6,6 +6,7 @@ const randInt = (min = 0, max: number) =>
   min + Math.floor(Math.random() * (max - min + 1));
 
 const randFloat = (min = 0, max: number) => min + Math.random() * (max - min);
+randFloat(0, 1);
 
 const choose = <T>(opts: T[]) => {
   console.assert(
@@ -78,27 +79,4 @@ it.each(times(20))("chooses outright majority", () => {
   console.log("test is done");
 });
 
-it.skip("finds winner after 1 runoff", () => {
-  const opts = options(randInt(2, 15));
-  const winner = choose(opts);
-
-  // We want a winner that only gains a majority after one runoff
-  const majority = randInt(Math.ceil(opts.length / 1) + 1, opts.length);
-
-  // Now split majority
-  const portion =
-    majority === opts.length ? randFloat(0.25, 0.75) : randFloat(0, 0.9);
-
-  const parts = [
-    Math.ceil(majority * portion),
-    majority - Math.floor(majority * portion),
-  ];
-
-  const rounds = [...parts].sort((a, b) => a - b);
-
-  const firstRoundFirsts = times(rounds[0]).map(() =>
-    shuffleWithFirst(opts, winner.id),
-  );
-  // all of our 'winner in second place' rankings also need to have
-  // their first place be the loser
-});
+it.todo("finds winner after 1 runoff");

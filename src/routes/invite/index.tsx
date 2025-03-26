@@ -24,23 +24,13 @@ const inviteFor = (poll: Poll, p: Participant) => {
   };
 };
 
-const InviteLink: FunctionComponent<{
-  invite: ReturnType<typeof inviteFor>;
-}> = ({ invite: { subject, body, participant } }) => (
-  <a
-    href={`mailto:${participant.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`}
-  >
-    Invite
-  </a>
-);
-
 // https://stackoverflow.com/questions/53003980/how-to-copy-a-hypertext-link-into-clipboard-without-losing-the-link-properties
 // https://stackoverflow.com/questions/74838274/copy-html-rich-text-using-js-navigator-clipboard
 const InviteButton: FunctionComponent<{
   invite: ReturnType<typeof inviteFor>;
   gmail?: boolean;
 }> = ({
-  invite: { subject, body, participant, href, poll },
+  invite: { participant, href, poll },
   gmail = false,
 }) => {
   const invite = () => {

@@ -19,7 +19,7 @@ export const Matchup = <T extends object>({
   onResult,
   style,
 }: Props<T>) => {
-  const [snackMessage, setSnackMessage] = useState<string | null>(null);
+  const [_snackMessage, setSnackMessage] = useState<string | null>(null);
   const chooseA = useCallback(() => {
     onResult({
       winnerId: optionA.id,
@@ -141,7 +141,7 @@ interface TieProps {
   ambivalentTie: () => void;
   refreshKey: string;
 }
-const Tie: FunctionComponent<TieProps> = ({ ambivalentTie, refreshKey }) => (
+const Tie: FunctionComponent<TieProps> = ({ ambivalentTie }) => (
   <div>
     <div style={{ backgroundColor: "red" }}>
       <small>&lt;&lt;&lt; x neither</small>

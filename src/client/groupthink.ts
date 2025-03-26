@@ -165,11 +165,7 @@ export class GroupthinkClient {
       ...pending,
       participantEmail: email,
     };
-    const res = await this.writeFile(
-      path,
-      JSON.stringify(created),
-      accessToken,
-    );
+    await this.writeFile(path, JSON.stringify(created), accessToken);
 
     return created;
   }
