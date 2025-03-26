@@ -34,7 +34,7 @@ export const VoteRoute: FunctionComponent = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [voting, setVoting] = useState(true);
+  const [state, setState] = useState<"voting" | "submitting">("voting");
   const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number }>(
     {},
   );
@@ -77,12 +77,13 @@ export const VoteRoute: FunctionComponent = () => {
 
   const submitRanking = useCallback(
     async (ranking: PendingRanking) => {
+      setState("submitting");
       const created = await groupthink.createRanking(ranking);
       if (!created) {
         return;
       }
 
-      setVoting(false);
+      
       navigate(`/${poll!.id}?participantEmail=${created.participantEmail}`);
     },
     [poll, navigate],
@@ -126,28 +127,24 @@ export const VoteRoute: FunctionComponent = () => {
     return <>loading options...</>;
   }
 
+  if (state === "submitting") {
+    return <>submitting ranking!</>;
+  }
+
   return (
     <>
       <DisableOverscroll />
       <div
-        style={{
-          // height: "100vh",
-          overflowY: "hidden",
-          minHeight: "100vh",
-        }}
+        className="flex-col h-screen"
       >
         <div
-          style={{
-            height: "10%",
-          }}
+            className="h-1/10 text-center content-center"
         >
-          {poll.description}
+          {poll.name}
         </div>
-        {voting && (
+        {(
           <MatchupComponent
-            style={{
-              height: "80%",
-            }}
+            className="h-9/10"
             options={poll.optionsList}
             optionA={optionA!}
             optionB={optionB!}

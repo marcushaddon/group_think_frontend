@@ -9,7 +9,7 @@ export interface Props<T> {
   optionA: OptionModel<T>;
   optionB: OptionModel<T>;
   onResult: (res: MatchupResult) => void;
-  style?: React.CSSProperties;
+  className?: string;
 }
 
 export const Matchup = <T extends object>({
@@ -17,7 +17,7 @@ export const Matchup = <T extends object>({
   optionA,
   optionB,
   onResult,
-  style,
+  className = ""
 }: Props<T>) => {
   const [_snackMessage, setSnackMessage] = useState<string | null>(null);
   const chooseA = useCallback(() => {
@@ -82,14 +82,14 @@ export const Matchup = <T extends object>({
 
   return (
     <div
-      style={{
-        ...(style || {}),
-      }}
+      className={`${className}`}
     >
       {" "}
       {/* BOOKMARK: block this out and debug how to make it fit */}
       {/* TOP HALF */}
-      <div>
+      <div
+        className="h-4/10 content-center"
+      >
         {/* TOP HALF */}
         {options.map((o) => (
           <Swipe
@@ -98,19 +98,23 @@ export const Matchup = <T extends object>({
             onLeft={rejectA}
             onRight={chooseA}
             refreshKey={optionA!.id + optionB!.id}
+            className="h-1/1"
           >
-            <Option {...optionA} />
+            <Option {...optionA} className="h-1/1" />
           </Swipe>
         ))}
       </div>
       {/* MIDDLE */}
-      <div>
+      <div
+        className="h-2/10"
+      >
         {/* MIDDLE */}
         <Swipe
           onLeft={negativeTie}
           onRight={positiveTie}
           visible={true}
           refreshKey={optionA.id + optionB.id}
+          className="h-1/1"
         >
           <Tie
             ambivalentTie={ambivalentTie}
@@ -119,7 +123,9 @@ export const Matchup = <T extends object>({
         </Swipe>
       </div>
       {/* BOTTOM HALF */}
-      <div style={{ height: "40%" }}>
+      <div
+        className="h-4/10 content-center"
+      >
         {/* BOTTOM HALF */}
         {options.map((o) => (
           <Swipe
@@ -128,8 +134,9 @@ export const Matchup = <T extends object>({
             onLeft={rejectB}
             onRight={chooseB}
             refreshKey={optionA.id + optionB.id}
+            className="h-1/1"
           >
-            <Option {...optionB} />
+            <Option {...optionB} className="h-1/1" />
           </Swipe>
         ))}
       </div>
@@ -142,15 +149,24 @@ interface TieProps {
   refreshKey: string;
 }
 const Tie: FunctionComponent<TieProps> = ({ ambivalentTie }) => (
-  <div>
-    <div style={{ backgroundColor: "red" }}>
-      <small>&lt;&lt;&lt; x neither</small>
+  <div
+    className="h-1/1 flex content-center text-center"
+  >
+    <div
+        className="flex-1/3 content-center text-center"
+    >
+      &lt;&lt;&lt; x neither
     </div>
-    <div onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
-      <small>~ ambivalent</small>
+    <div
+        onClick={ambivalentTie}
+        className="flex-1/3 content-center text-center"
+    >
+      ~ ambivalent
     </div>
-    <div style={{ backgroundColor: "green" }}>
-      <small>+ both &gt;&gt;&gt;</small>
+    <div
+        className="flex-1/3 content-center text-center"
+    >
+      + both &gt;&gt;&gt;
     </div>
   </div>
 );
