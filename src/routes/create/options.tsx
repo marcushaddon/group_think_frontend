@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useRef, useState } from "react";
+import { FunctionComponent, useCallback, useRef, useState } from "react";
 
 export interface Props {
   onComplete: (options: string[]) => void;
@@ -20,19 +20,16 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
   return (
     <div
       style={{
-        justifyContent: "center"
+        justifyContent: "center",
       }}
     >
       <h4>Enter Options (comma separated)</h4>
-      <div 
+      <div
         style={{
-          width: "90%"
+          width: "90%",
         }}
       >
-        <button
-          onClick={submit}
-          disabled={!!!value}
-        >
+        <button onClick={submit} disabled={!!!value}>
           Save
         </button>
         <textarea
@@ -42,23 +39,23 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
             left: "auto",
             right: "auto",
             resize: "none",
-            marginTop: "8px"
+            marginTop: "8px",
           }}
           value={value || ""}
           onChange={(e) => {
             setValue(e.target.value);
             setOptions(
-                e.target.value.split(/,\s*/ig).filter((opt) => !!opt.length)
+              e.target.value.split(/,\s*/gi).filter((opt) => !!opt.length),
             );
           }}
         />
       </div>
 
       <ol>
-      {options.map((opt) => <li>{opt}</li>)}
+        {options.map((opt) => (
+          <li>{opt}</li>
+        ))}
       </ol>
-      
-      
     </div>
   );
-}
+};

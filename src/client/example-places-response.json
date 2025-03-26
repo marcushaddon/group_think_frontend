@@ -46,12 +46,7 @@
     "rating": 4.5,
     "reference": "ChIJ_1_Yew8KlVQRu_YFZLBY1HM",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 1079,
     "vicinity": "204 SW Yamhill St, Portland"
   },
@@ -156,12 +151,7 @@
     "rating": 4,
     "reference": "ChIJ13nC1bELlVQRriFe7jXLIVg",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 32,
     "vicinity": "1708 SW 6th Ave, Portland"
   },
@@ -212,12 +202,7 @@
     "rating": 4.3,
     "reference": "ChIJIZA0RREKlVQRx7-hTigLST8",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 658,
     "vicinity": "415 SW Montgomery St, Portland"
   },
@@ -325,12 +310,7 @@
     "rating": 0,
     "reference": "ChIJP1oMk6ELlVQR_GkiNMhYveM",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 0,
     "vicinity": "1210 NW Couch St, Portland"
   },
@@ -495,12 +475,7 @@
     "rating": 4.2,
     "reference": "ChIJ2UJrfgQKlVQR6VB1XMNn328",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 263,
     "vicinity": "540 SW College St, Portland"
   },
@@ -608,12 +583,7 @@
     "rating": 4.3,
     "reference": "ChIJycG5OBqhlVQR95O8WYKh44E",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 147,
     "vicinity": "621 SE Morrison St, Portland"
   },
@@ -779,12 +749,7 @@
     "rating": 4.5,
     "reference": "ChIJUSkZH_EJlVQRH6F32ZlTYzU",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 1324,
     "vicinity": "622 NW 23rd Ave, Portland"
   },
@@ -835,12 +800,7 @@
     "rating": 4.3,
     "reference": "ChIJv6nF-v0JlVQRuzCqOPZs5w0",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 198,
     "vicinity": "1265 NW 10th Ave, Portland"
   },
@@ -949,12 +909,7 @@
     "rating": 4.7,
     "reference": "ChIJRbnQwsMJlVQR1k1XDxvuX94",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 564,
     "vicinity": "1765 NW 23rd Ave, Portland"
   },
@@ -1059,12 +1014,7 @@
     "rating": 4.6,
     "reference": "ChIJwVG1vp-glVQRopbp3Ha79Vk",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 215,
     "vicinity": "1207 SE Hawthorne Blvd, Portland"
   },
@@ -1115,12 +1065,7 @@
     "rating": 4.2,
     "reference": "ChIJWwkhGr-glVQRq24akjMzj6I",
     "scope": "GOOGLE",
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
+    "types": ["restaurant", "food", "point_of_interest", "establishment"],
     "user_ratings_total": 117,
     "vicinity": "2811 E Burnside St, Portland"
   }

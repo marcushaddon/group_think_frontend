@@ -2,20 +2,15 @@ import React, { FunctionComponent } from "react";
 import { Choice, Option } from "../models";
 
 export interface Props {
-  option: Option<any>
+  option: Option<any>;
   choice: Choice;
   winner?: boolean;
   breakdownType?: "visual" | "nl";
 }
 
 export const RankedChoice: FunctionComponent<Props> = ({
-  choice,
   option,
-  winner = false,
-  breakdownType = "nl",
 }) => {
-  
-
   return (
     <div>
       <div>

@@ -30,7 +30,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionA]);
 
   const chooseB = useCallback(() => {
-        onResult({
+    onResult({
       winnerId: optionB.id,
       optionA: OptionAward.IMPLICIT_LOSS,
       optionB: OptionAward.EXPLICIT_WIN,
@@ -39,7 +39,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionB]);
 
   const rejectA = useCallback(() => {
-        onResult({
+    onResult({
       winnerId: optionB.id,
       optionA: OptionAward.EXPLICIT_LOSS,
       optionB: OptionAward.IMPLICIT_WIN,
@@ -48,7 +48,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionB, optionA]);
 
   const rejectB = useCallback(() => {
-        onResult({
+    onResult({
       winnerId: optionA.id,
       optionA: OptionAward.IMPLICIT_WIN,
       optionB: OptionAward.EXPLICIT_LOSS,
@@ -57,7 +57,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionA, optionB]);
 
   const ambivalentTie = useCallback(() => {
-        onResult({
+    onResult({
       optionA: OptionAward.AMBIVALENT_TIE,
       optionB: OptionAward.AMBIVALENT_TIE,
     });
@@ -65,7 +65,7 @@ export const Matchup = <T extends object>({
   }, [onResult]);
 
   const positiveTie = useCallback(() => {
-        onResult({
+    onResult({
       optionA: OptionAward.POSITIVE_TIE,
       optionB: OptionAward.POSITIVE_TIE,
     });
@@ -73,7 +73,7 @@ export const Matchup = <T extends object>({
   }, [onResult]);
 
   const negativeTie = useCallback(() => {
-        onResult({
+    onResult({
       optionA: OptionAward.NEGATIVE_TIE,
       optionB: OptionAward.NEGATIVE_TIE,
     });
@@ -83,13 +83,15 @@ export const Matchup = <T extends object>({
   return (
     <div
       style={{
-        ...(style || {})
+        ...(style || {}),
       }}
-    > {/* BOOKMARK: block this out and debug how to make it fit */}
+    >
+      {" "}
+      {/* BOOKMARK: block this out and debug how to make it fit */}
       {/* TOP HALF */}
       <div>
         {/* TOP HALF */}
-        {options.map(o => (
+        {options.map((o) => (
           <Swipe
             key={o.id}
             visible={o.id === optionA.id}
@@ -97,9 +99,7 @@ export const Matchup = <T extends object>({
             onRight={chooseA}
             refreshKey={optionA!.id + optionB!.id}
           >
-            <Option
-              {...optionA}
-            />
+            <Option {...optionA} />
           </Swipe>
         ))}
       </div>
@@ -112,7 +112,7 @@ export const Matchup = <T extends object>({
           visible={true}
           refreshKey={optionA.id + optionB.id}
         >
-          <Tie 
+          <Tie
             ambivalentTie={ambivalentTie}
             refreshKey={optionA.id + optionB.id}
           />
@@ -121,47 +121,36 @@ export const Matchup = <T extends object>({
       {/* BOTTOM HALF */}
       <div style={{ height: "40%" }}>
         {/* BOTTOM HALF */}
-        {options.map(o => (
-            <Swipe
-              key={o.id}
-              visible={o.id === optionB.id}
-              onLeft={rejectB}
-              onRight={chooseB}
-              refreshKey={optionA.id + optionB.id}
-            >
-              <Option
-                {...optionB}
-              />
-            </Swipe>
+        {options.map((o) => (
+          <Swipe
+            key={o.id}
+            visible={o.id === optionB.id}
+            onLeft={rejectB}
+            onRight={chooseB}
+            refreshKey={optionA.id + optionB.id}
+          >
+            <Option {...optionB} />
+          </Swipe>
         ))}
       </div>
     </div>
   );
-}
+};
 
 interface TieProps {
   ambivalentTie: () => void;
   refreshKey: string;
 }
-const Tie: FunctionComponent<TieProps> = ({
-  ambivalentTie,
-  refreshKey
-}) => (
+const Tie: FunctionComponent<TieProps> = ({ ambivalentTie, refreshKey }) => (
   <div>
-    <div  style={{ backgroundColor: "red" }}>
-      <small>
-        &lt;&lt;&lt; x neither
-      </small>
+    <div style={{ backgroundColor: "red" }}>
+      <small>&lt;&lt;&lt; x neither</small>
     </div>
     <div onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
-      <small>
-        ~ ambivalent
-      </small>
+      <small>~ ambivalent</small>
     </div>
-    <div  style={{ backgroundColor: "green" }}>
-      <small>
-        + both &gt;&gt;&gt;
-      </small>
+    <div style={{ backgroundColor: "green" }}>
+      <small>+ both &gt;&gt;&gt;</small>
     </div>
   </div>
-)
+);

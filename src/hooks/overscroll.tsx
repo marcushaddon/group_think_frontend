@@ -6,7 +6,9 @@ const DisableOverscroll = () => {
       event.preventDefault();
     };
 
-    document.addEventListener("touchmove", preventOverscroll, { passive: false });
+    document.addEventListener("touchmove", preventOverscroll, {
+      passive: false,
+    });
 
     return () => {
       document.removeEventListener("touchmove", preventOverscroll);

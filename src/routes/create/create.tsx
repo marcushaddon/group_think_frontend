@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 import { PollInfo, Info } from "./poll-info";
 import { Participants } from "./participants";
 import { PendingOption, PendingParticipant, PendingPoll } from "../../models";
-import groupthink from '../../client/groupthink';
-import { useNavigate } from 'react-router-dom';
-import { Options } from './options';
+import groupthink from "../../client/groupthink";
+import { useNavigate } from "react-router-dom";
+import { Options } from "./options";
 
 export enum Step {
   OPTIONS,
@@ -38,34 +38,47 @@ export function CreateRoute() {
       },
       participants,
       optionsList: options,
-    }
+    };
 
     const res = await groupthink.createPoll(poll);
 
     localStorage.setItem(res.id + "token", res.owner.token!);
     navigate(`/${res.id}/invite`);
-
   }, [step, info, options, participants, navigate]);
 
   return (
     <div>
-      {step === Step.OPTIONS && <Options onComplete={(opts) => {
-        setOptions(opts.map(opt => ({
-          name: opt,
-          description: "",
-          uri: "",
-          img: "",
-          original: {}
-        })));
-        next();
-      }} />}
-      {step === Step.POLL_INFO && <PollInfo onSubmit={pollInfo => { setInfo(pollInfo); next(); } }/>}
-      {step === Step.PARTICIPANTS &&
+      {step === Step.OPTIONS && (
+        <Options
+          onComplete={(opts) => {
+            setOptions(
+              opts.map((opt) => ({
+                name: opt,
+                description: "",
+                uri: "",
+                img: "",
+                original: {},
+              })),
+            );
+            next();
+          }}
+        />
+      )}
+      {step === Step.POLL_INFO && (
+        <PollInfo
+          onSubmit={(pollInfo) => {
+            setInfo(pollInfo);
+            next();
+          }}
+        />
+      )}
+      {step === Step.PARTICIPANTS && (
         <Participants
           onComplete={next}
           participants={participants}
-          onAddParticipant={p => setParticipants([...participants, p])}
-        />}
+          onAddParticipant={(p) => setParticipants([...participants, p])}
+        />
+      )}
     </div>
   );
 }
