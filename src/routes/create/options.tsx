@@ -1,5 +1,4 @@
-import { Button, Grid, TextareaAutosize, Typography } from "@mui/material";
-import React, { FunctionComponent, useCallback, useRef, useState } from "react";
+import { FunctionComponent, useCallback, useRef, useState } from "react";
 
 export interface Props {
   onComplete: (options: string[]) => void;
@@ -19,48 +18,44 @@ export const Options: FunctionComponent<Props> = ({ onComplete }) => {
   }, [onComplete, value]);
 
   return (
-    <Grid container
+    <div
       style={{
-        justifyContent: "center"
+        justifyContent: "center",
       }}
     >
-      <Typography variant="h4">Enter Options (comma separated)</Typography>
-      <Grid item
+      <h4>Enter Options (comma separated)</h4>
+      <div
         style={{
-          width: "90%"
+          width: "90%",
         }}
       >
-        <Button
-          variant="outlined"
-          onClick={submit}
-          disabled={!!!value}
-        >
+        <button onClick={submit} disabled={!!!value}>
           Save
-        </Button>
-        <TextareaAutosize
+        </button>
+        <textarea
           ref={textRef}
           style={{
             width: "90%",
             left: "auto",
             right: "auto",
             resize: "none",
-            marginTop: "8px"
+            marginTop: "8px",
           }}
           value={value || ""}
           onChange={(e) => {
             setValue(e.target.value);
             setOptions(
-                e.target.value.split(/,\s*/ig).filter((opt) => !!opt.length)
+              e.target.value.split(/,\s*/gi).filter((opt) => !!opt.length),
             );
           }}
         />
-      </Grid>
+      </div>
 
       <ol>
-      {options.map((opt) => <li>{opt}</li>)}
+        {options.map((opt) => (
+          <li>{opt}</li>
+        ))}
       </ol>
-      
-      
-    </Grid>
+    </div>
   );
-}
+};

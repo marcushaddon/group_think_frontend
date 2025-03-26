@@ -1,4 +1,3 @@
-import { Grid, Snackbar, Typography } from "@mui/material";
 import React, { FunctionComponent, useCallback, useState } from "react";
 import { MatchupResult, OptionAward } from ".";
 import { Option } from "../../components/option/option";
@@ -20,7 +19,7 @@ export const Matchup = <T extends object>({
   onResult,
   style,
 }: Props<T>) => {
-  const [snackMessage, setSnackMessage] = useState<string | null>(null);
+  const [_snackMessage, setSnackMessage] = useState<string | null>(null);
   const chooseA = useCallback(() => {
     onResult({
       winnerId: optionA.id,
@@ -31,7 +30,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionA]);
 
   const chooseB = useCallback(() => {
-        onResult({
+    onResult({
       winnerId: optionB.id,
       optionA: OptionAward.IMPLICIT_LOSS,
       optionB: OptionAward.EXPLICIT_WIN,
@@ -40,7 +39,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionB]);
 
   const rejectA = useCallback(() => {
-        onResult({
+    onResult({
       winnerId: optionB.id,
       optionA: OptionAward.EXPLICIT_LOSS,
       optionB: OptionAward.IMPLICIT_WIN,
@@ -49,7 +48,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionB, optionA]);
 
   const rejectB = useCallback(() => {
-        onResult({
+    onResult({
       winnerId: optionA.id,
       optionA: OptionAward.IMPLICIT_WIN,
       optionB: OptionAward.EXPLICIT_LOSS,
@@ -58,7 +57,7 @@ export const Matchup = <T extends object>({
   }, [onResult, optionA, optionB]);
 
   const ambivalentTie = useCallback(() => {
-        onResult({
+    onResult({
       optionA: OptionAward.AMBIVALENT_TIE,
       optionB: OptionAward.AMBIVALENT_TIE,
     });
@@ -66,7 +65,7 @@ export const Matchup = <T extends object>({
   }, [onResult]);
 
   const positiveTie = useCallback(() => {
-        onResult({
+    onResult({
       optionA: OptionAward.POSITIVE_TIE,
       optionB: OptionAward.POSITIVE_TIE,
     });
@@ -74,7 +73,7 @@ export const Matchup = <T extends object>({
   }, [onResult]);
 
   const negativeTie = useCallback(() => {
-        onResult({
+    onResult({
       optionA: OptionAward.NEGATIVE_TIE,
       optionB: OptionAward.NEGATIVE_TIE,
     });
@@ -82,16 +81,17 @@ export const Matchup = <T extends object>({
   }, [onResult]);
 
   return (
-    <Grid
-      container
+    <div
       style={{
-        ...(style || {})
+        ...(style || {}),
       }}
-    > {/* BOOKMARK: block this out and debug how to make it fit */}
+    >
+      {" "}
+      {/* BOOKMARK: block this out and debug how to make it fit */}
       {/* TOP HALF */}
-      <Grid item xs={12}>
+      <div>
         {/* TOP HALF */}
-        {options.map(o => (
+        {options.map((o) => (
           <Swipe
             key={o.id}
             visible={o.id === optionA.id}
@@ -99,14 +99,12 @@ export const Matchup = <T extends object>({
             onRight={chooseA}
             refreshKey={optionA!.id + optionB!.id}
           >
-            <Option
-              {...optionA}
-            />
+            <Option {...optionA} />
           </Swipe>
         ))}
-      </Grid>
+      </div>
       {/* MIDDLE */}
-      <Grid item xs={12}>
+      <div>
         {/* MIDDLE */}
         <Swipe
           onLeft={negativeTie}
@@ -114,67 +112,45 @@ export const Matchup = <T extends object>({
           visible={true}
           refreshKey={optionA.id + optionB.id}
         >
-          <Tie 
+          <Tie
             ambivalentTie={ambivalentTie}
             refreshKey={optionA.id + optionB.id}
           />
         </Swipe>
-      </Grid>
+      </div>
       {/* BOTTOM HALF */}
-      <Grid item xs={12} style={{ height: "40%" }}>
+      <div style={{ height: "40%" }}>
         {/* BOTTOM HALF */}
-        {options.map(o => (
-            <Swipe
-              key={o.id}
-              visible={o.id === optionB.id}
-              onLeft={rejectB}
-              onRight={chooseB}
-              refreshKey={optionA.id + optionB.id}
-            >
-              <Option
-                {...optionB}
-              />
-            </Swipe>
+        {options.map((o) => (
+          <Swipe
+            key={o.id}
+            visible={o.id === optionB.id}
+            onLeft={rejectB}
+            onRight={chooseB}
+            refreshKey={optionA.id + optionB.id}
+          >
+            <Option {...optionB} />
+          </Swipe>
         ))}
-      </Grid>
-
-      <Snackbar
-        open={typeof snackMessage === "string"}
-        autoHideDuration={2000}
-        onClose={() => setSnackMessage(null)}
-        message={snackMessage}
-      />
-    </Grid>
+      </div>
+    </div>
   );
-}
+};
 
 interface TieProps {
   ambivalentTie: () => void;
   refreshKey: string;
 }
-const Tie: FunctionComponent<TieProps> = ({
-  ambivalentTie,
-  refreshKey
-}) => (
-  <Grid
-    container
-    item
-    xs={12}
-  >
-    <Grid item xs={4} style={{ backgroundColor: "red" }}>
-      <Typography variant="subtitle2">
-        &lt;&lt;&lt; x neither
-      </Typography>
-    </Grid>
-    <Grid item xs={4} onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
-      <Typography variant="subtitle2">
-        ~ ambivalent
-      </Typography>
-    </Grid>
-    <Grid item xs={4} style={{ backgroundColor: "green" }}>
-      <Typography variant="subtitle2">
-        + both &gt;&gt;&gt;
-      </Typography>
-    </Grid>
-  </Grid>
-)
+const Tie: FunctionComponent<TieProps> = ({ ambivalentTie }) => (
+  <div>
+    <div style={{ backgroundColor: "red" }}>
+      <small>&lt;&lt;&lt; x neither</small>
+    </div>
+    <div onClick={ambivalentTie} style={{ backgroundColor: "grey" }}>
+      <small>~ ambivalent</small>
+    </div>
+    <div style={{ backgroundColor: "green" }}>
+      <small>+ both &gt;&gt;&gt;</small>
+    </div>
+  </div>
+);

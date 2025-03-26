@@ -1,5 +1,3 @@
-import { IconName } from "../components/dynamic-icon";
-
 export enum OptionType {
   GOOGLE_PLACE = "google-place",
   GOOGLE_SEARCH_RESULT = "google-search-result",
@@ -15,16 +13,19 @@ export interface Option<T> {
   info?: T;
 }
 
-export type PendingOption<O = undefined, I = undefined> = Omit<Option<I>, "id"> & {
+export type PendingOption<O = undefined, I = undefined> = Omit<
+  Option<I>,
+  "id"
+> & {
   original: O;
 };
 
 export enum VoteStatus {
-    Pending = 'Pending',
-    Notified = 'Notified',
-    InProgress = 'InProgress',
-    Decided = 'Decided',
-    Error = 'Error'
+  Pending = "Pending",
+  Notified = "Notified",
+  InProgress = "InProgress",
+  Decided = "Decided",
+  Error = "Error",
 }
 
 export interface Participant {
@@ -47,7 +48,7 @@ export interface Choice {
     negativeTies: number;
     ambivalentTies: number;
     positiveTies: number;
-  }
+  };
 }
 
 export interface Ranking {
@@ -59,25 +60,27 @@ export interface Ranking {
 
 export type PendingRanking = Omit<Ranking, "id" | "participantEmail">;
 
-export type Result = {
-    winner: Option<unknown>;
-    tie: undefined;
-    done: boolean;
-  } | {
-    winner: undefined;
-    tie: Option<unknown>[];
-    done: boolean
-  }
+export type Result =
+  | {
+      winner: Option<unknown>;
+      tie: undefined;
+      done: boolean;
+    }
+  | {
+      winner: undefined;
+      tie: Option<unknown>[];
+      done: boolean;
+    };
 
 export interface Poll {
   id: string;
   name: string;
   description: string;
   owner: {
-    name: string,
-    email: string,
-    token?: string
-  }
+    name: string;
+    email: string;
+    token?: string;
+  };
   optionsList: Option<unknown>[];
   optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
@@ -87,7 +90,16 @@ export interface Poll {
   rankings?: Ranking[];
 }
 
-export type PendingPoll = Omit<Poll, "id" | "owner.token" | "optionsMap" | "optionsList" | "result" | "participants"| "rankings"> & {
+export type PendingPoll = Omit<
+  Poll,
+  | "id"
+  | "owner.token"
+  | "optionsMap"
+  | "optionsList"
+  | "result"
+  | "participants"
+  | "rankings"
+> & {
   optionsList: PendingOption[];
   participants: PendingParticipant[];
 };

@@ -1,11 +1,13 @@
-import { CircularProgress, Grid } from "@mui/material";
-import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import groupthink from "../../client/groupthink";
-import { Option, PendingRanking, Choice, Poll } from "../../models";
-import { progress as progGrad } from "../../components/gradients";
+import { Option, PendingRanking, Poll } from "../../models";
 import { Matchup as MatchupComponent } from "./matchup";
-import { ManualReview } from "./manual-review";
 import { sorter as makeSorter, Matchup } from "./sort";
 import { buildRanking, optionAwardKey } from "./build-ranking";
 import DisableOverscroll from "../../hooks/overscroll";
@@ -17,7 +19,7 @@ export enum OptionAward {
   IMPLICIT_LOSS = "implicitLoss",
   POSITIVE_TIE = "positiveTie",
   NEGATIVE_TIE = "negativeTie",
-  AMBIVALENT_TIE = "ambivalentTie"
+  AMBIVALENT_TIE = "ambivalentTie",
 }
 
 export interface MatchupResult {
@@ -33,9 +35,14 @@ export const VoteRoute: FunctionComponent = () => {
   const navigate = useNavigate();
 
   const [voting, setVoting] = useState(true);
-  const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number}>({});
-  const [progress, setProgress] = useState(0);
-  const [sorter, setSorter] = useState<Generator<Matchup<any>, Option<any>[], MatchupResult> | null>(null);
+  const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number }>(
+    {},
+  );
+  const [sorter, setSorter] = useState<Generator<
+    Matchup<any>,
+    Option<any>[],
+    MatchupResult
+  > | null>(null);
   const [poll, setPoll] = useState<Poll | null>(null);
   const [optionA, setOptionA] = useState<Option<any> | null>(null);
   const [optionB, setOptionB] = useState<Option<any> | null>(null);
@@ -48,7 +55,9 @@ export const VoteRoute: FunctionComponent = () => {
     }
     setPoll(p);
 
-    const shuffled = [...p.optionsList].sort(() => Math.random() > 0.5 ? -1 : 1);
+    const shuffled = [...p.optionsList].sort(() =>
+      Math.random() > 0.5 ? -1 : 1,
+    );
     const generator = makeSorter()(shuffled);
     setSorter(generator);
 
@@ -66,88 +75,87 @@ export const VoteRoute: FunctionComponent = () => {
     fetchPoll(params.pollId);
   }, [params.pollId, fetchPoll]);
 
-  const submitRanking = useCallback(async (ranking: PendingRanking) => {
-
-    const created = await groupthink.createRanking(ranking);
-    if (!created) {
+  const submitRanking = useCallback(
+    async (ranking: PendingRanking) => {
+      const created = await groupthink.createRanking(ranking);
+      if (!created) {
         return;
-    }
+      }
 
-    setVoting(false);
-    navigate(`/${poll!.id}?participantEmail=${created.participantEmail}`);
-  }, [poll, navigate]);
+      setVoting(false);
+      navigate(`/${poll!.id}?participantEmail=${created.participantEmail}`);
+    },
+    [poll, navigate],
+  );
 
-  const onMatchupResult = useCallback(async (res: MatchupResult) => {  
-    if (!poll ) {
-      alert("no poll!");
-      return;
-    }
+  const onMatchupResult = useCallback(
+    async (res: MatchupResult) => {
+      if (!poll) {
+        alert("no poll!");
+        return;
+      }
 
-    const optionAAwardKey = optionAwardKey(optionA!.id, res.optionA);
-    const optionBAwardKey = optionAwardKey(optionB!.id, res.optionB);
+      const optionAAwardKey = optionAwardKey(optionA!.id, res.optionA);
+      const optionBAwardKey = optionAwardKey(optionB!.id, res.optionB);
 
-    const updatedAwardMap = {
-      ...awardMap,
-      [optionAAwardKey]: (awardMap![optionAAwardKey] || 0) + 1,
-      [optionBAwardKey]: (awardMap![optionBAwardKey] || 0) + 1,
-    }
-    // Record sentiment
-    setAwardMap(updatedAwardMap);
+      const updatedAwardMap = {
+        ...awardMap,
+        [optionAAwardKey]: (awardMap![optionAAwardKey] || 0) + 1,
+        [optionBAwardKey]: (awardMap![optionBAwardKey] || 0) + 1,
+      };
+      // Record sentiment
+      setAwardMap(updatedAwardMap);
 
-    let stepResult = sorter!.next(res);
+      let stepResult = sorter!.next(res);
 
-    if (stepResult.done) {
-      const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
-      submitRanking(ranking);
+      if (stepResult.done) {
+        const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
+        submitRanking(ranking);
 
-      return;
-    }
+        return;
+      }
 
-    
-
-    // new matchup and not done, so set next matchup
-    setOptionA(stepResult.value.inserted);
-    setOptionB(stepResult.value.inserting);
-  }, [sorter, awardMap, poll, submitRanking, optionA, optionB]);
+      // new matchup and not done, so set next matchup
+      setOptionA(stepResult.value.inserted);
+      setOptionB(stepResult.value.inserting);
+    },
+    [sorter, awardMap, poll, submitRanking, optionA, optionB],
+  );
 
   if (!poll) {
-    return <>loading options...</>
+    return <>loading options...</>;
   }
 
   return (
     <>
       <DisableOverscroll />
-      <Grid
+      <div
         className="vote.root"
-        container
         style={{
-            // height: "100vh",
-            overflowY: "hidden",
-            minHeight: "100vh"
+          // height: "100vh",
+          overflowY: "hidden",
+          minHeight: "100vh",
         }}
-        >
-        <Grid
-            item xs={12}
-            style={{
+      >
+        <div
+          style={{
             height: "10%",
-            background: progGrad(progress)
-            }}
+          }}
         >
-            {poll.description}
-        </Grid>
-        {voting && <MatchupComponent
+          {poll.description}
+        </div>
+        {voting && (
+          <MatchupComponent
             style={{
-                height: "80%"
+              height: "80%",
             }}
             options={poll.optionsList}
             optionA={optionA!}
             optionB={optionB!}
             onResult={onMatchupResult}
-        />}
-      </Grid>
+          />
+        )}
+      </div>
     </>
-    
-    
   );
-
-}
+};

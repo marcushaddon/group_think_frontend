@@ -1,4 +1,4 @@
-import { Choice } from "../models"
+import { Choice } from "../models";
 
 export const ScoreColors: { [key in keyof Choice["choiceTypes"]]: string } = {
   explicitWins: "rgb(0, 255, 0)",
@@ -8,4 +8,4 @@ export const ScoreColors: { [key in keyof Choice["choiceTypes"]]: string } = {
   negativeTies: "rgb(255, 10, 60)",
   implicitLosses: "rgb(200,0,255)",
   ambivalentTies: "rgb(130, 130, 130)",
-}
+};

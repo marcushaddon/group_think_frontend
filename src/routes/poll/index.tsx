@@ -1,12 +1,8 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Alert, AlertTitle, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
-import groupthink from "../../client/groupthink";
-import { Poll, Ranking } from "../../models";
+import { Ranking } from "../../models";
 import { Participant } from "../../components/participant";
 import { Option as OptionComponent } from "../../components/option";
-import { RankedChoice } from "../../components/ranked-choice";
-import { choiceBreakdowns, ChoiceReport } from "../../stats";
 import { usePollWithRankings, useRankedChoice } from "../../hooks";
 
 type RankingDisplay = Ranking & { name: string; participantEmail: string };
@@ -15,7 +11,9 @@ export const PollRoute: FunctionComponent = () => {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const pollId = params.pollId;
-  const [participantEmail, setparticipantEmail] = useState(searchParams.get("participantEmail"));
+  const [participantEmail, setparticipantEmail] = useState(
+    searchParams.get("participantEmail"),
+  );
 
   const poll = usePollWithRankings(pollId);
   const result = useRankedChoice(poll);
@@ -31,9 +29,11 @@ export const PollRoute: FunctionComponent = () => {
     if (!poll.rankings || poll.rankings.length === 0) return;
 
     if (participantEmail) {
-      const r = poll.rankings.find(r => r.participantEmail === participantEmail);
+      const r = poll.rankings.find(
+        (r) => r.participantEmail === participantEmail,
+      );
       if (!r) return;
-      const p = poll.participants.find(p => p.email === r.participantEmail);
+      const p = poll.participants.find((p) => p.email === r.participantEmail);
 
       setRanking({ ...r, name: p!.name });
     } else {
@@ -42,7 +42,7 @@ export const PollRoute: FunctionComponent = () => {
   }, [setRanking, poll, searchParams, pollId, participantEmail]);
 
   if (!poll) {
-    return <CircularProgress />
+    return <>TODO: progress</>;
   }
 
   const choices = ranking && ranking.choices;
@@ -53,42 +53,43 @@ export const PollRoute: FunctionComponent = () => {
   );
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography variant="h3">
-          {poll.name}
-        </Typography>
-        <Typography variant="subtitle1">
-          by {poll.owner.name}
-        </Typography>
+    <div>
+      <div>
+        <h3>{poll.name}</h3>
+        <small>by {poll.owner.name}</small>
         {result?.done ? (
-          <Alert severity="success">
-            <AlertTitle>Complete</AlertTitle>
-            We have a winner{result?.tie && '...s'}!!!
-          </Alert>
+          <div>
+            <div>Complete</div>
+            We have a winner{result?.tie && "...s"}!!!
+          </div>
         ) : (
-          <Alert severity="warning">
-            <AlertTitle>In progress</AlertTitle>
-            We are still wating on {poll.participants.length - (poll.rankings?.length || 0)} participants to submit their votes. The winner so far is...
-          </Alert>
+          <div>
+            <div>In progress</div>
+            We are still wating on{" "}
+            {poll.participants.length - (poll.rankings?.length || 0)}{" "}
+            participants to submit their votes. The winner so far is...
+          </div>
         )}
-      </Grid>
+      </div>
 
-      <Typography variant="subtitle2">
-        {poll.participants.length} participants
-      </Typography>
-      
-      {poll.participants.map(p => {
-        const pRanking = poll.rankings?.find(r => r.participantEmail === p.id);
-        const action = pRanking && ranking?.participantEmail !== p.id ? {
-          cb: () => {
-            setSearchParams({
-              ...searchParams,
-              participantEmail: p.id
-            });
-          },
-          name: `View ${p.name}'s ranking`
-        } : undefined;
+      <>{poll.participants.length} participants</>
+
+      {poll.participants.map((p) => {
+        const pRanking = poll.rankings?.find(
+          (r) => r.participantEmail === p.id,
+        );
+        const action =
+          pRanking && ranking?.participantEmail !== p.id
+            ? {
+                cb: () => {
+                  setSearchParams({
+                    ...searchParams,
+                    participantEmail: p.id,
+                  });
+                },
+                name: `View ${p.name}'s ranking`,
+              }
+            : undefined;
 
         return (
           <Participant
@@ -100,41 +101,44 @@ export const PollRoute: FunctionComponent = () => {
         );
       })}
 
-      <Divider />
+      <hr />
 
       {result?.winner ? (
         <>
-            <h4>Winner</h4>
-            <OptionComponent {...result.winner} />
+          <h4>Winner</h4>
+          <OptionComponent {...result.winner} />
         </>
       ) : result?.tie ? (
         <>
-            <h4>{result.tie.length} way tie</h4>
-            {result.tie.map((opt) => <OptionComponent {...opt} /> )}
+          <h4>{result.tie.length} way tie</h4>
+          {result.tie.map((opt) => (
+            <OptionComponent {...opt} />
+          ))}
         </>
-      ) : <></>}
+      ) : (
+        <></>
+      )}
 
-      <Typography variant="h5">
-        {title}
-      </Typography>
+      <h5>{title}</h5>
 
       {ranking && poll.result?.done && (
-        <Button
+        <button
           onClick={() => {
             searchParams.delete("participantEmail");
             setSearchParams(searchParams);
           }}
         >
           view results
-        </Button>
+        </button>
       )}
 
       {choices && (
         <ol>
-            {choices.map((ch) => <li>{poll.optionsMap[ch.optionId].name}</li>)}
+          {choices.map((ch) => (
+            <li>{poll.optionsMap[ch.optionId].name}</li>
+          ))}
         </ol>
       )}
-      
-    </Grid>
-  )
-}
+    </div>
+  );
+};
