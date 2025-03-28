@@ -1,15 +1,11 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Ranking } from "../../models";
-import { Participant } from "../../components/participant";
 import { Option as OptionComponent } from "../../components/option";
 import { usePollWithRankings, useRankedChoice } from "../../hooks";
 
-type RankingDisplay = Ranking & { name: string; participantEmail: string };
 
 export const PollRoute: FunctionComponent = () => {
   const params = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
   const pollId = params.pollId;
 
   const poll = usePollWithRankings(pollId);
