@@ -138,7 +138,7 @@ export const Swipe: FunctionComponent<Props> = ({
     [],
   );
 
-  const touchEnd: React.TouchEventHandler<HTMLDivElement> = useCallback((e) => {
+  const touchEnd: React.TouchEventHandler<HTMLDivElement> = useCallback(() => {
     setSwipeStart(null);
     setHDelta(0);
     setVDelta(0);
