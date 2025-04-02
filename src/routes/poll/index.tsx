@@ -11,6 +11,8 @@ export const PollRoute: FunctionComponent = () => {
   const poll = usePollWithRankings(pollId);
   const result = useRankedChoice(poll);
 
+  const done = poll?.rankings?.length === poll?.participants.length;
+
   if (!poll) {
     return <>TODO: progress</>;
   }
@@ -20,10 +22,10 @@ export const PollRoute: FunctionComponent = () => {
       <div>
         <h3>{poll.name}</h3>
         <small>by {poll.owner.name}</small>
-        {result?.done ? (
+        {done ? (
           <div>
             <div>Complete</div>
-            We have a winner{result?.tie && "...s"}!!!
+            We have a winner{Array.isArray(result?.tie) && "...s"}!!!
           </div>
         ) : (
           <div>
@@ -42,13 +44,13 @@ export const PollRoute: FunctionComponent = () => {
       {result?.winner ? (
         <>
           <h4>Winner</h4>
-          <OptionComponent {...result.winner} />
+          <OptionComponent {...poll.optionsMap[result.winner]} />
         </>
       ) : result?.tie ? (
         <>
           <h4>{result.tie.length} way tie</h4>
           {result.tie.map((opt) => (
-            <OptionComponent {...opt} />
+            <OptionComponent {...poll.optionsMap[opt]} />
           ))}
         </>
       ) : (
@@ -62,7 +64,10 @@ export const PollRoute: FunctionComponent = () => {
                 <>
                     {p.name}'s ranking
                     <ol>
-                        {ranking.choices.map((ch) => <li>{ch.optionId}</li>)}
+                        {ranking.choices.map((ch) => {
+                            const name = poll.optionsMap[ch.optionId].name;
+                            return <li>{name || `Couldn't find option ${ch.optionId}`}</li>;
+                        })}
                     </ol>
                     <hr />
                 </>

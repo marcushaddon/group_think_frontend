@@ -22,12 +22,20 @@ export const Participants: FunctionComponent<Props> = ({
   const submit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       (e as any).preventDefault();
+      // TODO: Store participants in this component to break parent/child loop
+      const existing = participants.find(
+        ({ email: existingEmail, name: existingName }) => existingEmail === email);
+      if (existing) {
+        alert(`${email} already in use by ${existing.name}`);
+        return;
+      }
       onAddParticipant({
         name,
         email,
         status: VoteStatus.Pending,
       });
       setName("");
+      setEmail("");
     },
     [name, email, onAddParticipant],
   );

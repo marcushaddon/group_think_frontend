@@ -1,37 +1,132 @@
+import * as logger from "../common/logging";
 type Option = { id: string };
+
+export type RoundEvent = {
+  name: "Round";
+  options: string[];
+};
+
+export type FirstPlaceSharesEvent = {
+  name: "FirstPlaceShares";
+  shares: Record<string, number>;
+};
+
+export type MajorityEvent = {
+  name: "Majority";
+  winner: { id: string; share: number };
+};
+
+export type TieEvent = {
+  name: "Tie";
+  winners: string[];
+  share: number;
+};
+
+export type LoserChosenEvent = {
+  name: "LoserChosen";
+  loser: string;
+};
+
+export type ElectionEvent =
+  | RoundEvent
+  | FirstPlaceSharesEvent
+  | MajorityEvent
+  | TieEvent
+  | LoserChosenEvent;
+
+type Majority = {
+  winner: string;
+  tie: undefined;
+};
+
+type Tie = {
+  winner: undefined;
+  tie: string[];
+};
+
+type Result = Majority | Tie;
+
+export type Election = Result & {
+  logs: ElectionEvent[];
+};
 
 export const rankedChoice = <T extends Option>(
   rankings: T[][],
-): string | string[] => {
+  logs: ElectionEvent[] = [],
+): Election => {
   let workingRankings = [...rankings];
-  while (true) {
-    // TODO: if we have a tie
-    const scores = firstPlaceShares(workingRankings);
-    // 1st shares = shares(rankings)
-    const results = superlatives(scores);
+  const roundLogs: ElectionEvent[] = logs.concat([
+    {
+      name: "Round",
+      options: optionsFromRankings(rankings),
+    },
+  ]);
+  // TODO: if we have a tie
+  const scores = firstPlaceShares(workingRankings);
+  roundLogs.push({
+    name: "FirstPlaceShares",
+    shares: scores,
+  });
 
-    const weHaveATie =
-      results.winners && results.winners.length === workingRankings.length;
+  // 1st shares = shares(rankings)
+  const results = superlatives(scores);
 
-    if (weHaveATie) {
-      return results.winners.map(([id]) => id);
-    }
-    // winner = shares where s > 0.5
-    const winner = results.winner;
-    const share = results.winner
-      ? results.winner[1] / workingRankings.length
-      : 0;
+  const weHaveATie =
+    results.winners && results.winners.length === workingRankings.length;
 
-    // if winner return winner
-    if (winner && share > 0.5) {
-      return results.winner[0];
-    }
-    // loser = find loser
-    // rankings = filter(loser)
-    workingRankings = workingRankings.map((ranking) =>
-      ranking.filter((opt) => opt.id !== results.loser[0]),
-    );
+  if (weHaveATie) {
+    const winners = results.winners.map(([id]) => id);
+    const share = results.winners[0][1] / rankings.length;
+    return {
+      tie: winners,
+      winner: undefined,
+      logs: [
+        ...roundLogs,
+        {
+          name: "Tie",
+          winners,
+          share,
+        },
+      ],
+    };
   }
+
+  // winner = shares where s > 0.5
+  const winner = results.winner;
+  const share = results.winner ? results.winner[1] / workingRankings.length : 0;
+
+  // if winner return winner
+  if (winner && share > 0.5) {
+    return {
+      winner: results.winner[0],
+      tie: undefined,
+      logs: roundLogs.concat([
+        {
+          name: "Majority",
+          winner: {
+            id: results.winner[0],
+            share: results.winner[1] / rankings.length,
+          },
+        },
+      ]),
+    };
+  }
+  // loser = find loser
+  // rankings = filter(loser)
+
+  workingRankings = workingRankings.map((ranking) =>
+    ranking.filter((opt) => opt.id !== results.loser[0]),
+  );
+
+  return rankedChoice(
+    workingRankings,
+    logs.concat([
+      {
+        name: "LoserChosen",
+        loser: results.loser[0],
+      },
+    ]),
+  );
 };
 
 const firstPlaceShares = (rs: Option[][]): Record<string, number> =>
@@ -107,3 +202,18 @@ const superlatives = (shares: Record<string, number>) =>
     }),
     { winner: ["", -Infinity], loser: ["", Infinity] } as Superlatives,
   );
+
+const optionsFromRankings = (rankings: Option[][]): string[] => {
+  const opts = new Set(rankings[0].map(({ id }) => id));
+  const valid =
+    rankings.length > 0 &&
+    rankings.every((r) => {
+      const set = new Set(r.map(({ id }) => id));
+
+      return set.isSubsetOf(opts) && opts.isSubsetOf(set);
+    });
+
+  logger.assert(valid, "Invalid rankings", { rankings });
+
+  return [...opts.values()];
+};
