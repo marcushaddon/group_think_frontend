@@ -2,6 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Option as OptionComponent } from "../../components/option";
 import { usePollWithRankings, useRankedChoice } from "../../hooks";
+import { ElectionBreakdown } from "./election-breakdwon";
 
 
 export const PollRoute: FunctionComponent = () => {
@@ -76,6 +77,10 @@ export const PollRoute: FunctionComponent = () => {
 
         return <>wating on {p.name} to vote!</>
       })}
+
+      {result?.logs.length && (
+        <ElectionBreakdown events={result.logs} getOption={({ optionId }) => poll.optionsMap[optionId] }/>
+      )}
     </div>
   );
 };

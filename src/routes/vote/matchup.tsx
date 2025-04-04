@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useState } from "react";
-import { MatchupResult, OptionAward } from ".";
+import { MatchupResult, MatchupAward } from "../../models";
 import { Option } from "../../components/option/option";
 import { Swipe } from "../../components/swipe";
 import { Option as OptionModel } from "../../models";
@@ -20,62 +20,66 @@ export const Matchup = <T extends object>({
   className = ""
 }: Props<T>) => {
   const [_snackMessage, setSnackMessage] = useState<string | null>(null);
-  const chooseA = useCallback(() => {
+  const chooseOption = useCallback((winnerId: string) => {
     onResult({
-      winnerId: optionA.id,
-      optionA: OptionAward.EXPLICIT_WIN,
-      optionB: OptionAward.IMPLICIT_LOSS,
-    });
+        optionA: optionA.id,
+        optionB: optionB.id,
+        winnerAward: MatchupAward.EXPLICIT_WIN,
+        winnerId
+    })
+  }, [optionA, optionB]);
+  const rejectOption = useCallback((loserId: string) => {
+    onResult({
+        optionA: optionA.id,
+        optionB: optionB.id,
+        winnerAward: MatchupAward.IMPLICIT_WIN,
+        winnerId: loserId === optionA.id ? optionB.id : optionA.id
+    })
+  }, [optionA, optionB, onResult]);
+
+  const chooseA = useCallback(() => {
+    chooseOption(optionA.id);
     setSnackMessage(`+1 ${optionA.name}`);
-  }, [onResult, optionA]);
+  }, [chooseOption]);
 
   const chooseB = useCallback(() => {
-    onResult({
-      winnerId: optionB.id,
-      optionA: OptionAward.IMPLICIT_LOSS,
-      optionB: OptionAward.EXPLICIT_WIN,
-    });
+    chooseOption(optionB.id);
     setSnackMessage(`+1 ${optionB.name}`);
-  }, [onResult, optionB]);
+  }, [chooseOption]);
 
   const rejectA = useCallback(() => {
-    onResult({
-      winnerId: optionB.id,
-      optionA: OptionAward.EXPLICIT_LOSS,
-      optionB: OptionAward.IMPLICIT_WIN,
-    });
+    rejectOption(optionA.id);
     setSnackMessage(`-1 for ${optionA.name}`);
-  }, [onResult, optionB, optionA]);
+  }, [rejectOption]);
 
   const rejectB = useCallback(() => {
-    onResult({
-      winnerId: optionA.id,
-      optionA: OptionAward.IMPLICIT_WIN,
-      optionB: OptionAward.EXPLICIT_LOSS,
-    });
+    rejectOption(optionB.id);
     setSnackMessage(`-1 for ${optionB.name}`);
-  }, [onResult, optionA, optionB]);
+  }, [rejectOption]);
 
   const ambivalentTie = useCallback(() => {
     onResult({
-      optionA: OptionAward.AMBIVALENT_TIE,
-      optionB: OptionAward.AMBIVALENT_TIE,
+      optionA: optionA.id,
+      optionB: optionB.id,
+      winnerAward: MatchupAward.AMBIVALENT_TIE,
     });
     setSnackMessage(`meh to both`);
   }, [onResult]);
 
   const positiveTie = useCallback(() => {
     onResult({
-      optionA: OptionAward.POSITIVE_TIE,
-      optionB: OptionAward.POSITIVE_TIE,
+        optionA: optionA.id,
+        optionB: optionB.id,
+        winnerAward: MatchupAward.POSITIVE_TIE,
     });
     setSnackMessage("+1 for both");
   }, [onResult]);
 
   const negativeTie = useCallback(() => {
     onResult({
-      optionA: OptionAward.NEGATIVE_TIE,
-      optionB: OptionAward.NEGATIVE_TIE,
+        optionA: optionA.id,
+        optionB: optionB.id,
+        winnerAward: MatchupAward.NEGATIVE_TIE,
     });
     setSnackMessage("-1 for both");
   }, [onResult]);

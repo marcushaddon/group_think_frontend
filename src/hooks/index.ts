@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import groupthink from "../client/groupthink";
-import { Poll, Result } from "../models";
+import { Poll, Ranking, Result } from "../models";
 import { Election, rankedChoice } from "../alg/ranked-choice";
 
 export function usePoll(pollId?: string): Poll | undefined {
@@ -70,4 +70,16 @@ export function useRankedChoice(poll?: Poll): Election | undefined {
   }, [poll]);
 
   return result;
+}
+
+export function useRanking(pollId: string, email: string) {
+  const [ranking, setRanking] = useState<Ranking | undefined>();
+
+  useEffect(() => {
+    groupthink
+      .fetchRanking(pollId, email)
+      .then((ranking) => setRanking(ranking));
+  });
+
+  return ranking;
 }

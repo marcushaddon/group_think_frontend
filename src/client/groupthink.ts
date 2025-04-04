@@ -170,7 +170,34 @@ export class GroupthinkClient {
     return created;
   }
 
+  async fetchRanking(
+    pollId: string,
+    email: string,
+  ): Promise<Ranking | undefined> {
+    const path = `/poll/${pollId}/rankings/${email}.json`;
+    const token = this.getToken(pollId);
+    // poll/id/rankings/email.json
+    if (!token) {
+      alert(`Could not find token for poll ${pollId.slice(0, 5)}`);
+      return;
+    }
+
+    const result = await this.readFile(path, token);
+
+    const parsed: Ranking = JSON.parse(result);
+    console.log("feetchRanking: ", parsed);
+
+    return parsed;
+  }
+
   getToken(pollId: string): string {
+    const token = this._getToken(pollId);
+    console.log("groupthink client: token ", jwtDecode(token));
+
+    return token;
+  }
+
+  _getToken(pollId: string): string {
     // This won work with our fragment router
     const fromQuery = new URLSearchParams(window.location.search).get("token");
     if (fromQuery) {

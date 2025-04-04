@@ -1,30 +1,22 @@
-import { ChoiceMap, OptionAward } from ".";
+import { ChoiceMap } from ".";
+import { MatchupResult, MatchupAward } from "../../models";
 import { Choice, PendingRanking, Poll } from "../../models";
 
-export const optionAwardKey = (optId: string, award: OptionAward) =>
+export const optionAwardKey = (optId: string, award: MatchupAward) =>
   `${optId}-${award}`;
 
 export const buildRanking = <T extends { id: string }>(
   sortedOptions: T[],
-  awardMap: ChoiceMap,
+  matchups: MatchupResult[],
   poll: Poll,
 ): PendingRanking => {
-  const choices = sortedOptions.map((opt) =>
-    Object.values(OptionAward).reduce(
-      (choice, awardName) => ({
-        ...choice,
-        choiceTypes: {
-          ...choice.choiceTypes,
-          [awardName]:
-            awardMap[optionAwardKey(opt.id, awardName as OptionAward)] || 0,
-        },
-      }),
-      { optionId: opt.id, choiceTypes: {} },
-    ),
-  ) as Choice[];
+  const choices: Choice[] = sortedOptions.map((opt) => ({
+    optionId: opt.id,
+  }));
 
   return {
     pollId: poll.id,
     choices,
+    matchups,
   };
 };

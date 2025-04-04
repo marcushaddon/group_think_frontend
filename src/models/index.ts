@@ -40,15 +40,23 @@ export type PendingParticipant = Omit<Participant, "id">;
 
 export interface Choice {
   optionId: string;
-  choiceTypes: {
-    explicitWins: number;
-    implicitWins: number;
-    explicitLosses: number;
-    implicitLosses: number;
-    negativeTies: number;
-    ambivalentTies: number;
-    positiveTies: number;
-  };
+}
+
+export enum MatchupAward {
+  EXPLICIT_WIN = "explicitWin",
+  EXPLICIT_LOSS = "explicitLoss",
+  IMPLICIT_WIN = "implicitWin",
+  IMPLICIT_LOSS = "implicitLoss",
+  POSITIVE_TIE = "positiveTie",
+  NEGATIVE_TIE = "negativeTie",
+  AMBIVALENT_TIE = "ambivalentTie",
+}
+
+export interface MatchupResult {
+  optionA: string;
+  optionB: string;
+  winnerId?: string;
+  winnerAward: MatchupAward;
 }
 
 export interface Ranking {
@@ -56,6 +64,7 @@ export interface Ranking {
   pollId: string;
 
   choices: Choice[];
+  matchups: MatchupResult[];
 }
 
 export type PendingRanking = Omit<Ranking, "id" | "participantEmail">;

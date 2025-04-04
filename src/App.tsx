@@ -5,6 +5,7 @@ import { PollRoute } from "./routes/poll";
 import { VoteRoute } from "./routes/vote";
 import { InviteRoute } from "./routes/invite";
 import * as logger from "./common/logging";
+import { RankingRoute } from "./routes/ranking";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="/:pollId/invite" element={<InviteRoute />} />
           <Route path="/:pollId" element={<PollRoute />} />
           <Route path="/vote/:pollId" element={<VoteRoute />} />
+          <Route path="/:pollId/ranking/:email" element={<RankingRoute />} />
         </Routes>
       </BrowserRouter>
     </div>

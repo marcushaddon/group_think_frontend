@@ -6,27 +6,13 @@ import {
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import groupthink from "../../client/groupthink";
-import { Option, PendingRanking, Poll } from "../../models";
+import { MatchupResult, Option, PendingRanking, Poll } from "../../models";
 import { Matchup as MatchupComponent } from "./matchup";
 import { sorter as makeSorter, Matchup } from "./sort";
 import { buildRanking, optionAwardKey } from "./build-ranking";
 import DisableOverscroll from "../../hooks/overscroll";
 
-export enum OptionAward {
-  EXPLICIT_WIN = "explicitWin",
-  EXPLICIT_LOSS = "explicitLoss",
-  IMPLICIT_WIN = "implicitWin",
-  IMPLICIT_LOSS = "implicitLoss",
-  POSITIVE_TIE = "positiveTie",
-  NEGATIVE_TIE = "negativeTie",
-  AMBIVALENT_TIE = "ambivalentTie",
-}
 
-export interface MatchupResult {
-  optionA: OptionAward;
-  optionB: OptionAward;
-  winnerId?: string;
-}
 
 export type ChoiceMap = { [idAwardKey: string]: number };
 
@@ -35,9 +21,7 @@ export const VoteRoute: FunctionComponent = () => {
   const navigate = useNavigate();
 
   const [state, setState] = useState<"voting" | "submitting">("voting");
-  const [awardMap, setAwardMap] = useState<{ [optionAward: string]: number }>(
-    {},
-  );
+  const [matchups, setMatchups] = useState<MatchupResult[]>([]);
   const [sorter, setSorter] = useState<Generator<
     Matchup<any>,
     Option<any>[],
@@ -84,7 +68,9 @@ export const VoteRoute: FunctionComponent = () => {
       }
 
       
-      navigate(`/${poll!.id}?participantEmail=${created.participantEmail}`);
+    //   navigate(`/${poll!.id}/ranking/${created.participantEmail}`);
+    navigate(`/${poll!.id}`);
+
     },
     [poll, navigate],
   );
@@ -96,21 +82,20 @@ export const VoteRoute: FunctionComponent = () => {
         return;
       }
 
-      const optionAAwardKey = optionAwardKey(optionA!.id, res.optionA);
-      const optionBAwardKey = optionAwardKey(optionB!.id, res.optionB);
-
-      const updatedAwardMap = {
-        ...awardMap,
-        [optionAAwardKey]: (awardMap![optionAAwardKey] || 0) + 1,
-        [optionBAwardKey]: (awardMap![optionBAwardKey] || 0) + 1,
-      };
-      // Record sentiment
-      setAwardMap(updatedAwardMap);
-
       let stepResult = sorter!.next(res);
 
+      setMatchups([
+        ...matchups,
+        res
+      ])
+
+      // TODO: should this happen before we request next matchup?
       if (stepResult.done) {
-        const ranking = buildRanking(stepResult.value, updatedAwardMap, poll);
+        const ranking = buildRanking(
+            stepResult.value,
+            matchups,
+            poll
+        );
         submitRanking(ranking);
 
         return;
@@ -120,7 +105,7 @@ export const VoteRoute: FunctionComponent = () => {
       setOptionA(stepResult.value.inserted);
       setOptionB(stepResult.value.inserting);
     },
-    [sorter, awardMap, poll, submitRanking, optionA, optionB],
+    [sorter, poll, submitRanking, optionA, optionB],
   );
 
   if (!poll) {
