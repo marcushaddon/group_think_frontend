@@ -14,7 +14,10 @@ export const ElectionBreakdown: FunctionComponent<{
 
 }
 
-const NewRound: FunctionComponent<{ log: RoundEvent }> = ({
+const NewRound: FunctionComponent<{
+    log: RoundEvent,
+    // getOption: (id: string) => Option<any>
+}> = ({
     log
 }) => (
     <div>
