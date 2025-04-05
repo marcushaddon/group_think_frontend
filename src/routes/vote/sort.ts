@@ -1,5 +1,5 @@
 import * as logger from "../../common/logging";
-import { MatchupResult } from ".";
+import { MatchupResult } from "../../models";
 
 type ID = {
   id: string;
@@ -43,7 +43,10 @@ export const sorter = () => {
         ? Relation.LT
         : Relation.EQ;
 
-  function* compare<T extends ID>(inserted: T, inserting: T) {
+  function* compare<T extends ID>(
+    inserted: T,
+    inserting: T,
+  ): Generator<Matchup<T>, Relation, MatchupResult> {
     logger.log(`compare: comparing`, { inserted, inserting });
     const key = matchupKey(inserted, inserting);
     const existing = comparisons.get(key);
