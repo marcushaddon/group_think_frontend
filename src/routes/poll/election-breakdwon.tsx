@@ -4,7 +4,7 @@ import { Option } from "../../models";
 
 export const ElectionBreakdown: FunctionComponent<{
     events: ElectionEventModel[],
-    getOption: (optId: { optionId: string }) => Option<any>
+    getOption: (optionId: string ) => Option<any>
 }> = ({
     events,
     getOption
@@ -17,74 +17,96 @@ export const ElectionBreakdown: FunctionComponent<{
 const NewRound: FunctionComponent<{
     log: RoundEvent,
     idx: number,
-    // getOption: (id: string) => Option<any>
+    getOption: (id: string) => Option<any>
 }> = ({
     log,
-    idx
+    idx,
+    getOption
 }) => (
     <div>
         <strong>{idx}. New round. Remaining options:</strong>
         <ul>
-            {log.options.map((o) => <li>{o}</li>)}
+            {log.options.map((oid) => <li>{getOption(oid).name}</li>)}
         </ul>
     </div>
 );
 
-const FirstPlaceShares: FunctionComponent<{ log: FirstPlaceSharesEvent, idx: number }> = ({
+const FirstPlaceShares: FunctionComponent<{
+    log: FirstPlaceSharesEvent,
+    idx: number,
+    getOption: (optionId: string ) => Option<any>
+}> = ({
     log,
-    idx
+    idx,
+    getOption
 }) => (
     <div>
         <strong>{idx}. First place shares:</strong>
         <ul>
             {Object.entries(log.shares).map(
-                ([id, share]) => <li>{id}: {share}</li>
+                ([id, share]) => <li>{getOption(id).name}: {share}</li>
             )}
         </ul>
     </div>
 );
 
-const Majority: FunctionComponent<{ log: MajorityEvent, idx: number }> = ({
+const Majority: FunctionComponent<{
+    log: MajorityEvent,
+    idx: number,
+    getOption: (optionId: string ) => Option<any>,
+}> = ({
     log,
-    idx
+    idx,
+    getOption
 }) => (
     <div>
-        <strong>{idx}. Majority acheived! {log.winner.id} wins with {log.winner.share}!</strong>
+        <strong>{idx}. Majority acheived! {getOption(log.winner.id).name} wins with {log.winner.share}!</strong>
     </div>
 );
 
-const Loser: FunctionComponent<{ log: LoserChosenEvent, idx: number }> = ({
+const Loser: FunctionComponent<{
+    log: LoserChosenEvent,
+    idx: number,
+    getOption: (optionId: string ) => Option<any>,
+}> = ({
     log,
-    idx
+    idx,
+    getOption
 }) => (
     <div>
-        <strong>{idx}. Next option eliminated: {log.loser} eliminated.</strong>
+        <strong>{idx}. Next option eliminated: {getOption(log.loser).name} eliminated.</strong>
     </div>
 );
 
-const Tie: FunctionComponent<{ log: TieEvent, idx: number }> = ({
+const Tie: FunctionComponent<{
+    log: TieEvent,
+    idx: number,
+    getOption: (optionId: string ) => Option<any>,
+}> = ({
     log,
-    idx
+    idx,
+    getOption
 }) => (
     <div>
-        <strong>{idx}. TODO: TIE</strong>
+        <strong>{idx}. It's a tie between {log.winners.map((oid) => getOption(oid).name).join(', ')}</strong>
     </div>
 );
 
 export const ElectionEvent: FunctionComponent<{
     log: ElectionEventModel,
-    getOption: (optId: { optionId: string }) => Option<any>,
+    getOption: (optionId: string ) => Option<any>,
     idx: number
 }> = ({
     log,
-    idx
+    idx,
+    getOption
 }) => {
     const element = log.name === "Round" ?
-        <NewRound idx={idx} log={log} /> : log.name === "FirstPlaceShares" ?
-        <FirstPlaceShares idx={idx} log={log} /> : log.name === "Majority" ?
-        <Majority  idx={idx} log={log} /> : log.name === "LoserChosen" ?
-        <Loser idx={idx} log={log} /> : log.name === "Tie" ?
-        <Tie idx={idx} log={log} /> : `UNREACHABLE`;
+        <NewRound getOption={getOption} idx={idx} log={log} /> : log.name === "FirstPlaceShares" ?
+        <FirstPlaceShares getOption={getOption} idx={idx} log={log} /> : log.name === "Majority" ?
+        <Majority getOption={getOption} idx={idx} log={log} /> : log.name === "LoserChosen" ?
+        <Loser getOption={getOption} idx={idx} log={log} /> : log.name === "Tie" ?
+        <Tie getOption={getOption} idx={idx} log={log} /> : `UNREACHABLE`;
 
     return element;
 }

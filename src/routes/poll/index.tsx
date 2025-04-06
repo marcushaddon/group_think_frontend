@@ -79,7 +79,7 @@ export const PollRoute: FunctionComponent = () => {
       })}
 
       {result?.logs.length && (
-        <ElectionBreakdown events={result.logs} getOption={({ optionId }) => poll.optionsMap[optionId] }/>
+        <ElectionBreakdown events={result.logs} getOption={(optionId ) => poll.optionsMap[optionId] }/>
       )}
     </div>
   );
