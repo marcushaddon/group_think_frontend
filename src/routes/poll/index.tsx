@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { Option as OptionComponent } from "../../components/option";
 import { usePollWithRankings, useRankedChoice } from "../../hooks";
 import { ElectionBreakdown } from "./election-breakdwon";
+import { RankingGraphLink } from "../ranking";
 
 
 export const PollRoute: FunctionComponent = () => {
@@ -67,9 +68,10 @@ export const PollRoute: FunctionComponent = () => {
                     <ol>
                         {ranking.choices.map((ch) => {
                             const name = poll.optionsMap[ch.optionId].name;
-                            return <li>{name || `Couldn't find option ${ch.optionId}`}</li>;
+                            return <li>{name || `Couldn't find option "${ch.optionId}"`}</li>;
                         })}
                     </ol>
+                    <RankingGraphLink ranking={ranking} optMap={poll.optionsMap} />
                     <hr />
                 </>
             );

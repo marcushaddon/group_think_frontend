@@ -135,7 +135,7 @@ export const sorter = () => {
       }
       logger.log("sort: sort complete", { toSort });
 
-      return sorted;
+      return sorted.toReversed();
     } catch (e) {
       const msg =
         e instanceof Error

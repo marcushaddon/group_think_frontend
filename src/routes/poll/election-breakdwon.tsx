@@ -26,7 +26,7 @@ const NewRound: FunctionComponent<{
     <div>
         <strong>{idx}. New round. Remaining options:</strong>
         <ul>
-            {log.options.map((oid) => <li>{getOption(oid).name}</li>)}
+            {log.options.map((oid) => <li>"{getOption(oid).name}"</li>)}
         </ul>
     </div>
 );
@@ -44,7 +44,7 @@ const FirstPlaceShares: FunctionComponent<{
         <strong>{idx}. First place shares:</strong>
         <ul>
             {Object.entries(log.shares).map(
-                ([id, share]) => <li>{getOption(id).name}: {share}</li>
+                ([id, share]) => <li>"{getOption(id).name}": {share}</li>
             )}
         </ul>
     </div>
@@ -60,7 +60,7 @@ const Majority: FunctionComponent<{
     getOption
 }) => (
     <div>
-        <strong>{idx}. Majority acheived! {getOption(log.winner.id).name} wins with {log.winner.share}!</strong>
+        <strong>{idx}. Majority acheived! "{getOption(log.winner.id).name}" wins with {log.winner.share} first place votes!</strong>
     </div>
 );
 
@@ -74,7 +74,7 @@ const Loser: FunctionComponent<{
     getOption
 }) => (
     <div>
-        <strong>{idx}. Next option eliminated: {getOption(log.loser).name} eliminated.</strong>
+        <strong>{idx}. Next option eliminated: "{getOption(log.loser).name}" eliminated.</strong>
     </div>
 );
 
@@ -88,7 +88,9 @@ const Tie: FunctionComponent<{
     getOption
 }) => (
     <div>
-        <strong>{idx}. It's a tie between {log.winners.map((oid) => getOption(oid).name).join(', ')}</strong>
+        <strong>{idx}. It's a tie between {log.winners.map(
+            (oid) => `"${getOption(oid).name}"`
+        ).join(', ')}</strong>
     </div>
 );
 
