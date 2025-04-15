@@ -1,4 +1,5 @@
 import * as logger from "../common/logging";
+import { isSubsetOf } from "../common/util";
 type Option = { id: string };
 
 export type RoundEvent = {
@@ -210,7 +211,7 @@ const optionsFromRankings = (rankings: Option[][]): string[] => {
     rankings.every((r) => {
       const set = new Set(r.map(({ id }) => id));
 
-      return set.isSubsetOf(opts) && opts.isSubsetOf(set);
+      return isSubsetOf(set, opts) && isSubsetOf(set, opts);
     });
 
   logger.assert(valid, "Invalid rankings", { rankings });
