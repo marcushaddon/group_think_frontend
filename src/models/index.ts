@@ -1,3 +1,5 @@
+import { Election } from "../alg/ranked-choice";
+
 export enum OptionType {
   GOOGLE_PLACE = "google-place",
   GOOGLE_SEARCH_RESULT = "google-search-result",
@@ -69,18 +71,6 @@ export interface Ranking {
 
 export type PendingRanking = Omit<Ranking, "id" | "participantEmail">;
 
-export type Result =
-  | {
-      winner: Option<unknown>;
-      tie: undefined;
-      done: boolean;
-    }
-  | {
-      winner: undefined;
-      tie: Option<unknown>[];
-      done: boolean;
-    };
-
 export interface Poll {
   id: string;
   name: string;
@@ -94,7 +84,7 @@ export interface Poll {
   optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
 
-  result?: Result;
+  result?: Election;
 
   rankings?: Ranking[];
 }

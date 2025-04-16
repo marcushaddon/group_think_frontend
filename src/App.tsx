@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CreateRoute } from "./routes/create/create";
+import { PollView } from "./routes/poll/view";
 import { PollRoute } from "./routes/poll";
 import { VoteRoute } from "./routes/vote";
-import { InviteRoute } from "./routes/invite";
+import { InviteView } from "./routes/invite/view";
 import * as logger from "./common/logging";
 import { RankingRoute } from "./routes/ranking";
+import { InviteRoute } from "./routes/invite";
+import { pollWithWinner } from "./models/mocks";
 
 
 function App() {
@@ -44,6 +47,11 @@ function App() {
     >
       <BrowserRouter>
         <Routes>
+          {/* DESIGN PREWIEWS */}
+          <Route path="/design/invite" element={<InviteView poll={pollWithWinner} />} />
+          <Route path="/poll/design" element={<PollView poll={pollWithWinner} />} />
+
+          {/* APP */}
           <Route index element={<CreateRoute />} />
           <Route path="/:pollId/invite" element={<InviteRoute />} />
           <Route path="/:pollId" element={<PollRoute />} />

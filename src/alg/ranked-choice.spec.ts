@@ -1,4 +1,4 @@
-import { rankedChoice } from "./ranked-choice";
+import { rcv } from "./ranked-choice";
 
 type TestOpt = { id: string };
 
@@ -71,7 +71,7 @@ it.each(times(20))("chooses outright majority", () => {
   );
   const shuffledRankings = shuffle(rankings);
 
-  const res = rankedChoice(shuffledRankings);
+  const res = rcv(shuffledRankings);
   console.log("test got:", res);
 
   expect(typeof res).toBe("string");

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import groupthink from "../client/groupthink";
 import { Poll, Ranking, Result } from "../models";
-import { Election, rankedChoice } from "../alg/ranked-choice";
+import { Election, rcv } from "../alg/ranked-choice";
 
 export function usePoll(pollId?: string): Poll | undefined {
   const [poll, setPoll] = useState<Poll | undefined>(undefined);
@@ -63,7 +63,7 @@ export function useRankedChoice(poll?: Poll): Election | undefined {
     const asOptIds = poll.rankings.map((ranking) =>
       ranking.choices.map(({ optionId }) => ({ id: optionId })),
     );
-    const ranked = rankedChoice(asOptIds);
+    const ranked = rcv(asOptIds);
     const done = poll.rankings.length === poll.participants.length;
 
     setResult(ranked);

@@ -51,12 +51,12 @@ export type Election = Result & {
   logs: ElectionEvent[];
 };
 
-export const rankedChoice = <T extends Option>(
+export const rcv = <T extends Option>(
   rankings: T[][],
   logs: ElectionEvent[] = [],
 ): Election => {
   let workingRankings = [...rankings];
-  const roundLogs: ElectionEvent[] = logs.concat([
+  const runoffLogs: ElectionEvent[] = logs.concat([
     {
       name: "Round",
       options: optionsFromRankings(rankings),
@@ -64,7 +64,7 @@ export const rankedChoice = <T extends Option>(
   ]);
   // TODO: if we have a tie
   const scores = firstPlaceShares(workingRankings);
-  roundLogs.push({
+  runoffLogs.push({
     name: "FirstPlaceShares",
     shares: scores,
   });
@@ -78,11 +78,12 @@ export const rankedChoice = <T extends Option>(
   if (weHaveATie) {
     const winners = results.winners.map(([id]) => id);
     const share = results.winners[0][1] / rankings.length;
+
     return {
       tie: winners,
       winner: undefined,
       logs: [
-        ...roundLogs,
+        ...runoffLogs,
         {
           name: "Tie",
           winners,
@@ -94,14 +95,14 @@ export const rankedChoice = <T extends Option>(
 
   // winner = shares where s > 0.5
   const winner = results.winner;
-  const share = results.winner ? results.winner[1] / workingRankings.length : 0;
+  const share = winner ? winner[1] / workingRankings.length : 0;
 
   // if winner return winner
   if (winner && share > 0.5) {
     return {
       winner: results.winner[0],
       tie: undefined,
-      logs: roundLogs.concat([
+      logs: runoffLogs.concat([
         {
           name: "Majority",
           winner: {
@@ -119,7 +120,7 @@ export const rankedChoice = <T extends Option>(
     ranking.filter((opt) => opt.id !== results.loser[0]),
   );
 
-  return rankedChoice(
+  return rcv(
     workingRankings,
     logs.concat([
       {
@@ -131,13 +132,15 @@ export const rankedChoice = <T extends Option>(
 };
 
 const firstPlaceShares = (rs: Option[][]): Record<string, number> =>
-  rs.reduce(
-    (counts, current) => ({
-      ...counts,
-      [current[0].id]: (counts[current[0].id] || 0) + 1,
-    }),
-    {} as Record<string, number>,
-  );
+  rs
+    .filter((r) => r.length > 0)
+    .reduce(
+      (counts, current) => ({
+        ...counts,
+        [current[0].id]: (counts[current[0].id] || 0) + 1,
+      }),
+      {} as Record<string, number>,
+    );
 
 type Highest =
   | {
