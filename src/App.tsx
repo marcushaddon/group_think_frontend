@@ -8,7 +8,7 @@ import { InviteView } from "./routes/invite/view";
 import * as logger from "./common/logging";
 import { RankingRoute } from "./routes/ranking";
 import { InviteRoute } from "./routes/invite";
-import { pollWithWinner } from "./models/mocks";
+import { pollWithTie, pollWithWinner } from "./models/mocks";
 
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
         <Routes>
           {/* DESIGN PREWIEWS */}
           <Route path="/design/invite" element={<InviteView poll={pollWithWinner} />} />
-          <Route path="/poll/design" element={<PollView poll={pollWithWinner} />} />
+          <Route path="/poll/design" element={<PollView poll={pollWithTie} />} />
 
           {/* APP */}
           <Route index element={<CreateRoute />} />

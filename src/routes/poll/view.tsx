@@ -8,12 +8,14 @@ import {
 import {
   ElectionEvent,
 } from "../../alg/ranked-choice";
+import { useRankedChoice } from "../../hooks";
 
 interface PollDisplayProps {
   poll?: Poll;
 }
 
 export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
+  const result = useRankedChoice(poll);
   if (!poll) {
     return (
       <div className="flex items-center justify-center h-screen text-center text-gray-700">
@@ -26,16 +28,19 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
     poll.rankings?.some((r) => r.participantEmail === participantEmail);
 
   // Determine winner or tie from the Election result
-  const winnerOptionId = poll.result?.winner;
-  const tiedOptionIds = poll.result?.tie ?? [];
+  const winnerOptionId = result?.winner;
+  const tiedOptionIds = result?.tie ?? [];
 
   // Helper to format event logs
   const renderEvent = (event: ElectionEvent, index: number) => {
+    const asNames = (optIds: string[]) => optIds.map(
+      (id) => poll.optionsMap[id]?.name || `ERROR: unknown option: ${id}`
+    ).join(", ");
     switch (event.name) {
       case "Round":
         return (
           <div key={index}>
-            <strong>Round:</strong> {event.options.join(", ")}
+            <strong>Round:</strong> {asNames(event.options)}
           </div>
         );
       case "FirstPlaceShares":
@@ -64,7 +69,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
           <div key={index}>
             <strong>Tie Between:</strong>{" "}
             {event.winners.map((id) => poll.optionsMap[id]?.name).join(", ")} (
-            share: {event.share.toFixed(2)})
+            share: {(event.share * 100).toFixed(2)}%)
           </div>
         );
       case "LoserChosen":
@@ -162,11 +167,11 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         )}
       </div>
 
-      {poll.result?.logs && poll.result.logs.length > 0 && (
+      {result?.logs && result.logs.length > 0 && (
         <div>
           <h2 className="text-lg font-semibold mb-1">Election Logs</h2>
           <div className="bg-gray-100 p-3 rounded text-sm space-y-2">
-            {poll.result.logs.map((event, index) => renderEvent(event, index))}
+            {result.logs.map((event, index) => renderEvent(event, index))}
           </div>
         </div>
       )}

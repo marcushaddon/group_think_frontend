@@ -64,6 +64,7 @@ export const rcv = <T extends Option>(
   ]);
   // TODO: if we have a tie
   const scores = firstPlaceShares(workingRankings);
+
   runoffLogs.push({
     name: "FirstPlaceShares",
     shares: scores,
@@ -72,8 +73,11 @@ export const rcv = <T extends Option>(
   // 1st shares = shares(rankings)
   const results = superlatives(scores);
 
+  // this is wrong in the case that
   const weHaveATie =
-    results.winners && results.winners.length === workingRankings.length;
+    results.winners &&
+    results.winners.reduce((acc, [, count]) => acc + count, 0) ===
+      workingRankings.length;
 
   if (weHaveATie) {
     const winners = results.winners.map(([id]) => id);

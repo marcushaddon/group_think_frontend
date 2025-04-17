@@ -50,19 +50,16 @@ const participant1: Participant = {
   name: "Alice",
   email: "alice@example.com",
 };
-
 const participant2: Participant = {
   id: "p2",
   name: "Bob",
   email: "bob@example.com",
 };
-
 const participant3: Participant = {
   id: "p3",
   name: "Charlie",
   email: "charlie@example.com",
 };
-
 const participant4: Participant = {
   id: "p4",
   name: "Dana",
@@ -73,10 +70,7 @@ export const pollWithWinner: Poll = {
   id: "poll1",
   name: "Weekend Activity",
   description: "Vote on where we should go this weekend!",
-  owner: {
-    name: "Organizer One",
-    email: "organizer1@example.com",
-  },
+  owner: { name: "Organizer One", email: "organizer1@example.com" },
   optionsList: [option1, option2, option3, option4, option5],
   optionsMap: {
     opt1: option1,
@@ -94,6 +88,8 @@ export const pollWithWinner: Poll = {
         { optionId: "opt1" },
         { optionId: "opt2" },
         { optionId: "opt3" },
+        { optionId: "opt4" },
+        { optionId: "opt5" },
       ],
       matchups: [],
     },
@@ -104,19 +100,33 @@ export const pollWithWinner: Poll = {
         { optionId: "opt1" },
         { optionId: "opt3" },
         { optionId: "opt4" },
+        { optionId: "opt2" },
+        { optionId: "opt5" },
       ],
       matchups: [],
     },
     {
       participantEmail: "charlie@example.com",
       pollId: "poll1",
-      choices: [{ optionId: "opt1" }, { optionId: "opt5" }],
+      choices: [
+        { optionId: "opt1" },
+        { optionId: "opt5" },
+        { optionId: "opt4" },
+        { optionId: "opt3" },
+        { optionId: "opt2" },
+      ],
       matchups: [],
     },
     {
       participantEmail: "dana@example.com",
       pollId: "poll1",
-      choices: [{ optionId: "opt2" }, { optionId: "opt1" }],
+      choices: [
+        { optionId: "opt2" },
+        { optionId: "opt1" },
+        { optionId: "opt3" },
+        { optionId: "opt4" },
+        { optionId: "opt5" },
+      ],
       matchups: [],
     },
   ],
@@ -126,10 +136,7 @@ export const pollWithTie: Poll = {
   id: "poll2",
   name: "Spring Outing",
   description: "Where should we go for our spring trip?",
-  owner: {
-    name: "Organizer Two",
-    email: "organizer2@example.com",
-  },
+  owner: { name: "Organizer Two", email: "organizer2@example.com" },
   optionsList: [option1, option2, option3, option4, option5],
   optionsMap: {
     opt1: option1,
@@ -144,9 +151,11 @@ export const pollWithTie: Poll = {
       participantEmail: "alice@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt2" }, // Brooklyn Botanic Garden
-        { optionId: "opt3" }, // Prospect Park Zoo
+        { optionId: "opt2" }, // BBG
+        { optionId: "opt3" }, // Zoo
         { optionId: "opt5" },
+        { optionId: "opt1" },
+        { optionId: "opt4" },
       ],
       matchups: [],
     },
@@ -154,8 +163,11 @@ export const pollWithTie: Poll = {
       participantEmail: "bob@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt3" }, // Prospect Park Zoo
-        { optionId: "opt2" }, // Brooklyn Botanic Garden
+        { optionId: "opt3" }, // Zoo
+        { optionId: "opt2" }, // BBG
+        { optionId: "opt4" },
+        { optionId: "opt1" },
+        { optionId: "opt5" },
       ],
       matchups: [],
     },
@@ -163,7 +175,11 @@ export const pollWithTie: Poll = {
       participantEmail: "charlie@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt3" }, // Prospect Park Zoo
+        { optionId: "opt3" }, // Zoo
+        { optionId: "opt5" },
+        { optionId: "opt1" },
+        { optionId: "opt2" },
+        { optionId: "opt4" },
       ],
       matchups: [],
     },
@@ -171,7 +187,11 @@ export const pollWithTie: Poll = {
       participantEmail: "dana@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt2" }, // Brooklyn Botanic Garden
+        { optionId: "opt2" }, // BBG
+        { optionId: "opt4" },
+        { optionId: "opt3" },
+        { optionId: "opt5" },
+        { optionId: "opt1" },
       ],
       matchups: [],
     },
