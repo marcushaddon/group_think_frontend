@@ -1,4 +1,5 @@
 import React from "react";
+import { RankingGraphLink } from "../ranking";
 import {
   Poll,
   VoteStatus,
@@ -6,8 +7,6 @@ import {
 
 import {
   ElectionEvent,
-  MajorityEvent,
-  TieEvent,
 } from "../../alg/ranked-choice";
 
 interface PollDisplayProps {
@@ -153,6 +152,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
                       </li>
                     ))}
                   </ol>
+                  <RankingGraphLink ranking={ranking} optMap={poll.optionsMap} />
                 </div>
               </li>
             ))}

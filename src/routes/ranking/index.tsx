@@ -17,8 +17,8 @@ export const RankingGraphLink: FunctionComponent<{
             href={`https://dreampuf.github.io/GraphvizOnline/?engine=dot#${encodeURI(digraph)}`}
             target="_blank"
         >
-            <button className="py-2.5 px-5 font-medium rounded-lg text-sm border border-gray-200">
-                View graph
+            <button className="mt-1 py-2.5 px-5 font-medium rounded-lg text-sm border border-gray-200">
+                View decisions
             </button> 
         </a>
     );
