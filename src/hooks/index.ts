@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import groupthink from "../client/groupthink";
-import { Poll, Ranking, Result } from "../models";
+import { Poll, Ranking } from "../models";
 import { Election, rcv } from "../alg/ranked-choice";
 
 export function usePoll(pollId?: string): Poll | undefined {
