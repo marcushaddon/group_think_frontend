@@ -14,6 +14,8 @@ interface PollDisplayProps {
   poll?: Poll;
 }
 
+const asPercent = (p: number) => `${(p * 100).toFixed(2)}%`;
+
 export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
   const result = useRankedChoice(poll);
   if (!poll) {
@@ -50,7 +52,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
             <ul className="list-disc pl-5">
               {Object.entries(event.shares).map(([id, share]) => (
                 <li key={id}>
-                  {poll.optionsMap[id]?.name ?? id}: {share}
+                  {poll.optionsMap[id]?.name ?? id}: {asPercent(share)}
                 </li>
               ))}
             </ul>
@@ -61,7 +63,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
           <div key={index}>
             <strong>Majority Winner:</strong>{" "}
             {poll.optionsMap[event.winner.id]?.name} (
-            {event.winner.share.toFixed(2)})
+            {asPercent(event.winner.share)})
           </div>
         );
       case "Tie":
@@ -69,7 +71,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
           <div key={index}>
             <strong>Tie Between:</strong>{" "}
             {event.winners.map((id) => poll.optionsMap[id]?.name).join(", ")} (
-            share: {(event.share * 100).toFixed(2)}%)
+            share: {asPercent(event.share)})
           </div>
         );
       case "LoserChosen":
@@ -95,20 +97,21 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
       <div>
         <h2 className="text-lg font-semibold mb-1">Participants</h2>
         <ul className="space-y-1">
-          {poll.participants.map((participant) => {
-            const color = hasVoted(participant.email) ? "green" : "gray"
-            return (
-              <li
-                key={participant.id}
-                className={`flex items-center justify-between border-b border-${color} pb-1 text-${color}-600`}
-              >
-                {participant.name}
-                <span className="text-sm">
-                  {hasVoted(participant.email) ? "Voted ✅" : "Not Voted ❌"}
-                </span>
-              </li>
-            );
-          })}
+          {poll.participants.map((participant) => (
+            <li
+              key={participant.id}
+              className={`flex items-center justify-between border-b pb-1 ${
+                hasVoted(participant.email)
+                  ? "text-green-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {participant.name}
+              <span className="text-sm">
+                {hasVoted(participant.email) ? "Voted ✅" : "Not Voted ❌"}
+              </span>
+            </li>
+          ))}
         </ul>
       </div>
 
