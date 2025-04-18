@@ -95,21 +95,20 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
       <div>
         <h2 className="text-lg font-semibold mb-1">Participants</h2>
         <ul className="space-y-1">
-          {poll.participants.map((participant) => (
-            <li
-              key={participant.id}
-              className={`flex items-center justify-between border-b pb-1 ${
-                hasVoted(participant.email)
-                  ? "text-green-600"
-                  : "text-gray-600"
-              }`}
-            >
-              {participant.name}
-              <span className="text-sm">
-                {hasVoted(participant.email) ? "Voted ✅" : "Not Voted ❌"}
-              </span>
-            </li>
-          ))}
+          {poll.participants.map((participant) => {
+            const color = hasVoted(participant.email) ? "green" : "gray"
+            return (
+              <li
+                key={participant.id}
+                className={`flex items-center justify-between border-b border-${color} pb-1 text-${color}-600`}
+              >
+                {participant.name}
+                <span className="text-sm">
+                  {hasVoted(participant.email) ? "Voted ✅" : "Not Voted ❌"}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
