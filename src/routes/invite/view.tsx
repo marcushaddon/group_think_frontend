@@ -63,7 +63,7 @@ const InviteButton: FunctionComponent<{
   };
 
   return (
-    <button onClick={invite}>
+    <button onClick={invite} className="border rounded-lg me-4 p-2">
       {gmail ? "Gmail" : "Copy invite to clipboard"}
     </button>
   );
@@ -73,6 +73,7 @@ const LinkButton: FunctionComponent<{
   invite: ReturnType<typeof inviteFor>;
 }> = ({ invite }) => (
   <button
+    className="border rounded-lg me-1 p-2"
     onClick={() => {
       window.open(invite.href, "_blank")?.focus();
     }}
@@ -88,22 +89,23 @@ export const InviteView: FunctionComponent<{ poll?: Poll }> = ({
   return !poll ? (
     <>fetching poll</>
   ) : (
-    <>
-      <h1>Invites for {poll.name}</h1>
-      <ol>
+    <div className="p-4 max-w-3xl mx-auto space-y-6">
+      <h1 className="text-2xl font-bold">Invites for {poll.name}</h1>
+      <div className="space-y-6">
         {poll.participants.map((p) => {
           const invite = inviteFor(poll, p);
-
+ 
           return (
-            <li>
-              {p.name}&nbsp;
-              <InviteButton invite={invite} gmail />
-              <InviteButton invite={invite} />
-              <LinkButton invite={invite} />
-            </li>
+            <div>
+              <div className="font-semibold">{p.name}</div>
+              <div className="flex flex-row items-center">
+                <InviteButton invite={invite} />
+                <LinkButton invite={invite} />
+              </div>
+            </div>
           );
         })}
-      </ol>
-    </>
+      </div>
+    </div>
   );
 };

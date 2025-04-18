@@ -23,7 +23,7 @@ describe("insertionSort generator", () => {
     while (true) {
       const res = sorter.next();
       if (res.done) {
-        resultStr = res.value.map((o) => o.id).join("");
+        resultStr = res.value.map((o: Option<any>) => o.id).join("");
 
         break;
       }

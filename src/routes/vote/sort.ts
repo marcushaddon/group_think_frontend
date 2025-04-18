@@ -135,11 +135,11 @@ export const sorter = () => {
       }
       logger.log("sort: sort complete", { toSort });
 
-      return sorted.toReversed();
+      return [...sorted].reverse();
     } catch (e) {
       const msg =
         e instanceof Error
-          ? `name: ${e.name}, cause: ${e.cause}, message: ${e.message}, stack: ${e.stack}`
+          ? `name: ${e.name}, cause: ${(e as any).cause}, message: ${e.message}, stack: ${e.stack}`
           : `unknown: ${e}`;
       logger.error("insertionSort: encountered error", {
         error: msg,

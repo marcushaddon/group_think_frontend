@@ -50,8 +50,11 @@ const matchupEdge = (
   );
   assert(aIdx > -1 && bIdx > -1, "matchup result options not found in ranking");
   assert(aIdx !== bIdx, "self matchup found");
+  // arrows flow from winner to loser
+  // winners are lower idxed at this point
+  // TODO: have named types for orders of list
   const [from, to] = (
-    aIdx > bIdx ? [optionA, optionB] : [optionB, optionA]
+    aIdx < bIdx ? [optionA, optionB] : [optionB, optionA]
   ).map((id) => ({
     optionId: id,
     name: opts[id].name,
