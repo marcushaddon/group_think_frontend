@@ -1,4 +1,4 @@
-import { Election } from "../alg/ranked-choice";
+import { RankedChoiceElection } from "../alg/ranked-choice";
 
 export enum OptionType {
   GOOGLE_PLACE = "google-place",
@@ -84,7 +84,7 @@ export interface Poll {
   optionsMap: { [id: string]: Option<any> };
   participants: Participant[];
 
-  result?: Election;
+  result?: RankedChoiceElection;
 
   rankings?: Ranking[];
 }

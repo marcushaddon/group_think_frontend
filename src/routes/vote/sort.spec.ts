@@ -1,5 +1,5 @@
 import { Option } from "../../models";
-import { sorter as makeSorter } from "./sort";
+import { sorter as makeSorter, Matchup } from "./sort";
 
 const mockOption = (id: string): Option<any> => ({
   id,
@@ -27,8 +27,10 @@ describe("insertionSort generator", () => {
 
         break;
       }
-      expect(res.value.inserted).toBeDefined();
-      expect(res.value.inserting).toBeDefined();
+
+      const matchupRes = res.value as Matchup<Option<any>>;
+      expect(matchupRes.inserted).toBeDefined();
+      expect(matchupRes.inserting).toBeDefined();
     }
     const sortedStr = options.map((o) => o.id).join("");
     expect(resultStr).toEqual(sortedStr);

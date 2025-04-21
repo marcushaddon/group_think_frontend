@@ -1,5 +1,6 @@
 import * as logger from "../common/logging";
 import { isSubsetOf } from "../common/util";
+import { Result } from "./types";
 type Option = { id: string };
 
 export type RoundEvent = {
@@ -35,26 +36,14 @@ export type ElectionEvent =
   | TieEvent
   | LoserChosenEvent;
 
-type Majority = {
-  winner: string;
-  tie: undefined;
-};
-
-type Tie = {
-  winner: undefined;
-  tie: string[];
-};
-
-type Result = Majority | Tie;
-
-export type Election = Result & {
+export type RankedChoiceElection = Result & {
   logs: ElectionEvent[];
 };
 
 export const rcv = <T extends Option>(
   rankings: T[][],
   logs: ElectionEvent[] = [],
-): Election => {
+): RankedChoiceElection => {
   let workingRankings = [...rankings];
   const runoffLogs: ElectionEvent[] = logs.concat([
     {
