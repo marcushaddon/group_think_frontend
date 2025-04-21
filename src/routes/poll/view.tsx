@@ -8,7 +8,7 @@ import {
 import {
   ElectionEvent,
 } from "../../alg/ranked-choice";
-import { useRankedChoice } from "../../hooks";
+import { useAvgRanking, useRankedChoice } from "../../hooks";
 
 interface PollDisplayProps {
   poll?: Election;
@@ -17,7 +17,8 @@ interface PollDisplayProps {
 const asPercent = (p: number) => `${(p * 100).toFixed(2)}%`;
 
 export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
-  const result = useRankedChoice(poll);
+  const rcvResult = useRankedChoice(poll);
+  const avgResult = useAvgRanking(poll);
   if (!poll) {
     return (
       <div className="flex items-center justify-center h-screen text-center text-gray-700">
@@ -28,10 +29,6 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
 
   const hasVoted = (participantEmail: string) =>
     poll.rankings?.some((r) => r.voterEmail === participantEmail);
-
-  // Determine winner or tie from the Election result
-  const winnerOptionId = result?.winner;
-  const tiedOptionIds = result?.tie ?? [];
 
   // Helper to format event logs
   const renderEvent = (event: ElectionEvent, index: number) => {
@@ -124,17 +121,43 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         </ul>
       </div>
 
-      {winnerOptionId && (
+      <div>
+        <h2 className="text-lg font-semibold mb-1">Ranked Choice Results</h2>
+      </div>
+
+      {rcvResult?.winner && (
         <div className="text-green-700 font-semibold">
-          Winner: {poll.candidateMap[winnerOptionId]?.name}
+          Winner: {poll.candidateMap[rcvResult.winner]?.name}
         </div>
       )}
 
-      {tiedOptionIds.length > 0 && (
+      {rcvResult?.tie?.length && (
         <div className="text-yellow-600">
           <div className="font-semibold">Tie between:</div>
           <ul className="list-disc pl-5">
-            {tiedOptionIds.map((id) => (
+            {rcvResult?.tie.map((id) => (
+              <li key={id}>{poll.candidateMap[id]?.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div>
+        <h2 className="text-lg font-semibold mb-1">Average ranking result</h2>
+      </div>
+
+      {avgResult?.winner && (
+        <div className="text-green-700 font-semibold">
+          Winner: {poll.candidateMap[avgResult.winner]?.name} (avg. ranking of ${avgResult.share.toFixed(2)})
+        </div>
+      )}
+
+      {avgResult?.tie?.length && (
+        <div className="text-yellow-600">
+          Tied with average rankings of ${avgResult.share.toFixed(2)}
+          <div className="font-semibold">Tie between:</div>
+          <ul className="list-disc pl-5">
+            {avgResult?.tie.map((id) => (
               <li key={id}>{poll.candidateMap[id]?.name}</li>
             ))}
           </ul>
@@ -169,11 +192,11 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         )}
       </div>
 
-      {result?.logs && result.logs.length > 0 && (
+      {rcvResult?.logs && rcvResult.logs.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold mb-1">Election Logs</h2>
+          <h2 className="text-lg font-semibold mb-1">Ranked Choice Election Logs</h2>
           <div className="bg-gray-100 p-3 rounded text-sm space-y-2">
-            {result.logs.map((event, index) => renderEvent(event, index))}
+            {rcvResult.logs.map((event, index) => renderEvent(event, index))}
           </div>
         </div>
       )}

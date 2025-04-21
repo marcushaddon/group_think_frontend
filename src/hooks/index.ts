@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import groupthink from "../client/groupthink";
 import { Election, Ranking } from "../models";
 import { RCEResult, rcv } from "../alg/ranked-choice";
+import { AvgRankingResult, avgRankings } from "../alg/avg-ranking";
 
 export function usePoll(pollId?: string): Election | undefined {
   const [poll, setPoll] = useState<Election | undefined>(undefined);
@@ -82,4 +83,28 @@ export function useRanking(pollId: string, email: string) {
   });
 
   return ranking;
+}
+
+export function useAvgRanking(
+  election?: Election,
+): AvgRankingResult | undefined {
+  const [res, setRes] = useState<AvgRankingResult>();
+
+  useEffect(() => {
+    if (!election || !election.rankings?.length) {
+      setRes(undefined);
+      return;
+    }
+
+    const newRes = avgRankings(
+      election!.candidateList.map(({ id }) => id),
+      election.rankings.map((ranking) =>
+        ranking.choices.map((ch) => ch.candidateId),
+      ),
+    );
+
+    setRes(newRes);
+  }, [election]);
+
+  return res;
 }

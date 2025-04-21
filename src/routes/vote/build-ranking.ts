@@ -1,4 +1,3 @@
-import { ChoiceMap } from ".";
 import { MatchupResult, MatchupAward } from "../../models";
 import { Choice, PendingRanking, Election } from "../../models";
 
