@@ -163,7 +163,7 @@ export class GroupthinkClient {
     const path = `/polls/${pending.pollId}/rankings/${email}.json`;
     const created = {
       ...pending,
-      participantEmail: email,
+      voterEmail: email,
     };
     await this.writeFile(path, JSON.stringify(created), accessToken);
 

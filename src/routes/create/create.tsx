@@ -17,9 +17,9 @@ const STEPS = [Step.OPTIONS, Step.POLL_INFO, Step.PARTICIPANTS];
 export function CreateRoute() {
   const navigate = useNavigate();
   const [step, setStep] = useState(Step.OPTIONS);
-  const [options, setOptions] = useState<PendingCandidate<any, any>[]>([]);
+  const [candidates, setCandidates] = useState<PendingCandidate<any, any>[]>([]);
   const [info, setInfo] = useState<Info | null>(null);
-  const [participants, setParticipants] = useState<PendingVoter[]>([]);
+  const [voters, setParticipants] = useState<PendingVoter[]>([]);
 
   const next = useCallback(async () => {
     const stepIdx = STEPS.indexOf(step);
@@ -36,22 +36,22 @@ export function CreateRoute() {
         name: info!.ownerName,
         email: info!.ownerEmail!,
       },
-      participants,
-      optionsList: options,
+      voters,
+      candidateList: candidates,
     };
 
     const res = await groupthink.createPoll(poll);
 
     localStorage.setItem(res.id + "token", res.owner.token!);
     navigate(`/${res.id}/invite`);
-  }, [step, info, options, participants, navigate]);
+  }, [step, info, candidates, voters, navigate]);
 
   return (
     <div>
       {step === Step.OPTIONS && (
         <Options
           onComplete={(opts) => {
-            setOptions(
+            setCandidates(
               opts.map((opt) => ({
                 name: opt,
                 description: "",
@@ -75,8 +75,8 @@ export function CreateRoute() {
       {step === Step.PARTICIPANTS && (
         <Participants
           onComplete={next}
-          participants={participants}
-          onAddParticipant={(p) => setParticipants([...participants, p])}
+          participants={voters}
+          onAddParticipant={(p) => setParticipants([...voters, p])}
         />
       )}
     </div>

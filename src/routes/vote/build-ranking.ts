@@ -11,7 +11,7 @@ export const buildRanking = <T extends { id: string }>(
   poll: Election,
 ): PendingRanking => {
   const choices: Choice[] = sortedOptions.map((opt) => ({
-    optionId: opt.id,
+    candidateId: opt.id,
   }));
 
   return {
