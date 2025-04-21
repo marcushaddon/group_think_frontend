@@ -1,7 +1,7 @@
-import { Option } from "../../models";
+import { Candidate } from "../../models";
 import { sorter as makeSorter, Matchup } from "./sort";
 
-const mockOption = (id: string): Option<any> => ({
+const mockOption = (id: string): Candidate<any> => ({
   id,
   name: id,
   description: id,
@@ -11,7 +11,7 @@ const mockOption = (id: string): Option<any> => ({
 
 describe("insertionSort generator", () => {
   it.skip("works", () => {
-    const options: Option<any>[] = ["a", "b", "c", "d", "e", "f", "g"].map(
+    const options: Candidate<any>[] = ["a", "b", "c", "d", "e", "f", "g"].map(
       (letter) => mockOption(letter),
     );
 
@@ -23,12 +23,12 @@ describe("insertionSort generator", () => {
     while (true) {
       const res = sorter.next();
       if (res.done) {
-        resultStr = res.value.map((o: Option<any>) => o.id).join("");
+        resultStr = res.value.map((o: Candidate<any>) => o.id).join("");
 
         break;
       }
 
-      const matchupRes = res.value as Matchup<Option<any>>;
+      const matchupRes = res.value as Matchup<Candidate<any>>;
       expect(matchupRes.inserted).toBeDefined();
       expect(matchupRes.inserting).toBeDefined();
     }

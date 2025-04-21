@@ -1,6 +1,6 @@
-import { Option, OptionType, Participant, Poll } from ".";
+import { Candidate, OptionType, Voter, Election } from ".";
 
-const option1: Option<unknown> = {
+const option1: Candidate<unknown> = {
   id: "opt1",
   type: OptionType.GOOGLE_PLACE,
   name: "Central Park",
@@ -9,7 +9,7 @@ const option1: Option<unknown> = {
   img: "https://example.com/images/centralpark.jpg",
 };
 
-const option2: Option<unknown> = {
+const option2: Candidate<unknown> = {
   id: "opt2",
   type: OptionType.GOOGLE_PLACE,
   name: "Brooklyn Botanic Garden",
@@ -18,7 +18,7 @@ const option2: Option<unknown> = {
   img: "https://example.com/images/bbg.jpg",
 };
 
-const option3: Option<unknown> = {
+const option3: Candidate<unknown> = {
   id: "opt3",
   type: OptionType.GOOGLE_SEARCH_RESULT,
   name: "Prospect Park Zoo",
@@ -27,7 +27,7 @@ const option3: Option<unknown> = {
   img: "https://example.com/images/zoo.jpg",
 };
 
-const option4: Option<unknown> = {
+const option4: Candidate<unknown> = {
   id: "opt4",
   type: OptionType.GOOGLE_PLACE,
   name: "NYC Ferry Ride",
@@ -36,7 +36,7 @@ const option4: Option<unknown> = {
   img: "https://example.com/images/ferry.jpg",
 };
 
-const option5: Option<unknown> = {
+const option5: Candidate<unknown> = {
   id: "opt5",
   type: OptionType.GOOGLE_SEARCH_RESULT,
   name: "The High Line",
@@ -45,28 +45,28 @@ const option5: Option<unknown> = {
   img: "https://example.com/images/highline.jpg",
 };
 
-const participant1: Participant = {
+const participant1: Voter = {
   id: "p1",
   name: "Alice",
   email: "alice@example.com",
 };
-const participant2: Participant = {
+const participant2: Voter = {
   id: "p2",
   name: "Bob",
   email: "bob@example.com",
 };
-const participant3: Participant = {
+const participant3: Voter = {
   id: "p3",
   name: "Charlie",
   email: "charlie@example.com",
 };
-const participant4: Participant = {
+const participant4: Voter = {
   id: "p4",
   name: "Dana",
   email: "dana@example.com",
 };
 
-export const pollWithWinner: Poll = {
+export const pollWithWinner: Election = {
   id: "poll1",
   name: "Weekend Activity",
   description: "Vote on where we should go this weekend!",
@@ -79,7 +79,7 @@ export const pollWithWinner: Poll = {
     opt4: option4,
     opt5: option5,
   },
-  participants: [participant1, participant2, participant3, participant4],
+  voters: [participant1, participant2, participant3, participant4],
   rankings: [
     {
       participantEmail: "alice@example.com",
@@ -132,7 +132,7 @@ export const pollWithWinner: Poll = {
   ],
 };
 
-export const pollWithTie: Poll = {
+export const pollWithTie: Election = {
   id: "poll2",
   name: "Spring Outing",
   description: "Where should we go for our spring trip?",
@@ -145,7 +145,7 @@ export const pollWithTie: Poll = {
     opt4: option4,
     opt5: option5,
   },
-  participants: [participant1, participant2, participant3, participant4],
+  voters: [participant1, participant2, participant3, participant4],
   rankings: [
     {
       participantEmail: "alice@example.com",

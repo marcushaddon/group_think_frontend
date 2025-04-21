@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback, useState } from "react";
 import { Participant } from "../../components/participant";
 import {
-  PendingParticipant as ParticipantModel,
+  PendingVoter as ParticipantModel,
   VoteStatus,
 } from "../../models";
 

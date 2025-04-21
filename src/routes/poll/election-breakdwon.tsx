@@ -1,10 +1,10 @@
 import { FunctionComponent } from "react";
 import { ElectionEvent as ElectionEventModel, FirstPlaceSharesEvent, LoserChosenEvent, MajorityEvent, RoundEvent, TieEvent } from "../../alg/ranked-choice";
-import { Option } from "../../models";
+import { Candidate } from "../../models";
 
 export const ElectionBreakdown: FunctionComponent<{
     events: ElectionEventModel[],
-    getOption: (optionId: string ) => Option<any>
+    getOption: (optionId: string ) => Candidate<any>
 }> = ({
     events,
     getOption
@@ -17,7 +17,7 @@ export const ElectionBreakdown: FunctionComponent<{
 const NewRound: FunctionComponent<{
     log: RoundEvent,
     idx: number,
-    getOption: (id: string) => Option<any>
+    getOption: (id: string) => Candidate<any>
 }> = ({
     log,
     idx,
@@ -34,7 +34,7 @@ const NewRound: FunctionComponent<{
 const FirstPlaceShares: FunctionComponent<{
     log: FirstPlaceSharesEvent,
     idx: number,
-    getOption: (optionId: string ) => Option<any>
+    getOption: (optionId: string ) => Candidate<any>
 }> = ({
     log,
     idx,
@@ -53,7 +53,7 @@ const FirstPlaceShares: FunctionComponent<{
 const Majority: FunctionComponent<{
     log: MajorityEvent,
     idx: number,
-    getOption: (optionId: string ) => Option<any>,
+    getOption: (optionId: string ) => Candidate<any>,
 }> = ({
     log,
     idx,
@@ -67,7 +67,7 @@ const Majority: FunctionComponent<{
 const Loser: FunctionComponent<{
     log: LoserChosenEvent,
     idx: number,
-    getOption: (optionId: string ) => Option<any>,
+    getOption: (optionId: string ) => Candidate<any>,
 }> = ({
     log,
     idx,
@@ -81,7 +81,7 @@ const Loser: FunctionComponent<{
 const Tie: FunctionComponent<{
     log: TieEvent,
     idx: number,
-    getOption: (optionId: string ) => Option<any>,
+    getOption: (optionId: string ) => Candidate<any>,
 }> = ({
     log,
     idx,
@@ -96,7 +96,7 @@ const Tie: FunctionComponent<{
 
 export const ElectionEvent: FunctionComponent<{
     log: ElectionEventModel,
-    getOption: (optionId: string ) => Option<any>,
+    getOption: (optionId: string ) => Candidate<any>,
     idx: number
 }> = ({
     log,

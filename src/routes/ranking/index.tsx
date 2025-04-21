@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import { FunctionComponent, useCallback } from "react";
-import { Option, Ranking } from "../../models";
+import { Candidate, Ranking } from "../../models";
 import { usePoll, useRanking } from "../../hooks";
 import { buildRankingGraph } from "./ranking-graph";
 
 
 export const RankingGraphLink: FunctionComponent<{
-    ranking: Ranking, optMap: Record<string, Option<any>>
+    ranking: Ranking, optMap: Record<string, Candidate<any>>
 }> = ({
     ranking,
     optMap

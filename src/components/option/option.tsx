@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 
-import { Option as OptionProps } from "../../models";
+import { Candidate as OptionProps } from "../../models";
 
 export type Props = Partial<OptionProps<any>> & {
     className?: string;

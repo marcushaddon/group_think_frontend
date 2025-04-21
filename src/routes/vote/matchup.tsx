@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback, useState } from "react";
 import { MatchupResult, MatchupAward } from "../../models";
 import { Option } from "../../components/option/option";
 import { Swipe } from "../../components/swipe";
-import { Option as OptionModel } from "../../models";
+import { Candidate as OptionModel } from "../../models";
 
 export interface Props<T> {
   options: OptionModel<T>[];

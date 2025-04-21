@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import groupthink from "../client/groupthink";
-import { Poll, Ranking } from "../models";
-import { RankedChoiceElection, rcv } from "../alg/ranked-choice";
+import { Election, Ranking } from "../models";
+import { RCEResult, rcv } from "../alg/ranked-choice";
 
-export function usePoll(pollId?: string): Poll | undefined {
-  const [poll, setPoll] = useState<Poll | undefined>(undefined);
+export function usePoll(pollId?: string): Election | undefined {
+  const [poll, setPoll] = useState<Election | undefined>(undefined);
 
   useEffect(() => {
     if (!pollId) {
@@ -19,8 +19,8 @@ export function usePoll(pollId?: string): Poll | undefined {
   return poll;
 }
 
-export function usePollAsOwner(pollId?: string): Poll | undefined {
-  const [poll, setPoll] = useState<Poll | undefined>(undefined);
+export function usePollAsOwner(pollId?: string): Election | undefined {
+  const [poll, setPoll] = useState<Election | undefined>(undefined);
 
   useEffect(() => {
     if (!pollId) {
@@ -35,8 +35,8 @@ export function usePollAsOwner(pollId?: string): Poll | undefined {
   return poll;
 }
 
-export function usePollWithRankings(pollId?: string): Poll | undefined {
-  const [poll, setPoll] = useState<Poll | undefined>(undefined);
+export function usePollWithRankings(pollId?: string): Election | undefined {
+  const [poll, setPoll] = useState<Election | undefined>(undefined);
 
   useEffect(() => {
     if (!pollId) {
@@ -51,8 +51,8 @@ export function usePollWithRankings(pollId?: string): Poll | undefined {
   return poll;
 }
 
-export function useRankedChoice(poll?: Poll): RankedChoiceElection | undefined {
-  const [result, setResult] = useState<RankedChoiceElection | undefined>();
+export function useRankedChoice(poll?: Election): RCEResult | undefined {
+  const [result, setResult] = useState<RCEResult | undefined>();
 
   useEffect(() => {
     if (!poll || !poll.rankings) {
@@ -64,7 +64,7 @@ export function useRankedChoice(poll?: Poll): RankedChoiceElection | undefined {
       ranking.choices.map(({ optionId }) => ({ id: optionId })),
     );
     const ranked = rcv(asOptIds);
-    const done = poll.rankings.length === poll.participants.length;
+    const done = poll.rankings.length === poll.voters.length;
 
     setResult(ranked);
   }, [poll]);

@@ -1,10 +1,10 @@
 import { assert } from "../../common/logging";
-import { MatchupAward, MatchupResult, Option, Ranking } from "../../models";
+import { MatchupAward, MatchupResult, Candidate, Ranking } from "../../models";
 import { Matchup } from "../vote/sort";
 
 export const buildRankingGraph = (
   ranking: Ranking,
-  optMap: Record<string, Option<any>>,
+  optMap: Record<string, Candidate<any>>,
 ): string => {
   const nodes = ranking.choices.map(({ optionId }, idx) =>
     node(optionId, idx, optMap),
@@ -36,13 +36,13 @@ export const buildRankingGraph = (
 const node = (
   optionId: string,
   idx: number,
-  opts: Record<string, Option<any>>,
+  opts: Record<string, Candidate<any>>,
 ) => `"${optionId}" [label="${idx + 1}. ${opts[optionId].name}"]`;
 
 const matchupEdge = (
   m: MatchupResult,
   ranking: Ranking,
-  opts: Record<string, Option<any>>,
+  opts: Record<string, Candidate<any>>,
 ): string => {
   const { optionA, optionB } = m;
   const [aIdx, bIdx] = [optionA, optionB].map((id) =>

@@ -6,7 +6,7 @@ import {
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import groupthink from "../../client/groupthink";
-import { MatchupResult, Option, PendingRanking, Poll } from "../../models";
+import { MatchupResult, Candidate, PendingRanking, Election } from "../../models";
 import { Matchup as MatchupComponent } from "./matchup";
 import { sorter as makeSorter, Matchup } from "./sort";
 import { buildRanking, optionAwardKey } from "./build-ranking";
@@ -24,12 +24,12 @@ export const VoteRoute: FunctionComponent = () => {
   const [matchups, setMatchups] = useState<MatchupResult[]>([]);
   const [sorter, setSorter] = useState<Generator<
     Matchup<any>,
-    Option<any>[],
+    Candidate<any>[],
     MatchupResult
   > | null>(null);
-  const [poll, setPoll] = useState<Poll | null>(null);
-  const [optionA, setOptionA] = useState<Option<any> | null>(null);
-  const [optionB, setOptionB] = useState<Option<any> | null>(null);
+  const [poll, setPoll] = useState<Election | null>(null);
+  const [optionA, setOptionA] = useState<Candidate<any> | null>(null);
+  const [optionB, setOptionB] = useState<Candidate<any> | null>(null);
 
   const fetchPoll = useCallback(async (pollId: string) => {
     const p = await groupthink.getPoll(pollId);

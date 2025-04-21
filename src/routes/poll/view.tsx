@@ -1,7 +1,7 @@
 import React from "react";
 import { RankingGraphLink } from "../ranking";
 import {
-  Poll,
+  Election,
   VoteStatus,
 } from "../../models"; // Adjust path as needed
 
@@ -11,7 +11,7 @@ import {
 import { useRankedChoice } from "../../hooks";
 
 interface PollDisplayProps {
-  poll?: Poll;
+  poll?: Election;
 }
 
 const asPercent = (p: number) => `${(p * 100).toFixed(2)}%`;
@@ -97,7 +97,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
       <div>
         <h2 className="text-lg font-semibold mb-1">Participants</h2>
         <ul className="space-y-1">
-          {poll.participants.map((participant) => (
+          {poll.voters.map((participant) => (
             <li
               key={participant.id}
               className={`flex items-center justify-between border-b pb-1 ${

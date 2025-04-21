@@ -3,8 +3,8 @@ import { jwtDecode } from "jwt-decode";
 import {
   PendingRanking,
   Ranking,
-  Poll,
-  PendingPoll,
+  Election,
+  PendingElection,
   VoteStatus,
 } from "../models";
 
@@ -56,7 +56,7 @@ export class GroupthinkClient {
     return (await res.json()).file;
   }
 
-  async createPoll(poll: PendingPoll): Promise<Poll> {
+  async createPoll(poll: PendingElection): Promise<Election> {
     const res = await fetch(this.createPollEndpoint, {
       method: "POST",
       headers: {
@@ -69,11 +69,11 @@ export class GroupthinkClient {
     return resBody;
   }
 
-  async getPoll(pollId: string): Promise<Poll | null> {
+  async getPoll(pollId: string): Promise<Election | null> {
     const accessToken = this.getToken(pollId);
     const res = await this.readFile(`/polls/${pollId}/poll.json`, accessToken);
 
-    const parsed = JSON.parse(res) as Poll;
+    const parsed = JSON.parse(res) as Election;
 
     // TODO: read path, read glob for rankings, parse and construct
     const optionsMap = parsed.optionsList?.reduce(
@@ -87,10 +87,10 @@ export class GroupthinkClient {
     return {
       ...parsed,
       optionsMap,
-    } as Poll;
+    } as Election;
   }
 
-  async getPollWithRankings(pollId: string): Promise<Poll> {
+  async getPollWithRankings(pollId: string): Promise<Election> {
     const [poll, rankings] = await Promise.all([
       this.getPoll(pollId),
       this.getRankings(pollId),
@@ -106,7 +106,7 @@ export class GroupthinkClient {
       throw new Error("could not find rankings for poll");
     }
 
-    const participansWithStatii = poll.participants.map((p) => ({
+    const participansWithStatii = poll.voters.map((p) => ({
       ...p,
       status: rankings.find(
         ({ participantEmail }) => participantEmail === p.email,
@@ -118,7 +118,7 @@ export class GroupthinkClient {
     return {
       ...poll,
       rankings,
-      participants: participansWithStatii,
+      voters: participansWithStatii,
     };
   }
 
@@ -132,7 +132,7 @@ export class GroupthinkClient {
     return rankingsRes.map((fr) => JSON.parse(fr.file));
   }
 
-  async getPollAsOwner(pollId: string): Promise<Poll | null> {
+  async getPollAsOwner(pollId: string): Promise<Election | null> {
     const accessToken = this.getToken(pollId);
     const res = await this.readFile(
       `/polls/${pollId}/owner/poll.json`,
@@ -141,7 +141,7 @@ export class GroupthinkClient {
 
     const parsed = JSON.parse(res);
     // TODO: read path, read glob for rankings, parse and construct
-    return parsed as Poll;
+    return parsed as Election;
   }
 
   async createRanking(pending: PendingRanking): Promise<Ranking | void> {

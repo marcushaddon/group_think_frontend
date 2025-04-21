@@ -1,9 +1,9 @@
 import { FunctionComponent } from "react";
-import { Participant, Poll } from "../../models";
+import { Voter, Election } from "../../models";
 
 const LINEBREAK = "%0D%0A";
 
-const inviteFor = (poll: Poll, p: Participant) => {
+const inviteFor = (poll: Election, p: Voter) => {
   const subject = `${poll.owner} wants you to vote on "${poll.name}"!}`;
   const origin = window.location.origin;
   const href = `${origin}/vote/${poll.id}?token=${p.token}`;
@@ -82,7 +82,7 @@ const LinkButton: FunctionComponent<{
   </button>
 );
 
-export const InviteView: FunctionComponent<{ poll?: Poll }> = ({
+export const InviteView: FunctionComponent<{ poll?: Election }> = ({
     poll
 }) => {
 
@@ -92,7 +92,7 @@ export const InviteView: FunctionComponent<{ poll?: Poll }> = ({
     <div className="p-4 max-w-3xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold">Invites for {poll.name}</h1>
       <div className="space-y-6">
-        {poll.participants.map((p) => {
+        {poll.voters.map((p) => {
           const invite = inviteFor(poll, p);
  
           return (

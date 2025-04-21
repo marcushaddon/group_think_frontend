@@ -36,14 +36,14 @@ export type ElectionEvent =
   | TieEvent
   | LoserChosenEvent;
 
-export type RankedChoiceElection = Result & {
+export type RCEResult = Result & {
   logs: ElectionEvent[];
 };
 
 export const rcv = <T extends Option>(
   rankings: T[][],
   logs: ElectionEvent[] = [],
-): RankedChoiceElection => {
+): RCEResult => {
   let workingRankings = [...rankings];
   const runoffLogs: ElectionEvent[] = logs.concat([
     {

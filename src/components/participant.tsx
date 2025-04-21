@@ -1,13 +1,13 @@
 import{ FunctionComponent } from "react";
 import {
-  PendingParticipant,
-  Participant as ParticipantModel,
+  PendingVoter,
+  Voter as ParticipantModel,
   VoteStatus,
 } from "../models";
 import { Action } from "./action";
 
 export interface Props {
-  participant: ParticipantModel | PendingParticipant;
+  participant: ParticipantModel | PendingVoter;
   action?: Action;
   highlight?: boolean;
 }

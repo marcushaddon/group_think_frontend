@@ -9,7 +9,7 @@ export const PollRoute: FunctionComponent = () => {
   
     const poll = usePollWithRankings(pollId);
   
-    const done = poll?.rankings?.length === poll?.participants.length;
+    const done = poll?.rankings?.length === poll?.voters.length;
 
     return <PollView poll={poll && { ...poll  }} />
 }

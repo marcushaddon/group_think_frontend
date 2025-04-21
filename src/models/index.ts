@@ -1,11 +1,11 @@
-import { RankedChoiceElection } from "../alg/ranked-choice";
+import { RCEResult } from "../alg/ranked-choice";
 
 export enum OptionType {
   GOOGLE_PLACE = "google-place",
   GOOGLE_SEARCH_RESULT = "google-search-result",
 }
 
-export interface Option<T> {
+export interface Candidate<T> {
   id: string;
   type?: OptionType;
   name: string;
@@ -15,8 +15,8 @@ export interface Option<T> {
   info?: T;
 }
 
-export type PendingOption<O = undefined, I = undefined> = Omit<
-  Option<I>,
+export type PendingCandidate<O = undefined, I = undefined> = Omit<
+  Candidate<I>,
   "id"
 > & {
   original: O;
@@ -30,7 +30,7 @@ export enum VoteStatus {
   Error = "Error",
 }
 
-export interface Participant {
+export interface Voter {
   id: string;
   name: string;
   email: string;
@@ -38,7 +38,7 @@ export interface Participant {
   status?: VoteStatus;
 }
 
-export type PendingParticipant = Omit<Participant, "id">;
+export type PendingVoter = Omit<Voter, "id">;
 
 export interface Choice {
   optionId: string;
@@ -71,7 +71,7 @@ export interface Ranking {
 
 export type PendingRanking = Omit<Ranking, "id" | "participantEmail">;
 
-export interface Poll {
+export interface Election {
   id: string;
   name: string;
   description: string;
@@ -80,17 +80,17 @@ export interface Poll {
     email: string;
     token?: string;
   };
-  optionsList: Option<unknown>[];
-  optionsMap: { [id: string]: Option<any> };
-  participants: Participant[];
+  optionsList: Candidate<unknown>[];
+  optionsMap: { [id: string]: Candidate<any> };
+  voters: Voter[];
 
-  result?: RankedChoiceElection;
+  rcvResult?: RCEResult;
 
   rankings?: Ranking[];
 }
 
-export type PendingPoll = Omit<
-  Poll,
+export type PendingElection = Omit<
+  Election,
   | "id"
   | "owner.token"
   | "optionsMap"
@@ -99,6 +99,6 @@ export type PendingPoll = Omit<
   | "participants"
   | "rankings"
 > & {
-  optionsList: PendingOption[];
-  participants: PendingParticipant[];
+  optionsList: PendingCandidate[];
+  participants: PendingVoter[];
 };
