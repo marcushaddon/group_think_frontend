@@ -61,7 +61,7 @@ export function useRankedChoice(poll?: Election): RCEResult | undefined {
     }
 
     const asOptIds = poll.rankings.map((ranking) =>
-      ranking.choices.map(({ optionId }) => ({ id: optionId })),
+      ranking.choices.map(({ candidateId: optionId }) => ({ id: optionId })),
     );
     const ranked = rcv(asOptIds);
     const done = poll.rankings.length === poll.voters.length;

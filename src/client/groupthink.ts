@@ -76,7 +76,7 @@ export class GroupthinkClient {
     const parsed = JSON.parse(res) as Election;
 
     // TODO: read path, read glob for rankings, parse and construct
-    const optionsMap = parsed.optionsList?.reduce(
+    const optionsMap = parsed.candidateList?.reduce(
       (map, current) => ({
         ...map,
         [current.id]: current,
@@ -86,7 +86,7 @@ export class GroupthinkClient {
 
     return {
       ...parsed,
-      optionsMap,
+      candidateMap: optionsMap,
     } as Election;
   }
 
@@ -109,7 +109,7 @@ export class GroupthinkClient {
     const participansWithStatii = poll.voters.map((p) => ({
       ...p,
       status: rankings.find(
-        ({ participantEmail }) => participantEmail === p.email,
+        ({ voterEmail: participantEmail }) => participantEmail === p.email,
       )
         ? VoteStatus.Decided
         : VoteStatus.Pending,

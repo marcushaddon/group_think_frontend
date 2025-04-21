@@ -39,7 +39,7 @@ export const VoteRoute: FunctionComponent = () => {
     }
     setPoll(p);
 
-    const shuffled = [...p.optionsList].sort(() =>
+    const shuffled = [...p.candidateList].sort(() =>
       Math.random() > 0.5 ? -1 : 1,
     );
     const generator = makeSorter()(shuffled);
@@ -130,7 +130,7 @@ export const VoteRoute: FunctionComponent = () => {
         {(
           <MatchupComponent
             className="h-9/10"
-            options={poll.optionsList}
+            options={poll.candidateList}
             optionA={optionA!}
             optionB={optionB!}
             onResult={onMatchupResult}

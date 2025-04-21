@@ -41,7 +41,7 @@ export interface Voter {
 export type PendingVoter = Omit<Voter, "id">;
 
 export interface Choice {
-  optionId: string;
+  candidateId: string;
 }
 
 export enum MatchupAward {
@@ -62,14 +62,14 @@ export interface MatchupResult {
 }
 
 export interface Ranking {
-  participantEmail: string;
+  voterEmail: string;
   pollId: string;
 
   choices: Choice[];
   matchups: MatchupResult[];
 }
 
-export type PendingRanking = Omit<Ranking, "id" | "participantEmail">;
+export type PendingRanking = Omit<Ranking, "id" | "voterEmail">;
 
 export interface Election {
   id: string;
@@ -80,8 +80,8 @@ export interface Election {
     email: string;
     token?: string;
   };
-  optionsList: Candidate<unknown>[];
-  optionsMap: { [id: string]: Candidate<any> };
+  candidateList: Candidate<unknown>[];
+  candidateMap: { [id: string]: Candidate<any> };
   voters: Voter[];
 
   rcvResult?: RCEResult;
@@ -93,12 +93,12 @@ export type PendingElection = Omit<
   Election,
   | "id"
   | "owner.token"
-  | "optionsMap"
-  | "optionsList"
+  | "candidateMap"
+  | "candidateList"
   | "result"
-  | "participants"
+  | "voters"
   | "rankings"
 > & {
-  optionsList: PendingCandidate[];
-  participants: PendingVoter[];
+  candidateList: PendingCandidate[];
+  voters: PendingVoter[];
 };

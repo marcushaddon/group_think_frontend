@@ -6,7 +6,7 @@ export const buildRankingGraph = (
   ranking: Ranking,
   optMap: Record<string, Candidate<any>>,
 ): string => {
-  const nodes = ranking.choices.map(({ optionId }, idx) =>
+  const nodes = ranking.choices.map(({ candidateId: optionId }, idx) =>
     node(optionId, idx, optMap),
   );
   const edges = ranking.matchups.map((matchup) =>
@@ -46,7 +46,7 @@ const matchupEdge = (
 ): string => {
   const { optionA, optionB } = m;
   const [aIdx, bIdx] = [optionA, optionB].map((id) =>
-    ranking.choices.findIndex((ch) => ch.optionId === id),
+    ranking.choices.findIndex((ch) => ch.candidateId === id),
   );
   assert(aIdx > -1 && bIdx > -1, "matchup result options not found in ranking");
   assert(aIdx !== bIdx, "self matchup found");

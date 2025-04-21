@@ -27,7 +27,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
   }
 
   const hasVoted = (participantEmail: string) =>
-    poll.rankings?.some((r) => r.participantEmail === participantEmail);
+    poll.rankings?.some((r) => r.voterEmail === participantEmail);
 
   // Determine winner or tie from the Election result
   const winnerOptionId = result?.winner;
@@ -36,7 +36,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
   // Helper to format event logs
   const renderEvent = (event: ElectionEvent, index: number) => {
     const asNames = (optIds: string[]) => optIds.map(
-      (id) => poll.optionsMap[id]?.name || `ERROR: unknown option: ${id}`
+      (id) => poll.candidateMap[id]?.name || `ERROR: unknown option: ${id}`
     ).join(", ");
     switch (event.name) {
       case "Round":
@@ -52,7 +52,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
             <ul className="list-disc pl-5">
               {Object.entries(event.shares).map(([id, share]) => (
                 <li key={id}>
-                  {poll.optionsMap[id]?.name ?? id}: {asPercent(share)}
+                  {poll.candidateMap[id]?.name ?? id}: {asPercent(share)}
                 </li>
               ))}
             </ul>
@@ -62,7 +62,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         return (
           <div key={index}>
             <strong>Majority Winner:</strong>{" "}
-            {poll.optionsMap[event.winner.id]?.name} (
+            {poll.candidateMap[event.winner.id]?.name} (
             {asPercent(event.winner.share)})
           </div>
         );
@@ -70,7 +70,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         return (
           <div key={index}>
             <strong>Tie Between:</strong>{" "}
-            {event.winners.map((id) => poll.optionsMap[id]?.name).join(", ")} (
+            {event.winners.map((id) => poll.candidateMap[id]?.name).join(", ")} (
             share: {asPercent(event.share)})
           </div>
         );
@@ -78,7 +78,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         return (
           <div key={index}>
             <strong>Loser Eliminated:</strong>{" "}
-            {poll.optionsMap[event.loser]?.name ?? event.loser}
+            {poll.candidateMap[event.loser]?.name ?? event.loser}
           </div>
         );
       default:
@@ -118,7 +118,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
       <div>
         <h2 className="text-lg font-semibold mb-1">Options</h2>
         <ul className="list-disc pl-5">
-          {poll.optionsList.map((option) => (
+          {poll.candidateList.map((option) => (
             <li key={option.id}>{option.name}</li>
           ))}
         </ul>
@@ -126,7 +126,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
 
       {winnerOptionId && (
         <div className="text-green-700 font-semibold">
-          Winner: {poll.optionsMap[winnerOptionId]?.name}
+          Winner: {poll.candidateMap[winnerOptionId]?.name}
         </div>
       )}
 
@@ -135,7 +135,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
           <div className="font-semibold">Tie between:</div>
           <ul className="list-disc pl-5">
             {tiedOptionIds.map((id) => (
-              <li key={id}>{poll.optionsMap[id]?.name}</li>
+              <li key={id}>{poll.candidateMap[id]?.name}</li>
             ))}
           </ul>
         </div>
@@ -148,18 +148,18 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
             {poll.rankings.map((ranking, index) => (
               <li key={index} className="border p-3 rounded">
                 <div className="font-medium mb-1">
-                  {ranking.participantEmail}
+                  {ranking.voterEmail}
                 </div>
                 <div className="text-sm text-gray-700">
                   Ranked:
                   <ol className="list-decimal pl-5 mt-1">
                     {ranking.choices.map((choice, i) => (
                       <li key={i}>
-                        {poll.optionsMap[choice.optionId]?.name ?? "Unknown"}
+                        {poll.candidateMap[choice.candidateId]?.name ?? "Unknown"}
                       </li>
                     ))}
                   </ol>
-                  <RankingGraphLink ranking={ranking} optMap={poll.optionsMap} />
+                  <RankingGraphLink ranking={ranking} optMap={poll.candidateMap} />
                 </div>
               </li>
             ))}

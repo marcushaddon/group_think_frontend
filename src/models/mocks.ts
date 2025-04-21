@@ -71,8 +71,8 @@ export const pollWithWinner: Election = {
   name: "Weekend Activity",
   description: "Vote on where we should go this weekend!",
   owner: { name: "Organizer One", email: "organizer1@example.com" },
-  optionsList: [option1, option2, option3, option4, option5],
-  optionsMap: {
+  candidateList: [option1, option2, option3, option4, option5],
+  candidateMap: {
     opt1: option1,
     opt2: option2,
     opt3: option3,
@@ -82,50 +82,50 @@ export const pollWithWinner: Election = {
   voters: [participant1, participant2, participant3, participant4],
   rankings: [
     {
-      participantEmail: "alice@example.com",
+      voterEmail: "alice@example.com",
       pollId: "poll1",
       choices: [
-        { optionId: "opt1" },
-        { optionId: "opt2" },
-        { optionId: "opt3" },
-        { optionId: "opt4" },
-        { optionId: "opt5" },
+        { candidateId: "opt1" },
+        { candidateId: "opt2" },
+        { candidateId: "opt3" },
+        { candidateId: "opt4" },
+        { candidateId: "opt5" },
       ],
       matchups: [],
     },
     {
-      participantEmail: "bob@example.com",
+      voterEmail: "bob@example.com",
       pollId: "poll1",
       choices: [
-        { optionId: "opt1" },
-        { optionId: "opt3" },
-        { optionId: "opt4" },
-        { optionId: "opt2" },
-        { optionId: "opt5" },
+        { candidateId: "opt1" },
+        { candidateId: "opt3" },
+        { candidateId: "opt4" },
+        { candidateId: "opt2" },
+        { candidateId: "opt5" },
       ],
       matchups: [],
     },
     {
-      participantEmail: "charlie@example.com",
+      voterEmail: "charlie@example.com",
       pollId: "poll1",
       choices: [
-        { optionId: "opt1" },
-        { optionId: "opt5" },
-        { optionId: "opt4" },
-        { optionId: "opt3" },
-        { optionId: "opt2" },
+        { candidateId: "opt1" },
+        { candidateId: "opt5" },
+        { candidateId: "opt4" },
+        { candidateId: "opt3" },
+        { candidateId: "opt2" },
       ],
       matchups: [],
     },
     {
-      participantEmail: "dana@example.com",
+      voterEmail: "dana@example.com",
       pollId: "poll1",
       choices: [
-        { optionId: "opt2" },
-        { optionId: "opt1" },
-        { optionId: "opt3" },
-        { optionId: "opt4" },
-        { optionId: "opt5" },
+        { candidateId: "opt2" },
+        { candidateId: "opt1" },
+        { candidateId: "opt3" },
+        { candidateId: "opt4" },
+        { candidateId: "opt5" },
       ],
       matchups: [],
     },
@@ -137,8 +137,8 @@ export const pollWithTie: Election = {
   name: "Spring Outing",
   description: "Where should we go for our spring trip?",
   owner: { name: "Organizer Two", email: "organizer2@example.com" },
-  optionsList: [option1, option2, option3, option4, option5],
-  optionsMap: {
+  candidateList: [option1, option2, option3, option4, option5],
+  candidateMap: {
     opt1: option1,
     opt2: option2,
     opt3: option3,
@@ -148,50 +148,50 @@ export const pollWithTie: Election = {
   voters: [participant1, participant2, participant3, participant4],
   rankings: [
     {
-      participantEmail: "alice@example.com",
+      voterEmail: "alice@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt2" }, // BBG
-        { optionId: "opt3" }, // Zoo
-        { optionId: "opt5" },
-        { optionId: "opt1" },
-        { optionId: "opt4" },
+        { candidateId: "opt2" }, // BBG
+        { candidateId: "opt3" }, // Zoo
+        { candidateId: "opt5" },
+        { candidateId: "opt1" },
+        { candidateId: "opt4" },
       ],
       matchups: [],
     },
     {
-      participantEmail: "bob@example.com",
+      voterEmail: "bob@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt3" }, // Zoo
-        { optionId: "opt2" }, // BBG
-        { optionId: "opt4" },
-        { optionId: "opt1" },
-        { optionId: "opt5" },
+        { candidateId: "opt3" }, // Zoo
+        { candidateId: "opt2" }, // BBG
+        { candidateId: "opt4" },
+        { candidateId: "opt1" },
+        { candidateId: "opt5" },
       ],
       matchups: [],
     },
     {
-      participantEmail: "charlie@example.com",
+      voterEmail: "charlie@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt3" }, // Zoo
-        { optionId: "opt5" },
-        { optionId: "opt1" },
-        { optionId: "opt2" },
-        { optionId: "opt4" },
+        { candidateId: "opt3" }, // Zoo
+        { candidateId: "opt5" },
+        { candidateId: "opt1" },
+        { candidateId: "opt2" },
+        { candidateId: "opt4" },
       ],
       matchups: [],
     },
     {
-      participantEmail: "dana@example.com",
+      voterEmail: "dana@example.com",
       pollId: "poll2",
       choices: [
-        { optionId: "opt2" }, // BBG
-        { optionId: "opt4" },
-        { optionId: "opt3" },
-        { optionId: "opt5" },
-        { optionId: "opt1" },
+        { candidateId: "opt2" }, // BBG
+        { candidateId: "opt4" },
+        { candidateId: "opt3" },
+        { candidateId: "opt5" },
+        { candidateId: "opt1" },
       ],
       matchups: [],
     },
