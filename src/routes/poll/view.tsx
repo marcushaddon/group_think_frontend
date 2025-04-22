@@ -121,26 +121,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         </ul>
       </div>
 
-      <div>
-        <h2 className="text-lg font-semibold mb-1">Ranked Choice Results</h2>
-      </div>
-
-      {rcvResult?.winner && (
-        <div className="text-green-700 font-semibold">
-          Winner: {poll.candidateMap[rcvResult.winner]?.name}
-        </div>
-      )}
-
-      {rcvResult?.tie?.length && (
-        <div className="text-yellow-600">
-          <div className="font-semibold">Tie between:</div>
-          <ul className="list-disc pl-5">
-            {rcvResult?.tie.map((id) => (
-              <li key={id}>{poll.candidateMap[id]?.name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {/* AVERAGE RANKING */}
 
       <div>
         <h2 className="text-lg font-semibold mb-1">Average ranking result</h2>
@@ -148,7 +129,7 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
 
       {avgResult?.winner && (
         <div className="text-green-700 font-semibold">
-          Winner: {poll.candidateMap[avgResult.winner]?.name} (avg. ranking of ${avgResult.share.toFixed(2)})
+          Winner: {poll.candidateMap[avgResult.winner]?.name} (avg. ranking of {avgResult.share.toFixed(2)})
         </div>
       )}
 
@@ -192,6 +173,29 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
         )}
       </div>
 
+      {/* RANKED CHOICE */}
+
+      <div>
+        <h2 className="text-lg font-semibold mb-1">Ranked Choice Results</h2>
+      </div>
+
+      {rcvResult?.winner && (
+        <div className="text-green-700 font-semibold">
+          Winner: {poll.candidateMap[rcvResult.winner]?.name}
+        </div>
+      )}
+
+      {rcvResult?.tie?.length && (
+        <div className="text-yellow-600">
+          <div className="font-semibold">Tie between:</div>
+          <ul className="list-disc pl-5">
+            {rcvResult?.tie.map((id) => (
+              <li key={id}>{poll.candidateMap[id]?.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {rcvResult?.logs && rcvResult.logs.length > 0 && (
         <div>
           <h2 className="text-lg font-semibold mb-1">Ranked Choice Election Logs</h2>
@@ -200,6 +204,8 @@ export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
           </div>
         </div>
       )}
+
+      {/* CONDORCET */}
     </div>
   );
 };
