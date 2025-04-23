@@ -84,16 +84,15 @@ export const VoteRoute: FunctionComponent = () => {
 
       let stepResult = sorter!.next(res);
 
-      setMatchups([
-        ...matchups,
-        res
-      ])
+      const updatedMatchups = [...matchups, res];
+
+      setMatchups(updatedMatchups);
 
       // TODO: should this happen before we request next matchup?
       if (stepResult.done) {
         const ranking = buildRanking(
             stepResult.value,
-            matchups,
+            updatedMatchups,
             poll
         );
         submitRanking(ranking);
