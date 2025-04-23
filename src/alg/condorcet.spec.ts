@@ -1,4 +1,4 @@
-import { rankingMatrix, addMatrices, winner } from "./condorcet";
+import { rankingMatrix, addMatrices, condorcetInner } from "./condorcet";
 
 describe("Ranking Matrix", () => {
   const candidates = ["a", "b", "c", "d"];
@@ -33,6 +33,17 @@ describe("Ranking Matrix", () => {
       [1, 1, 1, _],
     ]);
 
-    expect(winner(candidates, summed).winner).toEqual("a");
+    expect(condorcetInner(candidates, summed).winner).toEqual("a");
+  });
+
+  it("detects tie", () => {
+    const summed = [
+      [_, 2, 1, 2],
+      [1, _, 1, 2],
+      [1, 2, _, 2],
+      [1, 1, 1, _],
+    ];
+
+    expect(condorcetInner(candidates, summed).tie).toEqual(["a", "c"]);
   });
 });

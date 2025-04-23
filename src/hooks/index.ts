@@ -3,6 +3,8 @@ import groupthink from "../client/groupthink";
 import { Election, Ranking } from "../models";
 import { RCEResult, rcv } from "../alg/ranked-choice";
 import { AvgRankingResult, avgRankings } from "../alg/avg-ranking";
+import { condorcet } from "../alg/condorcet";
+import { Result } from "../alg/types";
 
 export function usePoll(pollId?: string): Election | undefined {
   const [poll, setPoll] = useState<Election | undefined>(undefined);
@@ -52,8 +54,10 @@ export function usePollWithRankings(pollId?: string): Election | undefined {
   return poll;
 }
 
-export function useRankedChoice(poll?: Election): RCEResult | undefined {
-  const [result, setResult] = useState<RCEResult | undefined>();
+export function useRankedChoice(
+  poll?: Election,
+): RCEResult | undefined | Error {
+  const [result, setResult] = useState<RCEResult | undefined | Error>();
 
   useEffect(() => {
     if (!poll || !poll.rankings) {
@@ -64,10 +68,13 @@ export function useRankedChoice(poll?: Election): RCEResult | undefined {
     const asOptIds = poll.rankings.map((ranking) =>
       ranking.choices.map(({ candidateId: optionId }) => ({ id: optionId })),
     );
-    const ranked = rcv(asOptIds);
-    const done = poll.rankings.length === poll.voters.length;
 
-    setResult(ranked);
+    try {
+      const ranked = rcv(asOptIds);
+      setResult(ranked);
+    } catch (e) {
+      setResult(e as Error);
+    }
   }, [poll]);
 
   return result;
@@ -87,7 +94,7 @@ export function useRanking(pollId: string, email: string) {
 
 export function useAvgRanking(
   election?: Election,
-): AvgRankingResult | undefined {
+): AvgRankingResult | undefined | Error {
   const [res, setRes] = useState<AvgRankingResult>();
 
   useEffect(() => {
@@ -107,4 +114,45 @@ export function useAvgRanking(
   }, [election]);
 
   return res;
+}
+
+function useCondorcet(election?: Election): Result | undefined | Error {
+  const [res, setRes] = useState<Result | undefined | Error>();
+
+  useEffect(() => {
+    if (!election || !election.rankings) {
+      setRes(undefined);
+      return;
+    }
+
+    try {
+      const result = condorcet(election.candidateList, election.rankings);
+      setRes(result);
+    } catch (e) {
+      setRes(e as Error);
+    }
+  }, [election]);
+
+  return res;
+}
+
+export function useResult(election?: Election) {
+  const rcv = useRankedChoice(election);
+  const avg = useAvgRanking(election);
+  const condorcetMethod = useCondorcet(election);
+
+  return {
+    rcv: {
+      value: rcv instanceof Error ? undefined : rcv,
+      error: rcv instanceof Error ? rcv : undefined,
+    },
+    avg: {
+      value: avg instanceof Error ? undefined : avg,
+      error: avg instanceof Error ? avg : undefined,
+    },
+    condorcetMethod: {
+      value: condorcetMethod instanceof Error ? undefined : condorcetMethod,
+      error: condorcetMethod instanceof Error ? condorcetMethod : undefined,
+    },
+  };
 }

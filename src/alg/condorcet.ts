@@ -1,12 +1,13 @@
 /**
  * https://en.wikipedia.org/wiki/Condorcet_method
- * OR:
- * use matrix method
- * convert each ballot into matrix (array in order of candidates, of arrays in order of candidates, with undefined in each rows index)
- * where matrix[i][j] = # of voters who prefer candidate i over candidate j
- * sum all matrices (counting undefined as 0)
- * row with n for all n - 1 spots (where n is number of voters) is condorcet winner
+ *
+ * TODO: detect cycles?
+ * TODO: fallback methods
+ * TODO: test partial rankings?
  */
+
+import { Candidate, Ranking } from "../models";
+import { Result } from "./types";
 
 export type Matrix = (number | undefined)[][];
 
@@ -53,12 +54,10 @@ export const addMatrices = (matrices: Matrix[]): Matrix =>
     emptyMatrix(matrices[0].length),
   );
 
-export const winner = (
+export const condorcetInner = (
   candidates: string[],
   summedMatrix: Matrix,
-): {
-  winner: string | undefined;
-} => {
+): Result => {
   const scores = summedMatrix.map((row) =>
     row.reduce(
       (total: number, contest) => ((total || 0) + (contest || 0)) as number,
@@ -74,8 +73,30 @@ export const winner = (
   if (winners.length === 1) {
     return {
       winner: candidates[winners[0]],
+      tie: undefined,
     };
   }
 
-  return { winner: undefined };
+  return {
+    winner: undefined,
+    tie: winners.map((w) => candidates[w]),
+  };
+};
+
+export const condorcet = (
+  candidates: Candidate<unknown>[],
+  rankings: Ranking[],
+) => {
+  const candidateIds = candidates.map(({ id }) => id);
+  const idRankings = rankings.map((r) =>
+    r.choices.map(({ candidateId }) => candidateId),
+  );
+
+  const matrices = idRankings.map((idRanking) =>
+    rankingMatrix(candidateIds, idRanking),
+  );
+
+  const summed = addMatrices(matrices);
+
+  return condorcetInner(candidateIds, summed);
 };

@@ -13,7 +13,6 @@ import { buildRanking, optionAwardKey } from "./build-ranking";
 import DisableOverscroll from "../../hooks/overscroll";
 
 
-
 export type ChoiceMap = { [idAwardKey: string]: number };
 
 export const VoteRoute: FunctionComponent = () => {
