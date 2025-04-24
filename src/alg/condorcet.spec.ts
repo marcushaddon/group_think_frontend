@@ -46,4 +46,23 @@ describe("Ranking Matrix", () => {
 
     expect(condorcetInner(candidates, summed).tie).toEqual(["a", "c"]);
   });
+
+  it("tolerates partial rankings", () => {
+    const filtered = [
+      ranking1.filter((c) => c !== "b"),
+      ranking2,
+      ranking3.filter((c) => c !== "b" && c !== "d"),
+    ];
+
+    console.log(filtered);
+
+    const matrices = filtered.map((ranking) =>
+      rankingMatrix(candidates, ranking),
+    );
+
+    const summed = addMatrices(matrices);
+
+    const res = condorcetInner(candidates, summed);
+    console.log(summed);
+  });
 });

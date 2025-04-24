@@ -47,7 +47,6 @@ export const sorter = () => {
     inserted: T,
     inserting: T,
   ): Generator<Matchup<T>, Relation, MatchupResult> {
-    logger.log(`compare: comparing`, { inserted, inserting });
     const key = matchupKey(inserted, inserting);
     const existing = comparisons.get(key);
     if (existing) {
@@ -70,7 +69,7 @@ export const sorter = () => {
     return relation;
   }
 
-  function* binarySearch<T extends ID>(
+  function* binaryInsert<T extends ID>(
     items: T[],
     item: T,
     left = 0,
@@ -114,10 +113,12 @@ export const sorter = () => {
     const [newLeft, newRight] =
       res === Relation.GT ? [middle + 1, right] : [left, middle - 1];
 
-    return yield* binarySearch(items, item, newLeft, newRight);
+    return yield* binaryInsert(items, item, newLeft, newRight);
   }
 
-  return function* insertionSort<T extends ID>(opts: T[]) {
+  return function* insertionSort<T extends ID>(
+    opts: T[],
+  ): Generator<Matchup<T>, T[], MatchupResult> {
     let sorted: T[] = [];
     const toSort = [...opts];
     console.log("insertionSort: sorting = ", toSort);
@@ -130,7 +131,7 @@ export const sorter = () => {
           continue;
         }
 
-        sorted = yield* binarySearch(sorted, toInsert);
+        sorted = yield* binaryInsert(sorted, toInsert);
         logger.log(`sort: inserted ${toInsert.id}`, { sorted });
       }
       logger.log("sort: sort complete", { toSort });
