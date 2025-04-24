@@ -11,6 +11,8 @@ import { Result } from "./types";
 
 export type Matrix = (number | undefined)[][];
 
+export type CondorcetResult = Result & { matrix: Matrix };
+
 export const rankingMatrix = (
   orderedCandidates: string[],
   ranking: string[],
@@ -86,7 +88,7 @@ export const condorcetInner = (
 export const condorcet = (
   candidates: Candidate<unknown>[],
   rankings: Ranking[],
-) => {
+): CondorcetResult => {
   const candidateIds = candidates.map(({ id }) => id);
   const idRankings = rankings.map((r) =>
     r.choices.map(({ candidateId }) => candidateId),
@@ -98,5 +100,8 @@ export const condorcet = (
 
   const summed = addMatrices(matrices);
 
-  return condorcetInner(candidateIds, summed);
+  return {
+    ...condorcetInner(candidateIds, summed),
+    matrix: summed,
+  };
 };

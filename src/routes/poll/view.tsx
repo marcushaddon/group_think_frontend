@@ -8,6 +8,7 @@ import {
   ElectionEvent,
 } from "../../alg/ranked-choice";
 import { useResult } from "../../hooks";
+import { CondorcetMatrix } from "./matrix";
 
 interface PollDisplayProps {
   poll?: Election;
@@ -196,6 +197,13 @@ const result = useResult(poll);
         <div className="text-green-700 font-semibold">
           Winner: {poll.candidateMap[result?.condorcetMethod.value.winner]?.name}
         </div>
+      )}
+
+      {result?.condorcetMethod?.value?.matrix && (
+        <CondorcetMatrix
+            candidates={poll.candidateList}
+            matrix={result.condorcetMethod.value.matrix}
+        />
       )}
 
       {result?.condorcetMethod?.value?.tie?.length && (

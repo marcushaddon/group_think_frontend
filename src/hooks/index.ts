@@ -3,7 +3,7 @@ import groupthink from "../client/groupthink";
 import { Election, Ranking } from "../models";
 import { RCEResult, rcv } from "../alg/ranked-choice";
 import { AvgRankingResult, avgRankings } from "../alg/avg-ranking";
-import { condorcet } from "../alg/condorcet";
+import { condorcet, CondorcetResult } from "../alg/condorcet";
 import { Result } from "../alg/types";
 
 export function usePoll(pollId?: string): Election | undefined {
@@ -116,8 +116,10 @@ export function useAvgRanking(
   return res;
 }
 
-function useCondorcet(election?: Election): Result | undefined | Error {
-  const [res, setRes] = useState<Result | undefined | Error>();
+function useCondorcet(
+  election?: Election,
+): CondorcetResult | undefined | Error {
+  const [res, setRes] = useState<CondorcetResult | undefined | Error>();
 
   useEffect(() => {
     if (!election || !election.rankings) {
