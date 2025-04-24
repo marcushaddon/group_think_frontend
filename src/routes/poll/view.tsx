@@ -147,7 +147,7 @@ const result = useResult(poll);
       {/* RANKED CHOICE */}
 
       <div>
-        <h2 className="text-lg font-semibold mb-1">Ranked Choice Results</h2>
+        <h2 className="text-lg font-semibold mb-1">Ranked Choice (Instant runnoff) Results</h2>
       </div>
 
       {result?.rcv?.error && (
@@ -184,7 +184,7 @@ const result = useResult(poll);
 
       {/* CONDORCET */}
       <div>
-        <h2 className="text-lg font-semibold mb-1">Condorcet Results</h2>
+        <h2 className="text-lg font-semibold mb-1">Ranked Choice (Condorcet) Results</h2>
       </div>
 
       {result?.condorcetMethod?.error && (
