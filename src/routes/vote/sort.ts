@@ -6,8 +6,14 @@ type ID = {
 };
 
 export type Matchup<T extends ID> = {
+  name: "matchup";
   inserted: T;
   inserting: T;
+};
+
+export type RankPrompt = {
+  name: "confirmInsert";
+  candidateId: string;
 };
 
 export type MatchupWithProgress<T extends ID> = Matchup<T> & {
@@ -47,7 +53,6 @@ export const sorter = () => {
     inserted: T,
     inserting: T,
   ): Generator<Matchup<T>, Relation, MatchupResult> {
-    logger.log(`compare: comparing`, { inserted, inserting });
     const key = matchupKey(inserted, inserting);
     const existing = comparisons.get(key);
     if (existing) {
@@ -58,6 +63,7 @@ export const sorter = () => {
     }
 
     const matchup: Matchup<T> = {
+      name: "matchup",
       inserted,
       inserting,
     };
@@ -70,7 +76,7 @@ export const sorter = () => {
     return relation;
   }
 
-  function* binarySearch<T extends ID>(
+  function* binaryInsert<T extends ID>(
     items: T[],
     item: T,
     left = 0,
@@ -114,23 +120,47 @@ export const sorter = () => {
     const [newLeft, newRight] =
       res === Relation.GT ? [middle + 1, right] : [left, middle - 1];
 
-    return yield* binarySearch(items, item, newLeft, newRight);
+    return yield* binaryInsert(items, item, newLeft, newRight);
   }
 
-  return function* insertionSort<T extends ID>(opts: T[]) {
+  return function* insertionSort<T extends ID>(
+    opts: T[],
+  ): Generator<Matchup<T> | RankPrompt, T[], boolean | MatchupResult> {
     let sorted: T[] = [];
     const toSort = [...opts];
-    console.log("insertionSort: sorting = ", toSort);
+
     try {
       while (toSort.length > 0) {
         const toInsert = toSort.pop()!;
+        const shouldInsert = (yield {
+          name: "confirmInsert",
+          candidateId: toInsert.id,
+        }) as boolean;
+
+        logger.assert(
+          typeof shouldInsert === "boolean",
+          "insertionSort received invalid input for confirmInsert",
+        );
+
+        console.log("should insert", toInsert, shouldInsert);
+        if (!shouldInsert) {
+          continue;
+        }
         logger.log("sort: inserting", { toInsert, remaining: toSort.length });
         if (sorted.length === 0) {
           sorted.push(toInsert);
           continue;
         }
 
-        sorted = yield* binarySearch(sorted, toInsert);
+        // annoying cast required because the generator we are
+        // delegating to always yields a subtype of the container's
+        // yield type
+        sorted = yield* binaryInsert(sorted, toInsert) as Generator<
+          Matchup<T>,
+          T[],
+          boolean | MatchupResult
+        >;
+
         logger.log(`sort: inserted ${toInsert.id}`, { sorted });
       }
       logger.log("sort: sort complete", { toSort });

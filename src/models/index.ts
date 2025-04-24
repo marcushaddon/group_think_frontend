@@ -55,8 +55,8 @@ export enum MatchupAward {
 }
 
 export interface MatchupResult {
-  optionA: string;
-  optionB: string;
+  candidateA: string;
+  candidateB: string;
   winnerId?: string;
   winnerAward: MatchupAward;
 }

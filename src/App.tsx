@@ -3,12 +3,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CreateRoute } from "./routes/create/create";
 import { PollView } from "./routes/poll/view";
 import { PollRoute } from "./routes/poll";
-import { VoteRoute } from "./routes/vote";
+import { VoteView } from "./routes/vote/view";
 import { InviteView } from "./routes/invite/view";
 import * as logger from "./common/logging";
 import { RankingRoute } from "./routes/ranking";
 import { InviteRoute } from "./routes/invite";
 import { pollWithTie, pollWithWinner } from "./models/mocks";
+import { VoteRoute } from "./routes/vote";
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           {/* DESIGN PREWIEWS */}
           <Route path="/design/invite" element={<InviteView poll={pollWithWinner} />} />
           <Route path="/poll/design" element={<PollView poll={pollWithTie} />} />
+          <Route path="/vote/design" element={<VoteView election={pollWithWinner} submitRanking={(r) => {console.log({ ranking: r }); alert("done"); }} />} />
 
           {/* APP */}
           <Route index element={<CreateRoute />} />
