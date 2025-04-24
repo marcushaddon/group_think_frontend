@@ -4,34 +4,34 @@ import { Option } from "../../components/option/option";
 import { Swipe } from "../../components/swipe";
 import { Candidate as OptionModel } from "../../models";
 
-export interface Props<T> {
-  options: OptionModel<T>[];
-  optionA: OptionModel<T>;
-  optionB: OptionModel<T>;
+export interface Props {
+  options: OptionModel<unknown>[];
+  optionA: OptionModel<unknown>;
+  optionB: OptionModel<unknown>;
   onResult: (res: MatchupResult) => void;
   className?: string;
 }
 
-export const Matchup = <T extends object>({
+export const Matchup =({
   options,
   optionA,
   optionB,
   onResult,
   className = ""
-}: Props<T>) => {
+}: Props) => {
   const [_snackMessage, setSnackMessage] = useState<string | null>(null);
   const chooseOption = useCallback((winnerId: string) => {
     onResult({
-        optionA: optionA.id,
-        optionB: optionB.id,
+        candidateA: optionA.id,
+        candidateB: optionB.id,
         winnerAward: MatchupAward.EXPLICIT_WIN,
         winnerId
     })
   }, [optionA, optionB]);
   const rejectOption = useCallback((loserId: string) => {
     onResult({
-        optionA: optionA.id,
-        optionB: optionB.id,
+        candidateA: optionA.id,
+        candidateB: optionB.id,
         winnerAward: MatchupAward.IMPLICIT_WIN,
         winnerId: loserId === optionA.id ? optionB.id : optionA.id
     })
@@ -59,8 +59,8 @@ export const Matchup = <T extends object>({
 
   const ambivalentTie = useCallback(() => {
     onResult({
-      optionA: optionA.id,
-      optionB: optionB.id,
+      candidateA: optionA.id,
+      candidateB: optionB.id,
       winnerAward: MatchupAward.AMBIVALENT_TIE,
     });
     setSnackMessage(`meh to both`);
@@ -68,8 +68,8 @@ export const Matchup = <T extends object>({
 
   const positiveTie = useCallback(() => {
     onResult({
-        optionA: optionA.id,
-        optionB: optionB.id,
+        candidateA: optionA.id,
+        candidateB: optionB.id,
         winnerAward: MatchupAward.POSITIVE_TIE,
     });
     setSnackMessage("+1 for both");
@@ -77,8 +77,8 @@ export const Matchup = <T extends object>({
 
   const negativeTie = useCallback(() => {
     onResult({
-        optionA: optionA.id,
-        optionB: optionB.id,
+        candidateA: optionA.id,
+        candidateB: optionB.id,
         winnerAward: MatchupAward.NEGATIVE_TIE,
     });
     setSnackMessage("-1 for both");

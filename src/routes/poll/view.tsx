@@ -2,7 +2,6 @@ import React from "react";
 import { RankingGraphLink } from "../ranking";
 import {
   Election,
-  VoteStatus,
 } from "../../models"; // Adjust path as needed
 
 import {
@@ -48,7 +47,7 @@ const result = useResult(poll);
             <ul className="list-disc pl-5">
               {Object.entries(event.shares).map(([id, share]) => (
                 <li key={id}>
-                  {poll.candidateMap[id]?.name ?? id}: {asPercent(share)}
+                  {poll.candidateMap[id]?.name ?? id}: {share}
                 </li>
               ))}
             </ul>
@@ -128,13 +127,13 @@ const result = useResult(poll);
 
       {result?.avg?.value?.winner && (
         <div className="text-green-700 font-semibold">
-          Winner: {poll.candidateMap[result?.avg.value.winner]?.name} (avg. ranking of {result?.avg.value.share.toFixed(2)})
+          Winner: {poll.candidateMap[result?.avg.value.winner]?.name} (avg. ranking of {(result?.avg.value.share + 1).toFixed(2)})
         </div>
       )}
 
       {result.avg?.value?.tie?.length && (
         <div className="text-yellow-600">
-          Tied with average rankings of ${result?.avg.value.share.toFixed(2)}
+          Tied with average rankings of {(result?.avg.value.share + 1).toFixed(2)}
           <div className="font-semibold">Tie between:</div>
           <ul className="list-disc pl-5">
             {result?.avg.value.tie.map((id) => (

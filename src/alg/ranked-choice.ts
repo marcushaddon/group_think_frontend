@@ -202,15 +202,6 @@ const superlatives = (shares: Record<string, number>) =>
 
 const optionsFromRankings = (rankings: Option[][]): string[] => {
   const opts = new Set(rankings[0].map(({ id }) => id));
-  const valid =
-    rankings.length > 0 &&
-    rankings.every((r) => {
-      const set = new Set(r.map(({ id }) => id));
-
-      return isSubsetOf(set, opts) && isSubsetOf(set, opts);
-    });
-
-  logger.assert(valid, "Invalid rankings", { rankings });
 
   return [...opts.values()];
 };

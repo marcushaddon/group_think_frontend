@@ -18,8 +18,8 @@ export const buildRankingGraph = (
     edges,
     matchups: ranking.matchups.map((m) => ({
       ...m,
-      optionA: optMap[m.optionA].name,
-      optionB: optMap[m.optionB].name,
+      optionA: optMap[m.candidateA].name,
+      optionB: optMap[m.candidateB].name,
       winnerId: m.winnerId && optMap[m.winnerId].name,
     })),
   });
@@ -44,7 +44,7 @@ const matchupEdge = (
   ranking: Ranking,
   opts: Record<string, Candidate<any>>,
 ): string => {
-  const { optionA, optionB } = m;
+  const { candidateA: optionA, candidateB: optionB } = m;
   const [aIdx, bIdx] = [optionA, optionB].map((id) =>
     ranking.choices.findIndex((ch) => ch.candidateId === id),
   );
