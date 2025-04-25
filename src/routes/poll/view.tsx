@@ -113,7 +113,7 @@ const result = useResult(poll);
 
       <div>
         <h2 className="text-lg font-semibold mb-1">Options</h2>
-        <ul className="list-disc pl-5">
+        <ul className="list-decimal pl-5">
           {poll.candidateList.map((option) => (
             <li key={option.id}>{option.name}</li>
           ))}
@@ -142,6 +142,29 @@ const result = useResult(poll);
             ))}
           </ul>
         </div>
+      )}
+
+      {result.avg?.value?.shares && (
+        <ol
+            className="list-decimal pl-5"
+        >
+            {
+                Object.entries(result.avg.value.shares)
+                    .sort((a, b) => a[1] < b[1] ? -1 : 1)
+                    .map(([id, placement], i) => (
+                        <li
+                            className={
+                                (id === result.avg.value?.winner ?
+                                    "text-green-700 font-semibold" : result.avg.value?.tie?.includes(id) ?
+                                    "text-yellow-600" :
+                                    "")
+                                }
+                        >
+                            {poll.candidateMap[id].name}: {(placement + 1).toFixed(2)}
+                        </li>
+                    ))
+            }
+        </ol>
       )}
 
       {/* RANKED CHOICE */}

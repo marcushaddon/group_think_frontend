@@ -11,22 +11,40 @@ export const CondorcetMatrix: FunctionComponent<{ candidates: Election["candidat
     candidates
 }) => {
 
+    const cols = candidates.length + 1;
+
     return (
-        <div className="overflow-auto w-fill">
-            <table className="overflow-auto max-w-full format text-sm text-center">
+        // <div className="overflow-auto w-fill">
+            <table
+                className="text-center"
+                style={{
+                    tableLayout: "auto",
+                    width: "100%"
+                }}
+            >
                 <thead className="text-xs">
                     <tr>
-                        <th scope="col" className="px-6 py-3">
-                            filler
+                        <th scope="col" className={`w-1/${cols} py-3 border-b border-r`}>
+                           
                         </th>
-                        {candidates.map((c) => <th scope="col" className="px-6 py-3">{abreve(c.name)}</th>)}
+                        {candidates.map((c) => <th
+                            scope="col"
+                            className={`text-center border-b w-1/${cols} py-3`}
+                        >
+                            {abreve(c.name)}
+                        </th>)}
                     </tr>
                 </thead>
                 <tbody>
                 {
                     matrix.map((row, i) => (
                         <tr>
-                            <th scope="row">{abreve(candidates[i].name)}</th>
+                            <th
+                                scope="row"
+                                className="border-r"
+                            >
+                                {abreve(candidates[i].name)}
+                            </th>
                             {row.map((res) => <td>{res === undefined ? "-" : res}</td>)}
                         </tr>
                     ))
@@ -35,7 +53,7 @@ export const CondorcetMatrix: FunctionComponent<{ candidates: Election["candidat
                 </tbody>
                 
             </table>
-        </div>
+        // </div>
     )
     
 

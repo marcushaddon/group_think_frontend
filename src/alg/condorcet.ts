@@ -17,14 +17,6 @@ export const rankingMatrix = (
   orderedCandidates: string[],
   ranking: string[],
 ): Matrix => {
-  const idxMap = orderedCandidates.reduce(
-    (map, candidate, idx) => ({
-      ...map,
-      [candidate]: idx,
-    }),
-    {} as Record<string, number>,
-  );
-
   return orderedCandidates.map((runner) =>
     orderedCandidates.map((opponent) => {
       if (runner === opponent) {
@@ -35,7 +27,7 @@ export const rankingMatrix = (
         ranking.findIndex((candidateId) => candidateId === id),
       );
 
-      return runnerRank < oppRank ? 1 : 0;
+      return runnerRank > -1 && runnerRank < oppRank ? 1 : 0;
     }),
   );
 };

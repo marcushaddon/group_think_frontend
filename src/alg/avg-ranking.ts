@@ -1,7 +1,10 @@
 import { assert } from "../common/logging";
 import { Result } from "./types";
 
-export type AvgRankingResult = Result & { share: number };
+export type AvgRankingResult = Result & {
+  share: number;
+  shares: Record<string, number>;
+};
 
 export const avgRankings = (
   opts: string[],
@@ -28,11 +31,13 @@ export const avgRankings = (
         winner: winners[0],
         share: highest,
         tie: undefined,
+        shares: avgPlacements,
       }
     : {
         tie: winners,
         share: highest,
         winner: undefined,
+        shares: avgPlacements,
       };
 };
 

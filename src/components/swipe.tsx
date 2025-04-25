@@ -4,8 +4,10 @@ export interface Props {
   visible: boolean;
   refreshKey: string;
   children: React.ReactNode;
-  onLeft: () => void;
-  onRight: () => void;
+  onLeft?: () => void;
+  onRight?: () => void;
+  onUp?: () => void;
+  onDown?: () => void;
 
   className?: string;
 }
@@ -82,6 +84,8 @@ export const Swipe: FunctionComponent<Props> = ({
   children,
   onLeft,
   onRight,
+  onUp, 
+  onDown,
 
   className = ""
 }) => {
@@ -108,12 +112,20 @@ export const Swipe: FunctionComponent<Props> = ({
       setXDelta(xDelt);
       setYDelta(yDelt);
 
-      if (dir === Dir.LEFT || dir === Dir.RIGHT) {
+      console.log({ dir, onLeft, xDelta })
+      if (dir === Dir.LEFT && onLeft ) {
+        console.log('swiping left for some reason');
         setHDelta(xDelt);
         return;
-      } else if (dir === Dir.DOWN || dir === Dir.UP) {
-        // setVDelta(yDelt);
+      } else if (dir === Dir.RIGHT && onRight) {
+        console.log('setting right');
+        setHDelta(xDelt);
         return;
+      } else if (dir === Dir.DOWN && onDown) {
+        setVDelta(yDelt);
+        return;
+      } else if (dir === Dir.UP && onUp) {
+        setVDelta(yDelt);
       }
 
       const maybeDir = calcDir([xDelt, yDelt]);

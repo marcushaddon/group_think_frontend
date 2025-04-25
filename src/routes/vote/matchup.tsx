@@ -28,14 +28,6 @@ export const Matchup =({
         winnerId
     })
   }, [optionA, optionB]);
-  const rejectOption = useCallback((loserId: string) => {
-    onResult({
-        candidateA: optionA.id,
-        candidateB: optionB.id,
-        winnerAward: MatchupAward.IMPLICIT_WIN,
-        winnerId: loserId === optionA.id ? optionB.id : optionA.id
-    })
-  }, [optionA, optionB, onResult]);
 
   const chooseA = useCallback(() => {
     chooseOption(optionA.id);
@@ -46,16 +38,6 @@ export const Matchup =({
     chooseOption(optionB.id);
     setSnackMessage(`+1 ${optionB.name}`);
   }, [chooseOption]);
-
-  const rejectA = useCallback(() => {
-    rejectOption(optionA.id);
-    setSnackMessage(`-1 for ${optionA.name}`);
-  }, [rejectOption]);
-
-  const rejectB = useCallback(() => {
-    rejectOption(optionB.id);
-    setSnackMessage(`-1 for ${optionB.name}`);
-  }, [rejectOption]);
 
   const ambivalentTie = useCallback(() => {
     onResult({
@@ -75,15 +57,6 @@ export const Matchup =({
     setSnackMessage("+1 for both");
   }, [onResult]);
 
-  const negativeTie = useCallback(() => {
-    onResult({
-        candidateA: optionA.id,
-        candidateB: optionB.id,
-        winnerAward: MatchupAward.NEGATIVE_TIE,
-    });
-    setSnackMessage("-1 for both");
-  }, [onResult]);
-
   return (
     <div
       className={`${className}`}
@@ -99,7 +72,6 @@ export const Matchup =({
           <Swipe
             key={o.id}
             visible={o.id === optionA.id}
-            onLeft={rejectA}
             onRight={chooseA}
             refreshKey={optionA!.id + optionB!.id}
             className="h-1/1"
@@ -114,7 +86,6 @@ export const Matchup =({
       >
         {/* MIDDLE */}
         <Swipe
-          onLeft={negativeTie}
           onRight={positiveTie}
           visible={true}
           refreshKey={optionA.id + optionB.id}
@@ -135,7 +106,6 @@ export const Matchup =({
           <Swipe
             key={o.id}
             visible={o.id === optionB.id}
-            onLeft={rejectB}
             onRight={chooseB}
             refreshKey={optionA.id + optionB.id}
             className="h-1/1"
@@ -156,17 +126,6 @@ const Tie: FunctionComponent<TieProps> = ({ ambivalentTie }) => (
   <div
     className="h-1/1 flex content-center text-center"
   >
-    <div
-        className="flex-1/3 content-center text-center"
-    >
-      &lt;&lt;&lt; x neither
-    </div>
-    <div
-        onClick={ambivalentTie}
-        className="flex-1/3 content-center text-center"
-    >
-      ~ ambivalent
-    </div>
     <div
         className="flex-1/3 content-center text-center"
     >
