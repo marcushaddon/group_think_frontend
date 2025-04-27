@@ -1,4 +1,4 @@
-import { Candidate, OptionType, Voter, Election } from ".";
+import { Candidate, OptionType, Voter, Election, MatchupAward } from ".";
 
 const option1: Candidate<unknown> = {
   id: "opt1",
@@ -169,7 +169,13 @@ export const pollWithTie: Election = {
         { candidateId: "opt1" },
         { candidateId: "opt5" },
       ],
-      matchups: [],
+      matchups: [
+        {
+          candidateA: "opt4",
+          candidateB: "opt1",
+          winnerAward: MatchupAward.POSITIVE_TIE,
+        },
+      ],
     },
     {
       voterEmail: "charlie@example.com",
@@ -181,7 +187,23 @@ export const pollWithTie: Election = {
         { candidateId: "opt2" },
         { candidateId: "opt4" },
       ],
-      matchups: [],
+      matchups: [
+        {
+          candidateA: "opt3",
+          candidateB: "opt5",
+          winnerAward: MatchupAward.POSITIVE_TIE,
+        },
+        {
+          candidateA: "opt5",
+          candidateB: "opt1",
+          winnerAward: MatchupAward.POSITIVE_TIE,
+        },
+        {
+          candidateA: "opt5",
+          candidateB: "opt1",
+          winnerAward: MatchupAward.POSITIVE_TIE,
+        },
+      ],
     },
     {
       voterEmail: "dana@example.com",

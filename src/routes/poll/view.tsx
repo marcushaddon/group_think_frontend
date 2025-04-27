@@ -1,7 +1,11 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { RankingGraphLink } from "../ranking";
 import {
+  Choice,
   Election,
+  MatchupAward,
+  MatchupResult,
+  Ranking,
 } from "../../models"; // Adjust path as needed
 
 import {
@@ -11,14 +15,124 @@ import { useResult } from "../../hooks";
 import { CondorcetMatrix } from "./matrix";
 
 interface PollDisplayProps {
-  poll?: Election;
+  election?: Election;
 }
 
 const asPercent = (p: number) => `${(p * 100).toFixed(2)}%`;
 
-export const PollView: React.FC<PollDisplayProps> = ({ poll }) => {
-const result = useResult(poll);
-  if (!poll) {
+
+const matchupKey = (a: string, b: string) => [a, b].sort().join('_');
+const tieAwards = new Set([MatchupAward.AMBIVALENT_TIE, MatchupAward.NEGATIVE_TIE, MatchupAward.POSITIVE_TIE]);
+const isTie = (award: MatchupAward): boolean => tieAwards.has(award);
+
+const rankingStyles = (ranking: Ranking): (React.CSSProperties & { arrow: string })[] => {
+  const matchups = ranking.matchups.reduce((map, current) => ({
+    ...map,
+    [matchupKey(current.candidateA, current.candidateB)]: current
+  }), {} as Record<string, MatchupResult>);
+
+  const grouped = ranking.choices.reduce(
+    (groups, current, i) => {
+      const res = i > 0 ? 
+        matchups[matchupKey(current.candidateId, ranking.choices[i - 1].candidateId)] :
+        undefined;
+      const tiedWithAbove = !!res?.winnerAward && isTie(res.winnerAward);
+
+      return tiedWithAbove ? [
+        ...groups.slice(0, -1),
+        [...groups.at(-1)!, current]
+      ] : [
+        ...groups,
+        [current]
+      ]
+    },
+    [] as Choice[][]
+  );
+
+  const len = grouped.length;
+  
+  const hues = grouped.map((ch, i) => {
+    const hue = 120 / grouped.length * (len - i - 1);
+
+    return hue;
+  });
+
+  const UP_ARROW = "\u2191";
+  const DOWN_ARROW = "\u2193";
+  const UPDOWN_ARROW = "\u2195";
+
+  /**
+   * BOOKMARK: include unicode arrows indicating comparisons
+   * UPWARDS ARROW, U+2191 &#x2191;
+   * DOWNWARDS ARROW, U+2193 &#x2193;
+   * UP DOWN ARROW, U+2195 &#x2195;
+   */
+
+  const styles = grouped.flatMap(
+    (group, gIdx) => group.map((choice, chIdx) => {
+        const hue = hues[gIdx];
+        const tiedWithPrev = chIdx > 0;
+        const tiedWithNext = chIdx < group.length - 1;
+
+        const bgHsl = `hsl(${hue}, 50%, 80%)`;
+        const borderHsl = `hsl(${hue}, 50%, 60%)`;
+
+        return {
+            backgroundColor: bgHsl,
+            borderLeft: `1px solid ${borderHsl}`,
+            borderRight: `1px solid ${borderHsl}`,
+            borderTop: `1px solid ${tiedWithPrev ? bgHsl : borderHsl}`,
+            borderBottom: `1px solid ${tiedWithNext ? bgHsl : borderHsl}`
+        }
+    })
+  );
+
+  const arrows = ranking.choices.map(({ candidateId }, i) => {
+    const above = ranking.choices[i - 1]?.candidateId;
+    const below = ranking.choices[i + 1]?.candidateId;
+
+    const comparedWithAbove = !!matchups[matchupKey(candidateId, above)];
+    const comparedWithBelow = !!matchups[matchupKey(candidateId, below)];
+
+    return comparedWithAbove && comparedWithBelow ? 
+        UPDOWN_ARROW : 
+        comparedWithAbove ? UP_ARROW :
+        comparedWithBelow ? DOWN_ARROW : '';
+  });
+
+  return styles.map((style, i) => ({ ...style, arrow: arrows[i]}));
+}
+
+const VoterRanking: FunctionComponent<{ ranking: Ranking, election: Election }> = ({
+  ranking,
+  election
+}) => {
+  const styles = rankingStyles(ranking);
+
+  return (
+    <>
+      <div className="font-medium mb-1">
+        {ranking.voterEmail}
+      </div>
+      <div className="text-sm text-gray-700">
+        Ranked:
+        <ol className="list-decimal pl-5 mt-1">
+          {ranking.choices.map((choice, i) => (
+            <li key={i} style={{ ...styles[i] }}>
+              {styles[i].arrow} {election.candidateMap[choice.candidateId]?.name ?? "Unknown"}
+            </li>
+          ))}
+        </ol>
+        <RankingGraphLink ranking={ranking} optMap={election.candidateMap} />
+      </div>
+
+    </>
+  )
+}
+
+export const PollView: React.FC<PollDisplayProps> = ({ election }) => {
+const result = useResult(election);
+  if (!election) {
     return (
       <div className="flex items-center justify-center h-screen text-center text-gray-700">
         Loading poll data...
@@ -27,12 +141,12 @@ const result = useResult(poll);
   }
 
   const hasVoted = (participantEmail: string) =>
-    poll.rankings?.some((r) => r.voterEmail === participantEmail);
+    election.rankings?.some((r) => r.voterEmail === participantEmail);
 
   // Helper to format event logs
   const renderEvent = (event: ElectionEvent, index: number) => {
     const asNames = (optIds: string[]) => optIds.map(
-      (id) => poll.candidateMap[id]?.name || `ERROR: unknown option: ${id}`
+      (id) => election.candidateMap[id]?.name || `ERROR: unknown option: ${id}`
     ).join(", ");
     switch (event.name) {
       case "Round":
@@ -48,7 +162,7 @@ const result = useResult(poll);
             <ul className="list-disc pl-5">
               {Object.entries(event.shares).map(([id, share]) => (
                 <li key={id}>
-                  {poll.candidateMap[id]?.name ?? id}: {share}
+                  {election.candidateMap[id]?.name ?? id}: {share}
                 </li>
               ))}
             </ul>
@@ -58,7 +172,7 @@ const result = useResult(poll);
         return (
           <div key={index}>
             <strong>Majority Winner:</strong>{" "}
-            {poll.candidateMap[event.winner.id]?.name} (
+            {election.candidateMap[event.winner.id]?.name} (
             {asPercent(event.winner.share)})
           </div>
         );
@@ -66,7 +180,7 @@ const result = useResult(poll);
         return (
           <div key={index}>
             <strong>Tie Between:</strong>{" "}
-            {event.winners.map((id) => poll.candidateMap[id]?.name).join(", ")} (
+            {event.winners.map((id) => election.candidateMap[id]?.name).join(", ")} (
             share: {asPercent(event.share)})
           </div>
         );
@@ -74,7 +188,7 @@ const result = useResult(poll);
         return (
           <div key={index}>
             <strong>Loser Eliminated:</strong>{" "}
-            {poll.candidateMap[event.loser]?.name ?? event.loser}
+            {election.candidateMap[event.loser]?.name ?? event.loser}
           </div>
         );
       default:
@@ -84,16 +198,16 @@ const result = useResult(poll);
 
   return (
     <div className="p-4 max-w-3xl mx-auto text-black space-y-6">
-      <h1 className="text-2xl font-bold">{poll.name}</h1>
+      <h1 className="text-2xl font-bold">{election.name}</h1>
 
       <div>
-        <span className="font-semibold">Owner:</span> {poll.owner.name}
+        <span className="font-semibold">Owner:</span> {election.owner.name}
       </div>
 
       <div>
         <h2 className="text-lg font-semibold mb-1">Participants</h2>
         <ul className="space-y-1">
-          {poll.voters.map((participant) => (
+          {election.voters.map((participant) => (
             <li
               key={participant.id}
               className={`flex items-center justify-between border-b pb-1 ${
@@ -114,13 +228,14 @@ const result = useResult(poll);
       <div>
         <h2 className="text-lg font-semibold mb-1">Options</h2>
         <ul className="list-decimal pl-5">
-          {poll.candidateList.map((option) => (
+          {election.candidateList.map((option) => (
             <li key={option.id}>{option.name}</li>
           ))}
         </ul>
       </div>
 
       {/* AVERAGE RANKING */}
+      {/* TODO: show distribution! */}
 
       <div>
         <h2 className="text-lg font-semibold mb-1">Average ranking result</h2>
@@ -128,7 +243,7 @@ const result = useResult(poll);
 
       {result?.avg?.value?.winner && (
         <div className="text-green-700 font-semibold">
-          Winner: {poll.candidateMap[result?.avg.value.winner]?.name} (avg. ranking of {(result?.avg.value.share + 1).toFixed(2)})
+          Winner: {election.candidateMap[result?.avg.value.winner]?.name} (avg. ranking of {(result?.avg.value.share + 1).toFixed(2)})
         </div>
       )}
 
@@ -138,7 +253,7 @@ const result = useResult(poll);
           <div className="font-semibold">Tie between:</div>
           <ul className="list-disc pl-5">
             {result?.avg.value.tie.map((id) => (
-              <li key={id}>{poll.candidateMap[id]?.name}</li>
+              <li key={id}>{election.candidateMap[id]?.name}</li>
             ))}
           </ul>
         </div>
@@ -160,7 +275,7 @@ const result = useResult(poll);
                                     "")
                                 }
                         >
-                            {poll.candidateMap[id].name}: {(placement + 1).toFixed(2)}
+                            {election.candidateMap[id].name}: {(placement + 1).toFixed(2)}
                         </li>
                     ))
             }
@@ -181,7 +296,7 @@ const result = useResult(poll);
 
       {result?.rcv?.value?.winner && (
         <div className="text-green-700 font-semibold">
-          Winner: {poll.candidateMap[result?.rcv.value.winner]?.name}
+          Winner: {election.candidateMap[result?.rcv.value.winner]?.name}
         </div>
       )}
 
@@ -190,7 +305,7 @@ const result = useResult(poll);
           <div className="font-semibold">Tie between:</div>
           <ul className="list-disc pl-5">
             {result?.rcv?.value.tie.map((id) => (
-              <li key={id}>{poll.candidateMap[id]?.name}</li>
+              <li key={id}>{election.candidateMap[id]?.name}</li>
             ))}
           </ul>
         </div>
@@ -218,13 +333,13 @@ const result = useResult(poll);
 
       {result?.condorcetMethod?.value?.winner && (
         <div className="text-green-700 font-semibold">
-          Winner: {poll.candidateMap[result?.condorcetMethod.value.winner]?.name}
+          Winner: {election.candidateMap[result?.condorcetMethod.value.winner]?.name}
         </div>
       )}
 
       {result?.condorcetMethod?.value?.matrix && (
         <CondorcetMatrix
-            candidates={poll.candidateList}
+            candidates={election.candidateList}
             matrix={result.condorcetMethod.value.matrix}
         />
       )}
@@ -234,7 +349,7 @@ const result = useResult(poll);
           <div className="font-semibold">Tie between:</div>
           <ul className="list-disc pl-5">
             {result?.condorcetMethod?.value.tie.map((id) => (
-              <li key={id}>{poll.candidateMap[id]?.name}</li>
+              <li key={id}>{election.candidateMap[id]?.name}</li>
             ))}
           </ul>
         </div>
@@ -242,24 +357,11 @@ const result = useResult(poll);
 
       <div>
         <h2 className="text-lg font-semibold mb-1">Rankings</h2>
-        {poll.rankings && poll.rankings.length > 0 ? (
+        {election.rankings && election.rankings.length > 0 ? (
           <ul className="space-y-3">
-            {poll.rankings.map((ranking, index) => (
+            {election.rankings.map((ranking, index) => (
               <li key={index} className="border p-3 rounded">
-                <div className="font-medium mb-1">
-                  {ranking.voterEmail}
-                </div>
-                <div className="text-sm text-gray-700">
-                  Ranked:
-                  <ol className="list-decimal pl-5 mt-1">
-                    {ranking.choices.map((choice, i) => (
-                      <li key={i}>
-                        {poll.candidateMap[choice.candidateId]?.name ?? "Unknown"}
-                      </li>
-                    ))}
-                  </ol>
-                  <RankingGraphLink ranking={ranking} optMap={poll.candidateMap} />
-                </div>
+                <VoterRanking ranking={ranking} election={election} />
               </li>
             ))}
           </ul>

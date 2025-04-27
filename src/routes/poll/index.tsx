@@ -11,5 +11,5 @@ export const PollRoute: FunctionComponent = () => {
   
     const done = poll?.rankings?.length === poll?.voters.length;
 
-    return <PollView poll={poll && { ...poll  }} />
+    return <PollView election={poll && { ...poll  }} />
 }

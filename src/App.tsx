@@ -50,7 +50,7 @@ function App() {
         <Routes>
           {/* DESIGN PREWIEWS */}
           <Route path="/design/invite" element={<InviteView poll={pollWithWinner} />} />
-          <Route path="/poll/design" element={<PollView poll={pollWithTie} />} />
+          <Route path="/poll/design" element={<PollView election={pollWithTie} />} />
           <Route path="/vote/design" element={<VoteView election={pollWithWinner} submitRanking={(r) => {console.log({ ranking: r }); alert("done"); }} />} />
 
           {/* APP */}
